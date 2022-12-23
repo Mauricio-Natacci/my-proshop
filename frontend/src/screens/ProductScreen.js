@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Row, Col, Image, ListGroup, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { listProductDetails } from '../actions/productActions'
 
-const ProductScreen = ({ match }) => {
+const ProductScreen = ({ history, match }) => {
+  const qty = 1
   const dispatch = useDispatch()
 
   const productDetails = useSelector((state) => state.productDetails)
@@ -13,6 +14,10 @@ const ProductScreen = ({ match }) => {
   useEffect(() => {
     dispatch(listProductDetails(match.params.id))
   }, [dispatch, match])
+
+  const addToCartHandler = () => {
+    history.push(`/cart/${match.params.id}?qty=${qty}`)
+  }
 
   return (
     <>
@@ -41,7 +46,11 @@ const ProductScreen = ({ match }) => {
               <ListGroup.Item>{product.description}</ListGroup.Item>
               <ListGroup.Item>Price: $ {product.price}</ListGroup.Item>
               <ListGroup.Item>
-                <Button className='btn-block' type='button'>
+                <Button
+                  onClick={addToCartHandler}
+                  className='btn-block'
+                  type='button'
+                >
                   Add To Cart
                 </Button>
               </ListGroup.Item>
