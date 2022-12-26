@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Row, Col, ListGroup, Image, Form, Button, Card } from 'react-bootstrap'
+import { Row, Col, ListGroup, Image, Button, Card } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { addToCart } from '../actions/cartActions'
+import { addToCart, removeFromCart } from '../actions/cartActions'
 
 const CartScreen = ({ match, location, history }) => {
   const productId = match.params.id
@@ -19,6 +19,18 @@ const CartScreen = ({ match, location, history }) => {
       dispatch(addToCart(productId, qty))
     }
   }, [dispatch, productId, qty])
+
+  const removeFromCartHandler = (id) => {
+    dispatch(removeFromCart(id))
+  }
+
+  const checkoutHandler = (id) => {
+    console.log('buy products')
+  }
+
+  const updateItemQuantity = ({ productId, value }) => {
+    dispatch(addToCart(productId, value))
+  }
 
   return (
     <Row>
@@ -46,13 +58,62 @@ const CartScreen = ({ match, location, history }) => {
                   </Col>
                   <Col md={2}>$ {item.price}</Col>
                   <Col md={2}>
+                    <input
+                      type='number'
+                      value={item.quantity}
+                      onChange={(e) =>
+                        updateItemQuantity({
+                          productId: item.productId,
+                          value: Number(e.target.value),
+                        })
+                      }
+                      min='1'
+                      max='10'
+                    />
                     <p>Quantity: {item.quantity}</p>
+                  </Col>
+                  <Col md={2}>
+                    <Button
+                      type='button'
+                      variant='light'
+                      onClick={() => removeFromCartHandler(item.productId)}
+                    >
+                      <p>Remove</p>{' '}
+                    </Button>
                   </Col>
                 </Row>
               </ListGroup.Item>
             ))}
           </ListGroup>
         )}
+      </Col>
+      <Col md={4}>
+        <Card>
+          <ListGroup variant='fluid'>
+            <ListGroup.Item>
+              <h4>
+                Subtotal (
+                {cartItems.reduce((acc, item) => acc + item.quantity, 0)}) items
+              </h4>
+              <h3>
+                $
+                {cartItems
+                  .reduce((acc, item) => acc + item.quantity * item.price, 0)
+                  .toFixed(2)}
+              </h3>
+            </ListGroup.Item>
+            <ListGroup.Item>
+              <Button
+                type='button'
+                className='btn-block'
+                disabled={cartItems.length === 0}
+                onClick={checkoutHandler}
+              >
+                Buy Products
+              </Button>
+            </ListGroup.Item>
+          </ListGroup>
+        </Card>
       </Col>
     </Row>
   )
