@@ -25,7 +25,7 @@ const CartScreen = ({ match, location, history }) => {
   }
 
   const checkoutHandler = (id) => {
-    console.log('buy products')
+    history.push('/login?redirect=shipping')
   }
 
   const updateItemQuantity = ({ productId, value }) => {
