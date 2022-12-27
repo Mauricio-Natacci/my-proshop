@@ -28,9 +28,14 @@ const Header = () => {
                 <Nav.Link>Cart</Nav.Link>
               </LinkContainer>
               {userInfo ? (
-                <LinkContainer onClick={logoutHandler} to='/'>
-                  <Nav.Link>Logout</Nav.Link>
-                </LinkContainer>
+                <>
+                  <LinkContainer onClick={logoutHandler} to='/'>
+                    <Nav.Link>Logout</Nav.Link>
+                  </LinkContainer>
+                  <LinkContainer to='/'>
+                    <Nav.Link>{userInfo.name}</Nav.Link>
+                  </LinkContainer>
+                </>
               ) : (
                 <LinkContainer to='/login'>
                   <Nav.Link>Sign In</Nav.Link>
