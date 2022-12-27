@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 import { Row, Col, Image, ListGroup, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { listProductDetails } from '../actions/productActions'
+import Loader from '../components/Loader'
+import Message from '../components/Message'
 
 const ProductScreen = ({ history, match }) => {
   const qty = 1
@@ -25,9 +27,9 @@ const ProductScreen = ({ history, match }) => {
         Go Back
       </Link>
       {loading ? (
-        <h1>Loading...</h1>
+        <Loader />
       ) : error ? (
-        <h3>{error}</h3>
+        <Message variant='danger'>{error}</Message>
       ) : (
         <Row>
           <Col md={6}>
