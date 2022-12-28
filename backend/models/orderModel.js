@@ -27,7 +27,6 @@ const orderSchema = mongoose.Schema(
       country: { type: String, required: true },
     },
     status: { type: String, default: 'pending' },
-
     totalPrice: {
       type: Number,
       required: true,

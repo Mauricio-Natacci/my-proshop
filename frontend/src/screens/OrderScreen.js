@@ -1,10 +1,18 @@
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
+import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { getOrderDetails } from '../actions/orderActions'
+import {
+  getOrderDetails,
+  deliverOrder,
+  cancelledOrder,
+} from '../actions/orderActions'
+import {
+  ORDER_DELIVER_RESET,
+  ORDER_CANCELLED_RESET,
+} from '../constants/orderConstants'
 
 const OrderScreen = ({ match, history }) => {
   const orderId = match.params.id
@@ -13,11 +21,31 @@ const OrderScreen = ({ match, history }) => {
   const orderDetails = useSelector((state) => state.orderDetails)
   const { order, loading, error } = orderDetails
 
+  const orderDeliver = useSelector((state) => state.orderDeliver)
+  const { loading: loadingDeliver, success: successDeliver } = orderDeliver
+
+  const orderCancelled = useSelector((state) => state.orderCancelled)
+  const { loading: loadingCancelled, success: successCancelled } =
+    orderCancelled
+
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
+
   useEffect(() => {
-    if (!order || order._id !== orderId) {
+    if (!order || order._id !== orderId || successDeliver || successCancelled) {
+      dispatch({ type: ORDER_DELIVER_RESET })
+      dispatch({ type: ORDER_CANCELLED_RESET })
       dispatch(getOrderDetails(orderId))
     }
-  }, [dispatch, order, orderId])
+  }, [dispatch, order, orderId, successDeliver, successCancelled])
+
+  const deliverHandler = () => {
+    dispatch(deliverOrder(order))
+  }
+
+  const cancelledHanler = () => {
+    dispatch(cancelledOrder(order))
+  }
 
   return loading ? (
     <Loader />
@@ -78,9 +106,7 @@ const OrderScreen = ({ match, history }) => {
                 </ListGroup>
               )}
               {order.isDelivered ? (
-                <Message variant='success'>
-                  Delivered on {order.deliveredAt}
-                </Message>
+                <Message variant='success'>Delivered</Message>
               ) : (
                 <Message variant='danger'>Not Delivered</Message>
               )}
@@ -103,6 +129,32 @@ const OrderScreen = ({ match, history }) => {
                   <Col>${order.totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
+              {loadingDeliver && <Loader />}
+              {userInfo.isAdmin && !order.isDelivered && (
+                <ListGroup.Item>
+                  <Button
+                    type='button'
+                    className='btn btn-block'
+                    onClick={deliverHandler}
+                  >
+                    Mark As Delivered
+                  </Button>
+                </ListGroup.Item>
+              )}
+              {loadingCancelled && <Loader />}
+              {userInfo.isAdmin && (
+                <center>
+                  <ListGroup.Item>
+                    <Button
+                      type='button'
+                      className='btn btn-danger'
+                      onClick={cancelledHanler}
+                    >
+                      Mark as Cancelled
+                    </Button>
+                  </ListGroup.Item>
+                </center>
+              )}
             </ListGroup>
           </Card>
         </Col>
