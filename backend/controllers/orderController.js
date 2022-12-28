@@ -81,4 +81,19 @@ const orderCancelled = asyncHandler(async (req, res) => {
   }
 })
 
-export { addOrderItems, getOrderById, updateOrderToDelivered, orderCancelled }
+// @desc  GET logged in user orders
+// @route POST /api/orders/myorders
+// @acess Private
+const getMyOrders = asyncHandler(async (req, res) => {
+  const orders = await Order.find({ user: req.user._id })
+
+  res.json(orders)
+})
+
+export {
+  addOrderItems,
+  getOrderById,
+  updateOrderToDelivered,
+  orderCancelled,
+  getMyOrders,
+}
