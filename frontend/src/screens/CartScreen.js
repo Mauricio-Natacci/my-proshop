@@ -95,12 +95,12 @@ const CartScreen = ({ match, location, history }) => {
                 Subtotal (
                 {cartItems.reduce((acc, item) => acc + item.quantity, 0)}) items
               </h4>
-              <h3>
-                $
+              <h4>
+                Total: $
                 {cartItems
                   .reduce((acc, item) => acc + item.quantity * item.price, 0)
                   .toFixed(2)}
-              </h3>
+              </h4>
             </ListGroup.Item>
             <ListGroup.Item>
               <Button
