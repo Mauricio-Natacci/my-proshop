@@ -39,7 +39,6 @@ const PlaceOrderScreen = ({ history }) => {
         totalPrice: cart.totalPrice,
       })
     )
-    console.log('cart empty')
   }
 
   return (
