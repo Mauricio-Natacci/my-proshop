@@ -32,6 +32,12 @@ const OrderScreen = ({ match, history }) => {
   const { userInfo } = userLogin
 
   useEffect(() => {
+    if (!userInfo) {
+      history.push('/')
+    }
+  }, [history, userInfo])
+
+  useEffect(() => {
     if (!order || order._id !== orderId || successDeliver || successCancelled) {
       dispatch({ type: ORDER_DELIVER_RESET })
       dispatch({ type: ORDER_CANCELLED_RESET })
@@ -130,7 +136,7 @@ const OrderScreen = ({ match, history }) => {
                 </Row>
               </ListGroup.Item>
               {loadingDeliver && <Loader />}
-              {userInfo.isAdmin && !order.isDelivered && (
+              {userInfo && userInfo.isAdmin && !order.isDelivered && (
                 <ListGroup.Item>
                   <Button
                     type='button'
@@ -142,7 +148,7 @@ const OrderScreen = ({ match, history }) => {
                 </ListGroup.Item>
               )}
               {loadingCancelled && <Loader />}
-              {userInfo.isAdmin && (
+              {userInfo?.isAdmin && (
                 <center>
                   <ListGroup.Item>
                     <Button
