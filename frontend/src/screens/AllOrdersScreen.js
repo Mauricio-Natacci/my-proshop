@@ -6,15 +6,22 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { listOrders } from '../actions/orderActions'
 
-const AllOrdersScreen = () => {
+const AllOrdersScreen = ({ history }) => {
   const dispatch = useDispatch()
 
   const orderList = useSelector((state) => state.orderList)
   const { loading, error, orders } = orderList
 
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
+
   useEffect(() => {
-    dispatch(listOrders())
-  }, [dispatch])
+    if (userInfo && userInfo.isAdmin) {
+      dispatch(listOrders())
+    } else {
+      history.push('/')
+    }
+  }, [dispatch, history, userInfo])
 
   return (
     <>

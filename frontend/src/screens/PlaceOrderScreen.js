@@ -28,7 +28,7 @@ const PlaceOrderScreen = ({ history }) => {
       history.push(`/order/${order._id}`)
     }
     // eslint-disable-next-line
-  }, [history, success])
+  }, [history, success, dispatch])
 
   const placeOrderHandler = () => {
     dispatch(
@@ -39,6 +39,7 @@ const PlaceOrderScreen = ({ history }) => {
         totalPrice: cart.totalPrice,
       })
     )
+    console.log('cart empty')
   }
 
   return (
