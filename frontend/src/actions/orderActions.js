@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { CART_EMPTY } from '../constants/cartConstants'
 import {
   ORDER_CANCELLED_FAIL,
   ORDER_CANCELLED_REQUEST,
@@ -76,6 +77,8 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
       type: ORDER_DETAILS_SUCCESS,
       payload: data,
     })
+
+    dispatch({ type: CART_EMPTY, payload: localStorage.removeItem('cartItem') })
   } catch (error) {
     dispatch({
       type: ORDER_DETAILS_FAIL,
