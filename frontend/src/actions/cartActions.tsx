@@ -4,8 +4,27 @@ import {
   CART_REMOVE_ITEM,
   CART_SAVE_SHIPPING_ADDRESS,
 } from '../constants/cartConstants'
+import { Dispatch } from 'redux';
 
-export const addToCart = (id, quantity) => async (dispatch, getState) => {
+
+type CartItem = {
+  productId: string
+  name: string
+  image: string
+  price: number
+  quantity: number
+}
+
+type saveShippingAddressProps = {
+  address: string
+  city: string
+  postalCode: string
+  country: string
+}
+
+type getStateProps = () => { cart: { cartItems: CartItem[] } }
+
+export const addToCart = (id: string, quantity: number) => async (dispatch: Dispatch, getState: getStateProps) => {
   const { data } = await axios.get(`/api/products/${id}`)
 
   dispatch({
@@ -22,7 +41,7 @@ export const addToCart = (id, quantity) => async (dispatch, getState) => {
   localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems))
 }
 
-export const removeFromCart = (id) => (dispatch, getState) => {
+export const removeFromCart = (id: number) => (dispatch: Dispatch, getState: getStateProps) => {
   dispatch({
     type: CART_REMOVE_ITEM,
     payload: id,
@@ -30,7 +49,7 @@ export const removeFromCart = (id) => (dispatch, getState) => {
   localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems))
 }
 
-export const saveShippingAddress = (data) => (dispatch) => {
+export const saveShippingAddress = (data: saveShippingAddressProps) => (dispatch: Dispatch) => {
   dispatch({
     type: CART_SAVE_SHIPPING_ADDRESS,
     payload: data,

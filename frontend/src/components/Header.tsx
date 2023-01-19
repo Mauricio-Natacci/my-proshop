@@ -1,21 +1,29 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { LinkContainer } from 'react-router-bootstrap'
+import {  useSelector } from 'react-redux'
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap'
+import { LinkContainer } from 'react-router-bootstrap'
+import { useDispatch } from 'react-redux'
+import { Dispatch } from "redux"
 import { logout } from '../actions/userActions'
 
-const Header = () => {
-  const dispatch = useDispatch()
+type HeaderProps = {
+  children: React.ReactNode
+}; 
 
-  const userLogin = useSelector((state) => state.userLogin)
+const Header = (props: HeaderProps) => {
+
+  const dispatch: Dispatch<any> = useDispatch()
+
+  const userLogin = useSelector((state: any) => state.userLogin)
   const { userInfo } = userLogin
+
 
   const logoutHandler = () => {
     dispatch(logout())
   }
-
   return (
-    <header>
+    <div>
+      <header>
       <Navbar bg='dark' variant='dark' expand='lg' collapseOnSelect>
         <Container>
           <LinkContainer to='/'>
@@ -58,6 +66,8 @@ const Header = () => {
         </Container>
       </Navbar>
     </header>
+      {props.children}
+    </div>
   )
 }
 

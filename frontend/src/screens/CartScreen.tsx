@@ -2,16 +2,48 @@ import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Row, Col, ListGroup, Image, Button, Card } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
+import { Dispatch } from "redux"
 import { addToCart, removeFromCart } from '../actions/cartActions'
 
-const CartScreen = ({ match, location, history }) => {
+type CartScreenProps = {
+  match: {
+    params: {
+      id: string
+    }
+  }
+  location: {
+    search: string
+  }
+  history: {
+    push: (path: string) => void
+  }
+}
+
+type stateProps = {
+  cart: {
+    cartItems: {
+      productId: number
+      name: string
+      image: string
+      price: number
+      quantity: number
+    }[]
+  }
+}
+
+type updateItemQuantityProps = {
+  productId: any
+  value: number
+}
+
+const CartScreen = ({ match, location, history }: CartScreenProps) => {
   const productId = match.params.id
 
   const qty = location.search ? Number(location.search.split('=')[1]) : 1
 
-  const dispatch = useDispatch()
+  const dispatch: Dispatch<any> = useDispatch()
 
-  const cart = useSelector((state) => state.cart)
+  const cart  = useSelector((state: stateProps ) => state.cart)
   const { cartItems } = cart
 
   useEffect(() => {
@@ -20,15 +52,15 @@ const CartScreen = ({ match, location, history }) => {
     }
   }, [dispatch, productId, qty])
 
-  const removeFromCartHandler = (id) => {
+  const removeFromCartHandler = (id: number) => {
     dispatch(removeFromCart(id))
   }
 
-  const checkoutHandler = (id) => {
+  const checkoutHandler = (id: React.MouseEvent<HTMLButtonElement>) => {
     history.push('/login?redirect=shipping')
   }
 
-  const updateItemQuantity = ({ productId, value }) => {
+  const updateItemQuantity = ({ productId, value }: updateItemQuantityProps ) => {
     dispatch(addToCart(productId, value))
   }
 

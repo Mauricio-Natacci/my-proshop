@@ -21,7 +21,12 @@ import {
   ORDER_LIST_SUCCESS,
 } from '../constants/orderConstants'
 
-export const orderCreateReducer = (state = {}, action) => {
+type ActionProps = {
+  type: string
+  payload: any
+}
+
+export const orderCreateReducer = (state = {}, action: ActionProps) => {
   switch (action.type) {
     case ORDER_CREATE_REQUEST:
       return {
@@ -45,7 +50,7 @@ export const orderCreateReducer = (state = {}, action) => {
 
 export const orderDetailsReducer = (
   state = { loading: true, ordemItems: [], shippingAddress: {} },
-  action
+  action: ActionProps
 ) => {
   switch (action.type) {
     case ORDER_DETAILS_REQUEST:
@@ -68,7 +73,7 @@ export const orderDetailsReducer = (
   }
 }
 
-export const orderDeliverReducer = (state = {}, action) => {
+export const orderDeliverReducer = (state = {}, action: ActionProps) => {
   switch (action.type) {
     case ORDER_DELIVER_REQUEST:
       return {
@@ -91,7 +96,7 @@ export const orderDeliverReducer = (state = {}, action) => {
   }
 }
 
-export const orderCancelledReducer = (state = {}, action) => {
+export const orderCancelledReducer = (state = {}, action: ActionProps) => {
   switch (action.type) {
     case ORDER_CANCELLED_REQUEST:
       return {
@@ -114,7 +119,7 @@ export const orderCancelledReducer = (state = {}, action) => {
   }
 }
 
-export const orderListMyReducer = (state = { orders: [] }, action) => {
+export const orderListMyReducer = (state = { orders: [] }, action: ActionProps) => {
   switch (action.type) {
     case ORDER_LIST_MY_REQUEST:
       return {
@@ -135,7 +140,7 @@ export const orderListMyReducer = (state = { orders: [] }, action) => {
   }
 }
 
-export const orderListReducer = (state = { orders: [] }, action) => {
+export const orderListReducer = (state = { orders: [] }, action: ActionProps) => {
   switch (action.type) {
     case ORDER_LIST_REQUEST:
       return {

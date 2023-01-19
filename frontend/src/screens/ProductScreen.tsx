@@ -3,14 +3,27 @@ import { Link } from 'react-router-dom'
 import { Row, Col, Image, ListGroup, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { listProductDetails } from '../actions/productActions'
-import Loader from '../components/Loader'
-import Message from '../components/Message'
+import { Dispatch } from "redux"
 
-const ProductScreen = ({ history, match }) => {
+
+type ProductScreenProps = {
+  history: any
+  match: any
+}
+
+type ProductDetailsState = {
+  productDetails: {
+    loading: boolean
+    error: string
+    product: any
+  }
+}
+
+const ProductScreen = ({ history, match }: ProductScreenProps) => {
   const qty = 1
-  const dispatch = useDispatch()
+  const dispatch: Dispatch<any> = useDispatch()
 
-  const productDetails = useSelector((state) => state.productDetails)
+  const productDetails = useSelector((state: ProductDetailsState) => state.productDetails)
   const { loading, error, product } = productDetails
 
   useEffect(() => {
@@ -27,9 +40,9 @@ const ProductScreen = ({ history, match }) => {
         Go Back
       </Link>
       {loading ? (
-        <Loader />
+        <h1>Loading...</h1>
       ) : error ? (
-        <Message variant='danger'>{error}</Message>
+        <h1>{error}</h1>
       ) : (
         <Row>
           <Col md={6}>

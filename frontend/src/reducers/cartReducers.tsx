@@ -5,22 +5,36 @@ import {
   CART_SAVE_SHIPPING_ADDRESS,
 } from '../constants/cartConstants'
 
+type ActionProps = {
+  type: string
+  payload: any
+}
+
+type xProps = {
+  productId: string
+  name: string
+  image: string
+  price: number
+  quantity: number
+}
+
+
 export const cartReducer = (
   state = { cartItems: [], shippingAddress: {} },
-  action
+  action: ActionProps
 ) => {
   switch (action.type) {
     case CART_ADD_ITEM:
       const item = action.payload
 
-      const existItem = state.cartItems.find(
-        (x) => x.productId === item.productId
+      const existItem: any = state.cartItems.find(
+        (x: xProps) => x.productId === item.productId
       )
 
       if (existItem) {
         return {
           ...state,
-          cartItems: state.cartItems.map((x) =>
+          cartItems: state.cartItems.map((x: xProps) =>
             x.productId === existItem.productId ? item : x
           ),
         }
@@ -34,7 +48,7 @@ export const cartReducer = (
       return {
         ...state,
         cartItems: state.cartItems.filter(
-          (x) => x.productId !== action.payload
+          (x: xProps) => x.productId !== action.payload
         ),
       }
     case CART_SAVE_SHIPPING_ADDRESS:

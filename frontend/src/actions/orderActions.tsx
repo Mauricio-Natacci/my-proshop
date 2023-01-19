@@ -20,8 +20,41 @@ import {
   ORDER_LIST_REQUEST,
   ORDER_LIST_SUCCESS,
 } from '../constants/orderConstants'
+import { Dispatch } from 'redux';
 
-export const createOrder = (order) => async (dispatch, getState) => {
+
+type createOrderProps = {
+  orderItems: {
+    name: string
+    image: string
+    price: number
+    product: string
+    qty: number
+  }[]
+  shippingAddress: {
+    address: string
+    city: string
+    postalCode: string
+    country: string
+  }
+  itemsPrice: any
+  totalPrice: string
+}
+
+type getStateProps = () => {
+  userLogin: {
+    userInfo: {
+      token: string
+    }
+  }
+}
+
+type orderProps = {
+  _id: number
+}
+
+
+export const createOrder = (order: createOrderProps) => async (dispatch: Dispatch, getState: getStateProps) => {
   try {
     dispatch({
       type: ORDER_CREATE_REQUEST,
@@ -55,7 +88,7 @@ export const createOrder = (order) => async (dispatch, getState) => {
   }
 }
 
-export const getOrderDetails = (id) => async (dispatch, getState) => {
+export const getOrderDetails = (id: number) => async (dispatch: Dispatch, getState: getStateProps) => {
   try {
     dispatch({
       type: ORDER_DETAILS_REQUEST,
@@ -90,7 +123,7 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
   }
 }
 
-export const deliverOrder = (order) => async (dispatch, getState) => {
+export const deliverOrder = (order: orderProps) => async (dispatch: Dispatch, getState: getStateProps) => {
   try {
     dispatch({
       type: ORDER_DELIVER_REQUEST,
@@ -125,7 +158,7 @@ export const deliverOrder = (order) => async (dispatch, getState) => {
   }
 }
 
-export const cancelledOrder = (order) => async (dispatch, getState) => {
+export const cancelledOrder = (order: orderProps) => async (dispatch: Dispatch , getState: getStateProps) => {
   try {
     dispatch({
       type: ORDER_CANCELLED_REQUEST,
@@ -160,7 +193,7 @@ export const cancelledOrder = (order) => async (dispatch, getState) => {
   }
 }
 
-export const listMyOrders = () => async (dispatch, getState) => {
+export const listMyOrders = () => async (dispatch: Dispatch, getState: getStateProps) => {
   try {
     dispatch({
       type: ORDER_LIST_MY_REQUEST,
@@ -191,7 +224,7 @@ export const listMyOrders = () => async (dispatch, getState) => {
   }
 }
 
-export const listOrders = () => async (dispatch, getState) => {
+export const listOrders = () => async (dispatch: Dispatch, getState: getStateProps) => {
   try {
     dispatch({
       type: ORDER_LIST_REQUEST,

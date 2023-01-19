@@ -16,8 +16,17 @@ import {
   PRODUCT_UPDATE_SUCCESS,
   PRODUCT_UPDATE_FAIL,
 } from '../constants/productConstants'
+import { Dispatch } from 'redux';
 
-export const listProducts = () => async (dispatch) => {
+type Product = {
+  _id: string
+  name: string
+  image: string
+  description: string
+  price: number
+}
+
+export const listProducts = () => async (dispatch: Dispatch) => {
   try {
     dispatch({ type: PRODUCT_LIST_REQUEST })
 
@@ -38,7 +47,7 @@ export const listProducts = () => async (dispatch) => {
   }
 }
 
-export const listProductDetails = (id) => async (dispatch) => {
+export const listProductDetails = (id: string) => async (dispatch: Dispatch) => {
   try {
     dispatch({ type: PRODUCT_DETAILS_REQUEST })
 
@@ -59,15 +68,17 @@ export const listProductDetails = (id) => async (dispatch) => {
   }
 }
 
-export const deleteProduct = (id) => async (dispatch, getState) => {
-  try {
+type TypeUserInfo = { token: string }
+type getStateProps = () => { userLogin: { userInfo: TypeUserInfo } }
+
+
+export const deleteProduct = (id: string) => async (dispatch: Dispatch, getState: getStateProps) => {
+  try { 
     dispatch({
       type: PRODUCT_DELETE_REQUEST,
     })
 
-    const {
-      userLogin: { userInfo },
-    } = getState()
+  const { userLogin: { userInfo } } = getState()
 
     const config = {
       headers: { Authorization: `Bearer ${userInfo.token}` },
@@ -89,7 +100,7 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
   }
 }
 
-export const createProduct = () => async (dispatch, getState) => {
+export const createProduct = () => async (dispatch: Dispatch, getState: getStateProps) => {
   try {
     dispatch({
       type: PRODUCT_CREATE_REQUEST,
@@ -120,7 +131,7 @@ export const createProduct = () => async (dispatch, getState) => {
   }
 }
 
-export const updateProduct = (product) => async (dispatch, getState) => {
+export const updateProduct = (product: Product) => async (dispatch: Dispatch, getState: getStateProps) => {
   try {
     dispatch({
       type: PRODUCT_UPDATE_REQUEST,
@@ -155,3 +166,4 @@ export const updateProduct = (product) => async (dispatch, getState) => {
     })
   }
 }
+

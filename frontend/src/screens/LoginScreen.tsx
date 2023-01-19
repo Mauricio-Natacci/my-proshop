@@ -2,18 +2,30 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Form, Button, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import Message from '../components/Message'
-import Loader from '../components/Loader'
+import { Dispatch } from "redux"
 import FormContainer from '../components/FormContainer'
 import { login } from '../actions/userActions'
 
-const LoginScreen = ({ location, history }) => {
+type LoginScreenProps = {
+  location: any
+  history: any
+}
+
+type stateProps = {
+  userLogin: {
+    loading: boolean
+    error: string
+    userInfo:  any
+  }
+}
+
+const LoginScreen = ({ location, history }: LoginScreenProps) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const dispatch = useDispatch()
+  const dispatch: Dispatch<any> = useDispatch()
 
-  const userLogin = useSelector((state) => state.userLogin)
+  const userLogin = useSelector((state: stateProps ) => state.userLogin)
   const { loading, error, userInfo } = userLogin
 
   const redirect = location.search ? location.search.split('=')[1] : '/'
@@ -24,7 +36,7 @@ const LoginScreen = ({ location, history }) => {
     }
   }, [history, userInfo, redirect])
 
-  const submitHandler = (e) => {
+  const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     dispatch(login(email, password))
   }
@@ -32,8 +44,8 @@ const LoginScreen = ({ location, history }) => {
   return (
     <FormContainer>
       <h1>Sign In</h1>
-      {error && <Message variant='danger'>{error}</Message>}
-      {loading && <Loader />}
+      {error && <h1>{error}</h1>}
+      {loading && <h1>Loading...</h1>}
       <Form onSubmit={submitHandler}>
         <Form.Group controlId='email'>
           <Form.Label>Email Address</Form.Label>
