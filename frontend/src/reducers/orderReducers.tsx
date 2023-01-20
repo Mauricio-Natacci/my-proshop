@@ -30,19 +30,39 @@ type State = {
   loading: boolean
   success: boolean
   error: string | null
-  order: any
-  orders: any
+  order: {
+    _id: string
+    user: string
+    orderItems: any[]
+    shippingAddress: {
+      address: string
+      city: string
+      postalCode: string
+      country: string
+    }
+  }
+  orders: []
 }
 
-const initialStateOrderCreate: State = {
+const initialState: State = {
   loading: false,
   success: false,
   error: null,
-  order: {},
+  order: {
+    _id: '',
+    user: '',
+    orderItems: [],
+    shippingAddress: {
+      address: '',
+      city: '',
+      postalCode: '',
+      country: '',
+    }
+  },
   orders: [],
 }
 
-export const orderCreateReducer = (state = initialStateOrderCreate, action: Action): State => {
+export const orderCreateReducer = (state = initialState, action: Action): State => {
   switch (action.type) {
     case ORDER_CREATE_REQUEST:
       return {
@@ -63,13 +83,13 @@ export const orderCreateReducer = (state = initialStateOrderCreate, action: Acti
         error: action.payload,
       }
     default:
-      return { ...state }
+      return state
   }
 }
 
 
 export const orderDetailsReducer = (
-  state = initialStateOrderCreate, action: Action): State => {
+  state = initialState, action: Action): State => {
   switch (action.type) {
     case ORDER_DETAILS_REQUEST:
       return {
@@ -93,7 +113,7 @@ export const orderDetailsReducer = (
   }
 }
 
-export const orderDeliverReducer = (state = initialStateOrderCreate, action: Action): State => {
+export const orderDeliverReducer = (state = initialState, action: Action): State => {
   switch (action.type) {
     case ORDER_DELIVER_REQUEST:
       return {
@@ -119,7 +139,7 @@ export const orderDeliverReducer = (state = initialStateOrderCreate, action: Act
   }
 }
 
-export const orderCancelledReducer = (state = initialStateOrderCreate, action: Action): State => {
+export const orderCancelledReducer = (state = initialState, action: Action): State => {
   switch (action.type) {
     case ORDER_CANCELLED_REQUEST:
       return {
@@ -145,7 +165,7 @@ export const orderCancelledReducer = (state = initialStateOrderCreate, action: A
   }
 }
 
-export const orderListMyReducer = (state = initialStateOrderCreate, action: Action): State => {
+export const orderListMyReducer = (state = initialState, action: Action): State => {
   switch (action.type) {
     case ORDER_LIST_MY_REQUEST:
       return {
@@ -169,7 +189,7 @@ export const orderListMyReducer = (state = initialStateOrderCreate, action: Acti
   }
 }
 
-export const orderListReducer = (state = initialStateOrderCreate, action: Action): State => {
+export const orderListReducer = (state = initialState, action: Action): State => {
   switch (action.type) {
     case ORDER_LIST_REQUEST:
       return {
@@ -189,6 +209,6 @@ export const orderListReducer = (state = initialStateOrderCreate, action: Action
         error: action.payload,
       }
     default:
-      return { ...state }
+      return state
   }
 }

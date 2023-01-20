@@ -10,6 +10,7 @@ import Footer from './components/Footer';
 import ShippingScreen from './screens/ShippingScreen';
 import LoginScreen from './screens/LoginScreen';
 import PlaceOrderScreen from './screens/PlaceOrderScreen';
+import OrderScreen from './screens/OrderScreen';
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
             <Route path='/shipping' component={ShippingScreen} />
             <Route path='/login' component={LoginScreen} />
             <Route path='/placeorder' component={PlaceOrderScreen} />
+            <Route path='/order/:id' component={OrderScreen} />
           </Container>
         </main>
         <Footer />
