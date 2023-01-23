@@ -4,6 +4,7 @@ import {
   USER_LOGIN_SUCCESS,
   USER_LOGOUT
 } from "../constants/userConstants"
+import { Login, Logout, Register } from "../actions/userActions"
 
 type UserInfo = {
   _id: string
@@ -13,11 +14,11 @@ type UserInfo = {
   token: string
 }
 
-type ActionProps = {
-  type: string
+
+type Action = {
+  type: any
   payload: any
 }
-
 
 type StateProps = {
   loading: boolean
@@ -31,7 +32,7 @@ const initialState: StateProps = {
   error: null
 }
 
-export const userLoginReducer = (state = initialState, action: ActionProps): StateProps => {
+export const userLoginReducer = (state = initialState, action: Action): StateProps => {
   switch (action.type) {
     case USER_LOGIN_REQUEST:
       return { ...state, loading: true }

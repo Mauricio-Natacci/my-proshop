@@ -10,10 +10,24 @@ import {
 } from '../constants/userConstants'
 import { Dispatch } from 'redux';
 
+export type Login = {
+  type: typeof USER_LOGIN_REQUEST | typeof USER_LOGIN_SUCCESS | typeof USER_LOGIN_FAIL;
+  payload: { email: string, password: string };
+};
+
+export type userInfo = {
+  _id: string;
+  name: string;
+  email: string;
+  isAdmin: boolean;
+  token: string;
+};
+
 export const login = (email: string, password: string) => async (dispatch: Dispatch) => {
   try {
-    dispatch({
+    dispatch<Login>({
       type: USER_LOGIN_REQUEST,
+      payload: { email, password },
     })
 
     const config = {
@@ -45,14 +59,23 @@ export const login = (email: string, password: string) => async (dispatch: Dispa
   }
 }
 
+export type Logout = {
+  type: typeof USER_LOGOUT;
+};
+
 export const logout = () => (dispatch: Dispatch) => {
   localStorage.removeItem('userInfo')
-  dispatch({ type: USER_LOGOUT })
+  dispatch<Logout>({ type: USER_LOGOUT })
 }
+
+export type Register = {
+  type: typeof USER_REGISTER_REQUEST | typeof USER_REGISTER_SUCCESS | typeof USER_REGISTER_FAIL;
+  payload?: { name: string, email: string, password: string };
+};
 
 export const register = (name: string, email: string, password: string) => async (dispatch: Dispatch) => {
   try {
-    dispatch({
+    dispatch<Register>({
       type: USER_REGISTER_REQUEST,
     })
 
