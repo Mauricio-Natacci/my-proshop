@@ -2,8 +2,10 @@ import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Row, Col, Image, ListGroup, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
+import Loader from '../components/Loader'
 import { listProductDetails } from '../actions/productActions'
 import { Dispatch } from "redux"
+import Message from '../components/Message'
 
 
 type ProductScreenProps = {
@@ -40,9 +42,9 @@ const ProductScreen = ({ history, match }: ProductScreenProps) => {
         Go Back
       </Link>
       {loading ? (
-        <h1>Loading...</h1>
+        <Loader />
       ) : error ? (
-        <h1>{error}</h1>
+        <Message variant='danger'>{error}</Message>
       ) : (
         <Row>
           <Col md={6}>

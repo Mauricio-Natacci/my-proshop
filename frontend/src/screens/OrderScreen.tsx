@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Dispatch } from "redux"
+import Loader from '../components/Loader'
 import CheckoutSteps from '../components/CheckoutSteps'
 import {
   getOrderDetails,
@@ -13,6 +14,7 @@ import {
   ORDER_DELIVER_RESET,
   ORDER_CANCELLED_RESET,
 } from '../constants/orderConstants'
+import Message from '../components/Message'
 
 type OrderScreenProps = {
   match: any
@@ -49,7 +51,7 @@ type Item = {
   image: string
   price: number
   product: string
-  qty: number
+  quantity: number
 }
 
 const OrderScreen = ({ match, history }: OrderScreenProps) => {
@@ -92,9 +94,9 @@ const OrderScreen = ({ match, history }: OrderScreenProps) => {
   }
 
   return loading ? (
-    <h1>Loading...</h1>
+    <Loader />
   ) : error ? (
-    <p>{error}</p>
+    <Message variant='danger'>{error}</Message>
   ) : (
     <>
       <CheckoutSteps step4 />
@@ -142,8 +144,8 @@ const OrderScreen = ({ match, history }: OrderScreenProps) => {
                           </Link>
                         </Col>
                         <Col md={4}>
-                          {item.qty} x ${item.price} = $
-                          {item.qty * item.price}
+                          {item.quantity} x ${item.price} = $
+                          {item.quantity * item.price}
                         </Col>
                       </Row>
                     </ListGroup.Item>
@@ -151,11 +153,11 @@ const OrderScreen = ({ match, history }: OrderScreenProps) => {
                 </ListGroup>
               )}
               {order.isDelivered ? (
-                <p>Delivered</p>
+                <Message>Delivered</Message>
               ) : (
-                <p>Not Delivered</p>
+                <Message variant='danger'>Not Delivered</Message>
               )}
-              <ListGroup.Item>
+              <ListGroup.Item className='Uppercase'>
                 Status: {order.status}
               </ListGroup.Item>
             </ListGroup.Item>
@@ -174,7 +176,7 @@ const OrderScreen = ({ match, history }: OrderScreenProps) => {
                   <Col>${order.totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
-              {loadingDeliver && <h1> Loading...</h1>}
+              {loadingDeliver && <Loader />}
               {userInfo && userInfo.isAdmin && !order.isDelivered && (
                 <ListGroup.Item>
                   <Button
@@ -186,7 +188,7 @@ const OrderScreen = ({ match, history }: OrderScreenProps) => {
                   </Button>
                 </ListGroup.Item>
               )}
-              {loadingCancelled && <h1> Loading...</h1>}
+              {loadingCancelled && <Loader />}
               {userInfo?.isAdmin && (
                 <center>
                   <ListGroup.Item>

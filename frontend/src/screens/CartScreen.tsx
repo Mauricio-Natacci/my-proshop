@@ -4,6 +4,7 @@ import { Row, Col, ListGroup, Image, Button, Card } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Dispatch } from "redux"
 import { addToCart, removeFromCart } from '../actions/cartActions'
+import Message from '../components/Message'
 
 type CartScreenProps = {
   match: {
@@ -43,7 +44,7 @@ const CartScreen = ({ match, location, history }: CartScreenProps) => {
 
   const dispatch: Dispatch<any> = useDispatch()
 
-  const cart  = useSelector((state: stateProps ) => state.cart)
+  const cart = useSelector((state: stateProps) => state.cart)
   const { cartItems } = cart
 
   useEffect(() => {
@@ -60,7 +61,7 @@ const CartScreen = ({ match, location, history }: CartScreenProps) => {
     history.push('/login?redirect=shipping')
   }
 
-  const updateItemQuantity = ({ productId, value }: updateItemQuantityProps ) => {
+  const updateItemQuantity = ({ productId, value }: updateItemQuantityProps) => {
     dispatch(addToCart(productId, value))
   }
 
@@ -69,9 +70,9 @@ const CartScreen = ({ match, location, history }: CartScreenProps) => {
       <Col md={8}>
         <h1>Shopping Cart</h1>
         {cartItems.length === 0 ? (
-          <p>
+          <Message>
             Your cart is empty! <Link to='/'>Go Back</Link>
-          </p>
+          </Message>
         ) : (
           <ListGroup variant='flush'>
             {cartItems.map((item) => (

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Dispatch } from "redux"
 import CheckoutSteps from '../components/CheckoutSteps'
 import { createOrder } from '../actions/orderActions'
+import Message from '../components/Message'
 
 type PlaceOrderScreenProps = {
   history: any
@@ -86,7 +87,7 @@ const PlaceOrderScreen = ({ history }: PlaceOrderScreenProps) => {
             <ListGroup.Item>
               <h2>Order Items</h2>
               {cart.cartItems.length === 0 ? (
-                <p>Your cart is empty</p>
+                <Message>Your cart is empty</Message>
               ) : (
                 <ListGroup variant='flush'>
                   {cart.cartItems.map((item: CartItem, index: number) => (
@@ -131,7 +132,7 @@ const PlaceOrderScreen = ({ history }: PlaceOrderScreenProps) => {
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
-                {error && <p>{error}</p>}
+                {error && <Message variant='danger'>{error}</Message>}
               </ListGroup.Item>
               <ListGroup.Item>
                 <Button

@@ -133,7 +133,7 @@ export const orderDeliverReducer = (state = initialState, action: Action): State
         error: action.payload,
       }
     case ORDER_DELIVER_RESET:
-      return { ...state }
+      return { ...state, success: false, loading: false }
     default:
       return state
   }
@@ -159,7 +159,7 @@ export const orderCancelledReducer = (state = initialState, action: Action): Sta
         error: action.payload,
       }
     case ORDER_CANCELLED_RESET:
-      return { ...state }
+      return { ...state, success: false, loading: false }
     default:
       return state
   }
