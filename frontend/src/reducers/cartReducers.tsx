@@ -2,6 +2,7 @@ import {
   AddToCartAction,
   RemoveFromCartAction,
   SaveShippingAddressAction,
+  EmptyCart,
 } from "../actions/cartActions";
 import {
   CART_ADD_ITEM,
@@ -44,7 +45,7 @@ type Action =
   | AddToCartAction
   | RemoveFromCartAction
   | SaveShippingAddressAction
-  | { type: typeof CART_EMPTY }; // this is ugly, never do that, just showing you it's possible lol
+  | EmptyCart
 
 export const cartReducer = (state = initialState, action: Action): State => {
   switch (action.type) {

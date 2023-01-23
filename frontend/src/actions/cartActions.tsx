@@ -3,6 +3,7 @@ import {
   CART_ADD_ITEM,
   CART_REMOVE_ITEM,
   CART_SAVE_SHIPPING_ADDRESS,
+  CART_EMPTY,
 } from "../constants/cartConstants";
 import { Dispatch } from "redux";
 
@@ -33,33 +34,33 @@ export type AddToCartAction = {
 
 export const addToCart =
   (id: string, quantity: number) =>
-  async (dispatch: Dispatch, getState: getStateProps) => {
-    const { data } = await axios.get(`/api/products/${id}`);
+    async (dispatch: Dispatch, getState: getStateProps) => {
+      const { data } = await axios.get(`/api/products/${id}`);
 
-    dispatch<AddToCartAction>({
-      type: CART_ADD_ITEM,
-      payload: {
-        productId: data._id,
-        name: data.name,
-        image: data.image,
-        price: data.price,
-        quantity,
-      },
-    });
+      dispatch<AddToCartAction>({
+        type: CART_ADD_ITEM,
+        payload: {
+          productId: data._id,
+          name: data.name,
+          image: data.image,
+          price: data.price,
+          quantity,
+        },
+      });
 
-    localStorage.setItem(
-      "cartItems",
-      JSON.stringify(getState().cart.cartItems)
-    );
-  };
+      localStorage.setItem(
+        "cartItems",
+        JSON.stringify(getState().cart.cartItems)
+      );
+    };
 
 export type RemoveFromCartAction = {
   type: typeof CART_REMOVE_ITEM;
-  payload: number;
+  payload: string;
 };
 
 export const removeFromCart =
-  (id: number) => (dispatch: Dispatch, getState: getStateProps) => {
+  (id: string) => (dispatch: Dispatch, getState: getStateProps) => {
     dispatch<RemoveFromCartAction>({
       type: CART_REMOVE_ITEM,
       payload: id,
@@ -83,3 +84,7 @@ export const saveShippingAddress =
     });
     localStorage.setItem("shippingAddress", JSON.stringify(data));
   };
+
+export type EmptyCart = {
+  type: typeof CART_EMPTY;
+};

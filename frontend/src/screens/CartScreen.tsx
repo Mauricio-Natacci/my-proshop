@@ -23,7 +23,7 @@ type CartScreenProps = {
 type stateProps = {
   cart: {
     cartItems: {
-      productId: number
+      productId: string
       name: string
       image: string
       price: number
@@ -33,7 +33,7 @@ type stateProps = {
 }
 
 type updateItemQuantityProps = {
-  productId: any
+  productId: string
   value: number
 }
 
@@ -53,7 +53,7 @@ const CartScreen = ({ match, location, history }: CartScreenProps) => {
     }
   }, [dispatch, productId, qty])
 
-  const removeFromCartHandler = (id: number) => {
+  const removeFromCartHandler = (id: string) => {
     dispatch(removeFromCart(id))
   }
 
