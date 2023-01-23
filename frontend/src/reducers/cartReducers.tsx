@@ -43,7 +43,8 @@ const initialState: State = {
 type Action =
   | AddToCartAction
   | RemoveFromCartAction
-  | SaveShippingAddressAction;
+  | SaveShippingAddressAction
+  | { type: typeof CART_EMPTY }; // this is ugly, never do that, just showing you it's possible lol
 
 export const cartReducer = (state = initialState, action: Action): State => {
   switch (action.type) {
