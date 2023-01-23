@@ -1,57 +1,85 @@
-import axios from 'axios'
+import axios from "axios";
 import {
   CART_ADD_ITEM,
   CART_REMOVE_ITEM,
   CART_SAVE_SHIPPING_ADDRESS,
-} from '../constants/cartConstants'
-import { Dispatch } from 'redux';
+} from "../constants/cartConstants";
+import { Dispatch } from "redux";
 
 export type CartItem = {
-  productId: string
-  name: string
-  image: string
-  price: number
-  quantity: number
-}
+  productId: string;
+  name: string;
+  image: string;
+  price: number;
+  quantity: number;
+};
 
 export type SaveShippingAddressProps = {
-  address: string
-  city: string
-  postalCode: string
-  country: string
-}
+  address: string;
+  city: string;
+  postalCode: string;
+  country: string;
+};
 
-type getStateProps = () => { cart: { cartItems: CartItem[] }, shippingAddress: SaveShippingAddressProps } 
+type getStateProps = () => {
+  cart: { cartItems: CartItem[] };
+  shippingAddress: SaveShippingAddressProps;
+};
 
-export const addToCart = (id: string, quantity: number) => async (dispatch: Dispatch, getState: getStateProps) => {
-  const { data } = await axios.get(`/api/products/${id}`)
+export type AddToCartAction = {
+  type: typeof CART_ADD_ITEM;
+  payload: CartItem;
+};
 
-  dispatch({
-    type: CART_ADD_ITEM,
-    payload: {
-      productId: data._id,
-      name: data.name,
-      image: data.image,
-      price: data.price,
-      quantity,
-    },
-  })
+export const addToCart =
+  (id: string, quantity: number) =>
+  async (dispatch: Dispatch, getState: getStateProps) => {
+    const { data } = await axios.get(`/api/products/${id}`);
 
-  localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems))
-}
+    dispatch<AddToCartAction>({
+      type: CART_ADD_ITEM,
+      payload: {
+        productId: data._id,
+        name: data.name,
+        image: data.image,
+        price: data.price,
+        quantity,
+      },
+    });
 
-export const removeFromCart = (id: number) => (dispatch: Dispatch, getState: getStateProps) => {
-  dispatch({
-    type: CART_REMOVE_ITEM,
-    payload: id,
-  })
-  localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems))
-}
+    localStorage.setItem(
+      "cartItems",
+      JSON.stringify(getState().cart.cartItems)
+    );
+  };
 
-export const saveShippingAddress = (data: SaveShippingAddressProps) => (dispatch: Dispatch) => {
-  dispatch({
-    type: CART_SAVE_SHIPPING_ADDRESS,
-    payload: data,
-  })
-  localStorage.setItem('shippingAddress', JSON.stringify(data))
-}
+export type RemoveFromCartAction = {
+  type: typeof CART_REMOVE_ITEM;
+  payload: number;
+};
+
+export const removeFromCart =
+  (id: number) => (dispatch: Dispatch, getState: getStateProps) => {
+    dispatch<RemoveFromCartAction>({
+      type: CART_REMOVE_ITEM,
+      payload: id,
+    });
+    localStorage.setItem(
+      "cartItems",
+      JSON.stringify(getState().cart.cartItems)
+    );
+  };
+
+export type SaveShippingAddressAction = {
+  type: typeof CART_SAVE_SHIPPING_ADDRESS;
+  payload: SaveShippingAddressProps;
+};
+
+export const saveShippingAddress =
+  (data: SaveShippingAddressProps) => (dispatch: Dispatch) => {
+    dispatch<SaveShippingAddressAction>({
+      type: CART_SAVE_SHIPPING_ADDRESS,
+      payload: data,
+    });
+    localStorage.setItem("shippingAddress", JSON.stringify(data));
+  };

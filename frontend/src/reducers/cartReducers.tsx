@@ -1,56 +1,58 @@
 import {
+  AddToCartAction,
+  RemoveFromCartAction,
+  SaveShippingAddressAction,
+} from "../actions/cartActions";
+import {
   CART_ADD_ITEM,
   CART_EMPTY,
   CART_REMOVE_ITEM,
   CART_SAVE_SHIPPING_ADDRESS,
-} from '../constants/cartConstants'
-
-type ActionProps = {
-  type: string
-  payload: any
-}
+} from "../constants/cartConstants";
 
 type CartItem = {
-  productId: string
-  name: string
-  image: string
-  price: number
-  quantity: number
-}
+  productId: string;
+  name: string;
+  image: string;
+  price: number;
+  quantity: number;
+};
 
 type ShippingAddress = {
-  address: string
-  city: string
-  postalCode: string
-  country: string
-}
+  address: string;
+  city: string;
+  postalCode: string;
+  country: string;
+};
 
 type State = {
-  cartItems: CartItem[]
-  shippingAddress: ShippingAddress
-}
+  cartItems: CartItem[];
+  shippingAddress: ShippingAddress;
+};
 
 const initialState: State = {
   cartItems: [],
   shippingAddress: {
-    address: '',
-    city: '',
-    postalCode: '',
-    country: '',
+    address: "",
+    city: "",
+    postalCode: "",
+    country: "",
   },
-}
+};
 
-export const cartReducer = (
-  state = initialState,
-  action: ActionProps
-): State => {
+type Action =
+  | AddToCartAction
+  | RemoveFromCartAction
+  | SaveShippingAddressAction;
+
+export const cartReducer = (state = initialState, action: Action): State => {
   switch (action.type) {
     case CART_ADD_ITEM:
-      const item = action.payload
+      const item = action.payload;
 
       const existItem: any = state.cartItems.find(
         (x: CartItem) => x.productId === item.productId
-      )
+      );
 
       if (existItem) {
         return {
@@ -58,12 +60,12 @@ export const cartReducer = (
           cartItems: state.cartItems.map((x: CartItem) =>
             x.productId === existItem.productId ? item : x
           ),
-        }
+        };
       } else {
         return {
           ...state,
           cartItems: [...state.cartItems, item],
-        }
+        };
       }
     case CART_REMOVE_ITEM:
       return {
@@ -71,15 +73,15 @@ export const cartReducer = (
         cartItems: state.cartItems.filter(
           (x: CartItem) => x.productId !== action.payload
         ),
-      }
+      };
     case CART_SAVE_SHIPPING_ADDRESS:
       return {
         ...state,
         shippingAddress: action.payload,
-      }
+      };
     case CART_EMPTY:
-      return { ...state, cartItems: [] }
+      return { ...state, cartItems: [] };
     default:
-      return state
+      return state;
   }
-}
+};
