@@ -2,17 +2,12 @@ import {
   USER_LOGIN_FAIL,
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
-  USER_LOGOUT
+  USER_LOGOUT,
+  USER_REGISTER_FAIL,
+  USER_REGISTER_REQUEST,
+  USER_REGISTER_SUCCESS
 } from "../constants/userConstants"
-import { Login, Logout, Register } from "../actions/userActions"
-
-type UserInfo = {
-  _id: string
-  name: string
-  email: string
-  isAdmin: boolean
-  token: string
-}
+import { Login, Logout, Register, UserInfo } from "../actions/userActions"
 
 
 type Action = {
@@ -42,6 +37,20 @@ export const userLoginReducer = (state = initialState, action: Action): StatePro
       return { ...state, loading: false, error: action.payload }
     case USER_LOGOUT:
       return { ...state, userInfo: null }
+    default:
+      return state
+  }
+}
+
+export const userRegisterReducer = (state = {}, action: Action) => {
+  switch (action.type) {
+    case USER_REGISTER_REQUEST:
+      return { loading: true }
+    case USER_REGISTER_SUCCESS:
+      return { loading: false, userInfo: action.payload }
+    case USER_REGISTER_FAIL:
+      return { loading: false, error: action.payload }
+
     default:
       return state
   }

@@ -15,7 +15,7 @@ export type Login = {
   payload: { email: string, password: string };
 };
 
-export type userInfo = {
+export type UserInfo = {
   _id: string;
   name: string;
   email: string;

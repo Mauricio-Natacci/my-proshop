@@ -13,6 +13,8 @@ import PlaceOrderScreen from './screens/PlaceOrderScreen';
 import OrderScreen from './screens/OrderScreen';
 import AllOrdersScreen from './screens/AllOrdersScreen';
 import MyOrdersScreen from './screens/MyOrdersScreen';
+import ProductEditScreen from './screens/ProductEditScreen';
+import ProductListScreen from './screens/ProductListScreen';
 
 
 function App() {
@@ -25,11 +27,13 @@ function App() {
             <Route path='/' component={HomeScreen} exact />
             <Route path='/product/:id' component={ProductScreen} />
             <Route path='/admin/orders' component={AllOrdersScreen} />
+            <Route path='/admin/productlist' component={ProductListScreen} />
             <Route path='/cart/:id?' component={CartScreen} />
             <Route path='/shipping' component={ShippingScreen} />
             <Route path='/login' component={LoginScreen} />
             <Route path='/orders' component={MyOrdersScreen} />
             <Route path='/placeorder' component={PlaceOrderScreen} />
+            <Route path='/admin/product/:id/edit' component={ProductEditScreen} />
             <Route path='/order/:id' component={OrderScreen} />
           </Container>
         </main>

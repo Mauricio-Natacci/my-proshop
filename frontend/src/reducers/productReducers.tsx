@@ -68,7 +68,7 @@ export const productDetailsReducer = (state = initialState, action: Actions): St
 export const productDeleteReducer = (state = initialState, action: Actions): State => {
   switch (action.type) {
     case PRODUCT_DELETE_REQUEST:
-      return { ...state, loading: true }
+      return { ...state, loading: true, success: false }
     case PRODUCT_DELETE_SUCCESS:
       return { ...state, loading: false, success: true }
     case PRODUCT_DELETE_FAIL:
@@ -87,7 +87,7 @@ export const productCreateReducer = (state = initialState, action: Actions): Sta
     case PRODUCT_CREATE_FAIL:
       return { ...state, loading: false, error: action.payload }
     case PRODUCT_CREATE_RESET:
-      return { ...state }
+      return { ...state, success: false }
     default:
       return state
   }
@@ -102,7 +102,7 @@ export const productUpdateReducer = (state = initialState, action: Actions): Sta
     case PRODUCT_UPDATE_FAIL:
       return { ...state, loading: false, error: action.payload }
     case PRODUCT_UPDATE_RESET:
-      return { ...state, product: {} }
+      return { ...state, product: {}, success: false }
     default:
       return state
   }
