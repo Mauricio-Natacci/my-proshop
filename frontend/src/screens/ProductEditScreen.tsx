@@ -11,8 +11,14 @@ import { PRODUCT_UPDATE_RESET } from '../constants/productConstants'
 import { Dispatch } from 'redux'
 
 type ProductEditScreenProps = {
-  match: any
-  history: any
+  match: {
+    params: {
+      id: string
+    }
+  }
+  history: {
+    push: (url: string) => void
+  }
 }
 
 type State = {

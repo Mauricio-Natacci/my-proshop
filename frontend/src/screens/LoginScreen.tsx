@@ -9,8 +9,12 @@ import { login } from '../actions/userActions'
 import Message from '../components/Message'
 
 type LoginScreenProps = {
-  location: any
-  history: any
+  location: {
+    search: string
+  }
+  history: {
+    push: (url: string) => void
+  }
 }
 
 type stateProps = {

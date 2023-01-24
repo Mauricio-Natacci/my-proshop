@@ -14,7 +14,9 @@ import { PRODUCT_CREATE_RESET } from '../constants/productConstants'
 import { UserInfo } from '../actions/userActions'
 
 type ProductListScreenProps = {
-  history: any
+  history: {
+    push: (url: string) => void
+  }
 }
 
 type Products = {

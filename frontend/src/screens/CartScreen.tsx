@@ -16,7 +16,7 @@ type CartScreenProps = {
     search: string
   }
   history: {
-    push: (path: string) => void
+    push: (url: string) => void
   }
 }
 

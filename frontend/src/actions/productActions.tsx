@@ -71,14 +71,13 @@ export const listProductDetails = (id: string) => async (dispatch: Dispatch) => 
 type TypeUserInfo = { token: string }
 type getStateProps = () => { userLogin: { userInfo: TypeUserInfo } }
 
-
 export const deleteProduct = (id: string) => async (dispatch: Dispatch, getState: getStateProps) => {
-  try { 
+  try {
     dispatch({
       type: PRODUCT_DELETE_REQUEST,
     })
 
-  const { userLogin: { userInfo } } = getState()
+    const { userLogin: { userInfo } } = getState()
 
     const config = {
       headers: { Authorization: `Bearer ${userInfo.token}` },

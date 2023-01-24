@@ -9,7 +9,9 @@ import { listMyOrders } from '../actions/orderActions'
 import { Orders } from './AllOrdersScreen'
 
 type MyOrdersScreenProps = {
-  history: any
+  history: {
+    push: (url: string) => void
+  }
 }
 
 type userInfoProps = {
@@ -60,19 +62,21 @@ const MyOrdersScreen = ({ history }: MyOrdersScreenProps) => {
             <Table striped bordered hover responsive className='table-sm'>
               <thead>
                 <tr>
-                  <th>ID</th>
+                  <th>USER</th>
                   <th>DATE</th>
                   <th>TOTAL</th>
                   <th>DELIVER</th>
-                  <th></th>
+                  <th>INFO</th>
                 </tr>
               </thead>
               <tbody>
                 {orders.map((order) => (
-                  <tr key={order._id}>
-                    <td>{order._id}</td>
+                  < tr key={order._id}>
+                    <td>
+                      {userInfo.name}
+                    </td>
                     <td>{order.createdAt.substring(0, 10)}</td>
-                    <td>{order.totalPrice}</td>
+                    <td>$ {order.totalPrice}</td>
 
                     <td>
                       {order.isDelivered ? (
@@ -88,6 +92,7 @@ const MyOrdersScreen = ({ history }: MyOrdersScreenProps) => {
                         </Button>
                       </LinkContainer>
                     </td>
+
                   </tr>
                 ))}
               </tbody>

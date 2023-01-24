@@ -8,7 +8,9 @@ import { createOrder } from '../actions/orderActions'
 import Message from '../components/Message'
 
 type PlaceOrderScreenProps = {
-  history: any
+  history: {
+    push: (url: string) => void
+  }
 }
 
 type CartItem = {

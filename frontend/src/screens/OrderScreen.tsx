@@ -17,8 +17,14 @@ import {
 import Message from '../components/Message'
 
 type OrderScreenProps = {
-  match: any
-  history: any
+  match: {
+    params: {
+      id: string
+    }
+  }
+  history: {
+    push: (url: string) => void
+  }
 }
 
 type State = {

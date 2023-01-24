@@ -15,6 +15,7 @@ import AllOrdersScreen from './screens/AllOrdersScreen';
 import MyOrdersScreen from './screens/MyOrdersScreen';
 import ProductEditScreen from './screens/ProductEditScreen';
 import ProductListScreen from './screens/ProductListScreen';
+import RegisterScreen from './screens/RegisterScreen';
 
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
             <Route path='/placeorder' component={PlaceOrderScreen} />
             <Route path='/admin/product/:id/edit' component={ProductEditScreen} />
             <Route path='/order/:id' component={OrderScreen} />
+            <Route path='/register' component={RegisterScreen} />
           </Container>
         </main>
         <Footer />

@@ -53,10 +53,14 @@ type orderProps = {
   _id: number
 }
 
+export type CreateOrderAction = {
+  type: typeof ORDER_CREATE_REQUEST | typeof ORDER_CREATE_SUCCESS | typeof ORDER_CREATE_FAIL
+  payload?: createOrderProps
+}
 
 export const createOrder = (order: createOrderProps) => async (dispatch: Dispatch, getState: getStateProps) => {
   try {
-    dispatch({
+    dispatch<CreateOrderAction>({
       type: ORDER_CREATE_REQUEST,
     })
 
@@ -88,9 +92,14 @@ export const createOrder = (order: createOrderProps) => async (dispatch: Dispatc
   }
 }
 
-export const getOrderDetails = (id: number) => async (dispatch: Dispatch, getState: getStateProps) => {
+export type getOrderDetailsAction = {
+  type: typeof ORDER_DETAILS_REQUEST | typeof ORDER_DETAILS_SUCCESS | typeof ORDER_DETAILS_FAIL
+  payload?: number
+}
+
+export const getOrderDetails = (id: string) => async (dispatch: Dispatch, getState: getStateProps) => {
   try {
-    dispatch({
+    dispatch<getOrderDetailsAction>({
       type: ORDER_DETAILS_REQUEST,
     })
 
@@ -123,9 +132,14 @@ export const getOrderDetails = (id: number) => async (dispatch: Dispatch, getSta
   }
 }
 
+export type deliverOrderAction = {
+  type: typeof ORDER_DELIVER_REQUEST | typeof ORDER_DELIVER_SUCCESS | typeof ORDER_DELIVER_FAIL
+  payload?: orderProps
+}
+
 export const deliverOrder = (order: orderProps) => async (dispatch: Dispatch, getState: getStateProps) => {
   try {
-    dispatch({
+    dispatch<deliverOrderAction>({
       type: ORDER_DELIVER_REQUEST,
     })
 
@@ -158,9 +172,14 @@ export const deliverOrder = (order: orderProps) => async (dispatch: Dispatch, ge
   }
 }
 
-export const cancelledOrder = (order: orderProps) => async (dispatch: Dispatch , getState: getStateProps) => {
+export type cancelledOrderAction = {
+  type: typeof ORDER_CANCELLED_REQUEST | typeof ORDER_CANCELLED_SUCCESS | typeof ORDER_CANCELLED_FAIL
+  payload?: orderProps
+}
+
+export const cancelledOrder = (order: orderProps) => async (dispatch: Dispatch, getState: getStateProps) => {
   try {
-    dispatch({
+    dispatch<cancelledOrderAction>({
       type: ORDER_CANCELLED_REQUEST,
     })
 
@@ -192,6 +211,7 @@ export const cancelledOrder = (order: orderProps) => async (dispatch: Dispatch ,
     })
   }
 }
+
 
 export const listMyOrders = () => async (dispatch: Dispatch, getState: getStateProps) => {
   try {

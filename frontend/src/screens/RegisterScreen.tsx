@@ -9,8 +9,12 @@ import FormContainer from '../components/FormContainer'
 import { register } from '../actions/userActions'
 
 type RegisterScreenProps = {
-  location: any
-  history: any
+  location: {
+    search: string
+  }
+  history: {
+    push: (url: string) => void
+  }
 }
 
 type userInfo = {

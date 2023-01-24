@@ -9,15 +9,27 @@ import Message from '../components/Message'
 
 
 type ProductScreenProps = {
-  history: any
-  match: any
+  history: {
+    push: (url: string) => void
+  }
+  match: {
+    params: {
+      id: string
+    }
+  }
 }
 
 type ProductDetailsState = {
   productDetails: {
     loading: boolean
     error: string
-    product: any
+    product: {
+      _id: string
+      name: string
+      image: string
+      description: string
+      price: number
+    }
   }
 }
 

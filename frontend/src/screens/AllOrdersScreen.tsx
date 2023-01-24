@@ -8,14 +8,15 @@ import Loader from '../components/Loader'
 import { listOrders } from '../actions/orderActions'
 
 type AllOrdersScreenProps = {
-  history: any
+  history: {
+    push: (url: string) => void
+  }
 }
 
 export type Orders = {
   _id: string
   user: {
     _id: string
-    name: string
   }
   orderItems: {
     name: string
@@ -44,6 +45,9 @@ type State = {
   }
   userLogin: {
     userInfo: {
+      _id: string
+      name: string
+      email: string
       isAdmin: boolean
     }
   }
@@ -83,7 +87,7 @@ const AllOrdersScreen = ({ history }: AllOrdersScreenProps) => {
                   <th>DATE</th>
                   <th>TOTAL</th>
                   <th>DELIVER</th>
-                  <th></th>
+                  <th>INFO</th>
                 </tr>
               </thead>
               <tbody>

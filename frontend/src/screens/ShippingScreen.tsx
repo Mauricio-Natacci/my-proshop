@@ -7,7 +7,9 @@ import CheckoutSteps from '../components/CheckoutSteps'
 import FormContainer from '../components/FormContainer'
 
 type ShippingScreenProps = {
-  history: any
+  history: {
+    push(url: string): void
+  }
 }
 
 type cartStateProps = {
@@ -17,10 +19,9 @@ type cartStateProps = {
       city: string
       postalCode: string
       country: string
-  }
+    }
   }
 }
-
 
 const ShippingScreen = ({ history }: ShippingScreenProps) => {
   const cart = useSelector((state: cartStateProps) => state.cart)
@@ -35,7 +36,7 @@ const ShippingScreen = ({ history }: ShippingScreenProps) => {
 
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    dispatch(saveShippingAddress({ address, city, postalCode, country })) 
+    dispatch(saveShippingAddress({ address, city, postalCode, country }))
     history.push('/placeorder')
   }
 
