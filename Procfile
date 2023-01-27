@@ -1,1 +1,1 @@
-web: node backend/server.ts
+web: sucrase-node backend/server.ts
