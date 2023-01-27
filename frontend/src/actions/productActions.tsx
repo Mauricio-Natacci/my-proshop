@@ -77,7 +77,9 @@ export const deleteProduct = (id: string) => async (dispatch: Dispatch, getState
       type: PRODUCT_DELETE_REQUEST,
     })
 
-    const { userLogin: { userInfo } } = getState()
+    const {
+      userLogin: { userInfo },
+    } = getState()
 
     const config = {
       headers: { Authorization: `Bearer ${userInfo.token}` },

@@ -41,3 +41,11 @@
 .Uppercase {
   text-transform: uppercase;
 }
+
+.heightBox {
+  height: 18vh;
+}
+
+.maxImageHeight {
+  border-radius: 5px;
+}
