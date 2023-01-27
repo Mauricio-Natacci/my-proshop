@@ -2,7 +2,7 @@
   "name": "my-proshop",
   "version": "1.0.0",
   "description": "Shopping cart app",
-  "main": "server.js",
+  "main": "server.ts",
   "scripts": {
     "start": "node backend/server",
     "server": "sucrase-node backend/server.ts",
