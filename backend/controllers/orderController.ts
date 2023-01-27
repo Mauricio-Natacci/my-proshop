@@ -2,7 +2,6 @@ import { Request, Response } from 'express'
 import asyncHandler from 'express-async-handler'
 import Order from '../models/orderModel'
 
-
 // @desc  Create new order
 // @route POST /api/orders
 // @acess Private
@@ -96,7 +95,7 @@ const getMyOrders = asyncHandler(async (req: any, res: Response) => {
 // @route POST /api/orders/allorders
 // @acess Private/admin
 const getAllOrders = asyncHandler(async (req: any, res: Response) => {
-  const orders = await Order.find({})
+  const orders = await Order.find({}).populate('user', 'id name')
 
   res.json(orders)
 })

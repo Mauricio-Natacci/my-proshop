@@ -16,6 +16,7 @@ type AllOrdersScreenProps = {
 export type Orders = {
   _id: string
   user: {
+    name: string
     _id: string
   }
   orderItems: {
@@ -54,6 +55,7 @@ type State = {
 }
 
 const AllOrdersScreen = ({ history }: AllOrdersScreenProps) => {
+
   const dispatch: Dispatch<any> = useDispatch()
 
   const orderList = useSelector((state: State) => state.orderList)
@@ -83,7 +85,7 @@ const AllOrdersScreen = ({ history }: AllOrdersScreenProps) => {
             <Table striped bordered hover responsive className='table-sm'>
               <thead>
                 <tr>
-                  <th>ID</th>
+                  <th>NAME</th>
                   <th>DATE</th>
                   <th>TOTAL</th>
                   <th>DELIVER</th>
@@ -93,7 +95,7 @@ const AllOrdersScreen = ({ history }: AllOrdersScreenProps) => {
               <tbody>
                 {orders.map((order) => (
                   <tr key={order._id}>
-                    <td>{order._id}</td>
+                    <td>{order.user.name}</td>
                     <td>{order.createdAt.substring(0, 10)}</td>
                     <td>{order.totalPrice}</td>
 

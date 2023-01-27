@@ -7,7 +7,7 @@ let mongoURI: string
 if (process.env.MONGO_URI) {
   mongoURI = process.env.MONGO_URI
 } else {
-  throw new Error("WHATEVER environment variable is not set")
+  throw new Error("mongoURI environment variable is not set")
 }
 
 const connectDB = async () => {
