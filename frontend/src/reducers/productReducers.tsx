@@ -1,4 +1,24 @@
 import {
+  ProductListRequest,
+  ProductListSuccess,
+  ProductListFail,
+  ProductDetailsRequest,
+  ProductDetailsSuccess,
+  ProductDetailsFail,
+  ProductDeleteRequest,
+  ProductDeleteSuccess,
+  ProductDeleteFail,
+  ProductCreateRequest,
+  ProductCreateSuccess,
+  ProductCreateFail,
+  ProductUpdateRequest,
+  ProductUpdateSuccess,
+  ProductUpdateFail,
+  ProductCreateReset,
+  ProductUpdateReset,
+} from '../actions/productActions'
+
+import {
   PRODUCT_CREATE_FAIL,
   PRODUCT_CREATE_REQUEST,
   PRODUCT_CREATE_RESET,
@@ -26,10 +46,24 @@ type State = {
   products: any
 }
 
-type Actions = {
-  type: string
-  payload: any
-}
+type Action =
+  ProductListRequest
+  | ProductListSuccess
+  | ProductListFail
+  | ProductDetailsRequest
+  | ProductDetailsSuccess
+  | ProductDetailsFail
+  | ProductDeleteRequest
+  | ProductDeleteSuccess
+  | ProductDeleteFail
+  | ProductCreateRequest
+  | ProductCreateSuccess
+  | ProductCreateFail
+  | ProductCreateReset
+  | ProductUpdateRequest
+  | ProductUpdateSuccess
+  | ProductUpdateFail
+  | ProductUpdateReset
 
 const initialState: State = {
   loading: false,
@@ -39,7 +73,7 @@ const initialState: State = {
   products: [],
 }
 
-export const productListReducer = (state = initialState, action: Actions): State => {
+export const productListReducer = (state = initialState, action: Action): State => {
   switch (action.type) {
     case PRODUCT_LIST_REQUEST:
       return { ...state, loading: true, products: [] }
@@ -52,7 +86,7 @@ export const productListReducer = (state = initialState, action: Actions): State
   }
 }
 
-export const productDetailsReducer = (state = initialState, action: Actions): State => {
+export const productDetailsReducer = (state = initialState, action: Action): State => {
   switch (action.type) {
     case PRODUCT_DETAILS_REQUEST:
       return { ...state, loading: true }
@@ -65,7 +99,7 @@ export const productDetailsReducer = (state = initialState, action: Actions): St
   }
 }
 
-export const productDeleteReducer = (state = initialState, action: Actions): State => {
+export const productDeleteReducer = (state = initialState, action: Action): State => {
   switch (action.type) {
     case PRODUCT_DELETE_REQUEST:
       return { ...state, loading: true, success: false }
@@ -78,7 +112,7 @@ export const productDeleteReducer = (state = initialState, action: Actions): Sta
   }
 }
 
-export const productCreateReducer = (state = initialState, action: Actions): State => {
+export const productCreateReducer = (state = initialState, action: Action): State => {
   switch (action.type) {
     case PRODUCT_CREATE_REQUEST:
       return { ...state, loading: true }
@@ -93,7 +127,7 @@ export const productCreateReducer = (state = initialState, action: Actions): Sta
   }
 }
 
-export const productUpdateReducer = (state = initialState, action: Actions): State => {
+export const productUpdateReducer = (state = initialState, action: Action): State => {
   switch (action.type) {
     case PRODUCT_UPDATE_REQUEST:
       return { ...state, loading: true }

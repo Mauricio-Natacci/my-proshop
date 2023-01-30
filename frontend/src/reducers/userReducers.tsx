@@ -19,8 +19,14 @@ import {
 } from "../actions/userActions"
 
 
-type Action = LoginRequest | LoginSuccess | LoginFail | Logout | RegisterRequest | RegisterSuccess | RegisterFail
-
+type Action =
+  LoginRequest
+  | LoginSuccess
+  | LoginFail
+  | Logout
+  | RegisterRequest
+  | RegisterSuccess
+  | RegisterFail
 
 type StateProps = {
   loading: boolean

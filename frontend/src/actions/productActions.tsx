@@ -15,6 +15,8 @@ import {
   PRODUCT_UPDATE_REQUEST,
   PRODUCT_UPDATE_SUCCESS,
   PRODUCT_UPDATE_FAIL,
+  PRODUCT_CREATE_RESET,
+  PRODUCT_UPDATE_RESET,
 } from '../constants/productConstants'
 import { Dispatch } from 'redux';
 
@@ -26,18 +28,22 @@ type Product = {
   price: number
 }
 
+export type ProductListRequest = { type: typeof PRODUCT_LIST_REQUEST }
+export type ProductListSuccess = { type: typeof PRODUCT_LIST_SUCCESS; payload: Product[] }
+export type ProductListFail = { type: typeof PRODUCT_LIST_FAIL; payload: string }
+
 export const listProducts = () => async (dispatch: Dispatch) => {
   try {
-    dispatch({ type: PRODUCT_LIST_REQUEST })
+    dispatch<ProductListRequest>({ type: PRODUCT_LIST_REQUEST })
 
     const { data } = await axios.get('/api/products')
 
-    dispatch({
+    dispatch<ProductListSuccess>({
       type: PRODUCT_LIST_SUCCESS,
       payload: data,
     })
   } catch (error) {
-    dispatch({
+    dispatch<ProductListFail>({
       type: PRODUCT_LIST_FAIL,
       payload:
         error.response && error.response.data.message
@@ -47,18 +53,22 @@ export const listProducts = () => async (dispatch: Dispatch) => {
   }
 }
 
+export type ProductDetailsRequest = { type: typeof PRODUCT_DETAILS_REQUEST }
+export type ProductDetailsSuccess = { type: typeof PRODUCT_DETAILS_SUCCESS; payload: Product }
+export type ProductDetailsFail = { type: typeof PRODUCT_DETAILS_FAIL; payload: string }
+
 export const listProductDetails = (id: string) => async (dispatch: Dispatch) => {
   try {
-    dispatch({ type: PRODUCT_DETAILS_REQUEST })
+    dispatch<ProductDetailsRequest>({ type: PRODUCT_DETAILS_REQUEST })
 
     const { data } = await axios.get(`/api/products/${id}`)
 
-    dispatch({
+    dispatch<ProductDetailsSuccess>({
       type: PRODUCT_DETAILS_SUCCESS,
       payload: data,
     })
   } catch (error) {
-    dispatch({
+    dispatch<ProductDetailsFail>({
       type: PRODUCT_DETAILS_FAIL,
       payload:
         error.response && error.response.data.message
@@ -71,9 +81,13 @@ export const listProductDetails = (id: string) => async (dispatch: Dispatch) => 
 type TypeUserInfo = { token: string }
 type getStateProps = () => { userLogin: { userInfo: TypeUserInfo } }
 
+export type ProductDeleteRequest = { type: typeof PRODUCT_DELETE_REQUEST }
+export type ProductDeleteSuccess = { type: typeof PRODUCT_DELETE_SUCCESS }
+export type ProductDeleteFail = { type: typeof PRODUCT_DELETE_FAIL; payload: string }
+
 export const deleteProduct = (id: string) => async (dispatch: Dispatch, getState: getStateProps) => {
   try {
-    dispatch({
+    dispatch<ProductDeleteRequest>({
       type: PRODUCT_DELETE_REQUEST,
     })
 
@@ -87,11 +101,11 @@ export const deleteProduct = (id: string) => async (dispatch: Dispatch, getState
 
     await axios.delete(`/api/products/${id}`, config)
 
-    dispatch({
+    dispatch<ProductDeleteSuccess>({
       type: PRODUCT_DELETE_SUCCESS,
     })
   } catch (error) {
-    dispatch({
+    dispatch<ProductDeleteFail>({
       type: PRODUCT_DELETE_FAIL,
       payload:
         error.response && error.response.data.message
@@ -101,9 +115,14 @@ export const deleteProduct = (id: string) => async (dispatch: Dispatch, getState
   }
 }
 
+export type ProductCreateRequest = { type: typeof PRODUCT_CREATE_REQUEST }
+export type ProductCreateSuccess = { type: typeof PRODUCT_CREATE_SUCCESS; payload: Product }
+export type ProductCreateFail = { type: typeof PRODUCT_CREATE_FAIL; payload: string }
+export type ProductCreateReset = { type: typeof PRODUCT_CREATE_RESET }
+
 export const createProduct = () => async (dispatch: Dispatch, getState: getStateProps) => {
   try {
-    dispatch({
+    dispatch<ProductCreateRequest>({
       type: PRODUCT_CREATE_REQUEST,
     })
 
@@ -117,12 +136,12 @@ export const createProduct = () => async (dispatch: Dispatch, getState: getState
 
     const { data } = await axios.post(`/api/products`, {}, config)
 
-    dispatch({
+    dispatch<ProductCreateSuccess>({
       type: PRODUCT_CREATE_SUCCESS,
       payload: data,
     })
   } catch (error) {
-    dispatch({
+    dispatch<ProductCreateFail>({
       type: PRODUCT_CREATE_FAIL,
       payload:
         error.response && error.response.data.message
@@ -132,9 +151,14 @@ export const createProduct = () => async (dispatch: Dispatch, getState: getState
   }
 }
 
+export type ProductUpdateRequest = { type: typeof PRODUCT_UPDATE_REQUEST }
+export type ProductUpdateSuccess = { type: typeof PRODUCT_UPDATE_SUCCESS; payload: Product }
+export type ProductUpdateFail = { type: typeof PRODUCT_UPDATE_FAIL; payload: string }
+export type ProductUpdateReset = { type: typeof PRODUCT_UPDATE_RESET }
+
 export const updateProduct = (product: Product) => async (dispatch: Dispatch, getState: getStateProps) => {
   try {
-    dispatch({
+    dispatch<ProductUpdateRequest>({
       type: PRODUCT_UPDATE_REQUEST,
     })
 
@@ -153,12 +177,12 @@ export const updateProduct = (product: Product) => async (dispatch: Dispatch, ge
       config
     )
 
-    dispatch({
+    dispatch<ProductUpdateSuccess>({
       type: PRODUCT_UPDATE_SUCCESS,
       payload: data,
     })
   } catch (error) {
-    dispatch({
+    dispatch<ProductUpdateFail>({
       type: PRODUCT_UPDATE_FAIL,
       payload:
         error.response && error.response.data.message
