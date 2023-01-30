@@ -7,7 +7,7 @@ import User from '../models/userModel'
 // @desc  Auth user & get token
 // @route POST /api/users/login
 // @acess Public
-const authUser = asyncHandler(async (req: any, res: Response) => {
+const login = asyncHandler(async (req: any, res: Response) => {
   const { email, password } = req.body
 
   const user = await User.findOne({ email })
@@ -45,6 +45,9 @@ const getUserProfile = asyncHandler(async (req: any, res: Response) => {
   }
 })
 
+// @desc  Register a new user
+// @route POST /api/users
+// @acess Public
 const registerUser = asyncHandler(async (req: any, res: Response) => {
   const { name, email, password } = req.body
 
@@ -75,4 +78,4 @@ const registerUser = asyncHandler(async (req: any, res: Response) => {
   }
 })
 
-export { authUser, getUserProfile, registerUser }
+export { login, getUserProfile, registerUser }

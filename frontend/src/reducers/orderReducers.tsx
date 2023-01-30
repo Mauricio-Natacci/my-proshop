@@ -1,4 +1,28 @@
 import {
+  CreateOrderRequest,
+  CreateOrderSuccess,
+  CreateOrderFail,
+  GetOrderDetailsRequest,
+  GetOrderDetailsSuccess,
+  GetOrderDetailsFail,
+  GetOrderSuccessEmptyCart,
+  DeliverOrderRequest,
+  DeliverOrderSuccess,
+  DeliverOrderFail,
+  DeliverOrderReset,
+  CancelledOrderRequest,
+  CancelledOrderSuccess,
+  CancelledOrderFail,
+  CancelledOrderReset,
+  ListMyOrdersRequest,
+  ListMyOrdersSuccess,
+  ListMyOrdersFail,
+  ListOrdersRequest,
+  ListOrdersSuccess,
+  ListOrdersFail,
+  orderProps
+} from '../actions/orderActions'
+import {
   ORDER_CANCELLED_FAIL,
   ORDER_CANCELLED_REQUEST,
   ORDER_CANCELLED_RESET,
@@ -21,10 +45,28 @@ import {
   ORDER_LIST_SUCCESS,
 } from '../constants/orderConstants'
 
-type Action = {
-  type: string
-  payload: any
-}
+type Action = CreateOrderRequest
+  | CreateOrderSuccess
+  | CreateOrderFail
+  | GetOrderDetailsRequest
+  | GetOrderDetailsSuccess
+  | GetOrderDetailsFail
+  | GetOrderSuccessEmptyCart
+  | DeliverOrderRequest
+  | DeliverOrderSuccess
+  | DeliverOrderFail
+  | DeliverOrderReset
+  | CancelledOrderRequest
+  | CancelledOrderSuccess
+  | CancelledOrderFail
+  | CancelledOrderReset
+  | ListMyOrdersRequest
+  | ListMyOrdersSuccess
+  | ListMyOrdersFail
+  | ListOrdersRequest
+  | ListOrdersSuccess
+  | ListOrdersFail
+
 
 type State = {
   loading: boolean
@@ -41,7 +83,7 @@ type State = {
       country: string
     }
   }
-  orders: []
+  orders: orderProps[]
 }
 
 const initialState: State = {

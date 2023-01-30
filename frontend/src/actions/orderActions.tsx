@@ -3,12 +3,14 @@ import { CART_EMPTY } from '../constants/cartConstants'
 import {
   ORDER_CANCELLED_FAIL,
   ORDER_CANCELLED_REQUEST,
+  ORDER_CANCELLED_RESET,
   ORDER_CANCELLED_SUCCESS,
   ORDER_CREATE_FAIL,
   ORDER_CREATE_REQUEST,
   ORDER_CREATE_SUCCESS,
   ORDER_DELIVER_FAIL,
   ORDER_DELIVER_REQUEST,
+  ORDER_DELIVER_RESET,
   ORDER_DELIVER_SUCCESS,
   ORDER_DETAILS_FAIL,
   ORDER_DETAILS_REQUEST,
@@ -49,18 +51,45 @@ type getStateProps = () => {
   }
 }
 
-type orderProps = {
-  _id: number
+export type orderProps = {
+  _id: string
+  user: string
+  orderItems: {
+    name: string
+    image: string
+    price: number
+    product: string
+    qty: number
+  }[]
+  shippingAddress: {
+    address: string
+    city: string
+    postalCode: string
+    country: string
+  }
+  itemsPrice: any
+  totalPrice: string
+  isDelivered: boolean
 }
 
-export type CreateOrderAction = {
-  type: typeof ORDER_CREATE_REQUEST | typeof ORDER_CREATE_SUCCESS | typeof ORDER_CREATE_FAIL
-  payload?: createOrderProps
+
+export type CreateOrderRequest = {
+  type: typeof ORDER_CREATE_REQUEST
+}
+
+export type CreateOrderSuccess = {
+  type: typeof ORDER_CREATE_SUCCESS
+  payload: orderProps
+}
+
+export type CreateOrderFail = {
+  type: typeof ORDER_CREATE_FAIL
+  payload: string
 }
 
 export const createOrder = (order: createOrderProps) => async (dispatch: Dispatch, getState: getStateProps) => {
   try {
-    dispatch<CreateOrderAction>({
+    dispatch<CreateOrderRequest>({
       type: ORDER_CREATE_REQUEST,
     })
 
@@ -77,12 +106,12 @@ export const createOrder = (order: createOrderProps) => async (dispatch: Dispatc
 
     const { data } = await axios.post(`/api/orders`, order, config)
 
-    dispatch({
+    dispatch<CreateOrderSuccess>({
       type: ORDER_CREATE_SUCCESS,
       payload: data,
     })
   } catch (error) {
-    dispatch({
+    dispatch<CreateOrderFail>({
       type: ORDER_CREATE_FAIL,
       payload:
         error.response && error.response.data.message
@@ -92,14 +121,28 @@ export const createOrder = (order: createOrderProps) => async (dispatch: Dispatc
   }
 }
 
-export type getOrderDetailsAction = {
-  type: typeof ORDER_DETAILS_REQUEST | typeof ORDER_DETAILS_SUCCESS | typeof ORDER_DETAILS_FAIL
-  payload?: number
+export type GetOrderDetailsRequest = {
+  type: typeof ORDER_DETAILS_REQUEST
+}
+
+export type GetOrderDetailsSuccess = {
+  type: typeof ORDER_DETAILS_SUCCESS
+  payload: orderProps
+}
+
+export type GetOrderDetailsFail = {
+  type: typeof ORDER_DETAILS_FAIL
+  payload: string
+}
+
+export type GetOrderSuccessEmptyCart = {
+  type: typeof CART_EMPTY
+  payload: void
 }
 
 export const getOrderDetails = (id: string) => async (dispatch: Dispatch, getState: getStateProps) => {
   try {
-    dispatch<getOrderDetailsAction>({
+    dispatch<GetOrderDetailsRequest>({
       type: ORDER_DETAILS_REQUEST,
     })
 
@@ -115,14 +158,14 @@ export const getOrderDetails = (id: string) => async (dispatch: Dispatch, getSta
 
     const { data } = await axios.get(`/api/orders/${id}`, config)
 
-    dispatch({
+    dispatch<GetOrderDetailsSuccess>({
       type: ORDER_DETAILS_SUCCESS,
       payload: data,
     })
 
-    dispatch({ type: CART_EMPTY, payload: localStorage.removeItem('cartItem') })
+    dispatch<GetOrderSuccessEmptyCart>({ type: CART_EMPTY, payload: localStorage.removeItem('cartItem') })
   } catch (error) {
-    dispatch({
+    dispatch<GetOrderDetailsFail>({
       type: ORDER_DETAILS_FAIL,
       payload:
         error.response && error.response.data.message
@@ -132,14 +175,28 @@ export const getOrderDetails = (id: string) => async (dispatch: Dispatch, getSta
   }
 }
 
-export type deliverOrderAction = {
-  type: typeof ORDER_DELIVER_REQUEST | typeof ORDER_DELIVER_SUCCESS | typeof ORDER_DELIVER_FAIL
-  payload?: orderProps
+export type DeliverOrderRequest = {
+  type: typeof ORDER_DELIVER_REQUEST
 }
+
+export type DeliverOrderSuccess = {
+  type: typeof ORDER_DELIVER_SUCCESS
+  payload: orderProps
+}
+
+export type DeliverOrderFail = {
+  type: typeof ORDER_DELIVER_FAIL
+  payload: string
+}
+
+export type DeliverOrderReset = {
+  type: typeof ORDER_DELIVER_RESET
+}
+
 
 export const deliverOrder = (order: orderProps) => async (dispatch: Dispatch, getState: getStateProps) => {
   try {
-    dispatch<deliverOrderAction>({
+    dispatch<DeliverOrderRequest>({
       type: ORDER_DELIVER_REQUEST,
     })
 
@@ -157,12 +214,12 @@ export const deliverOrder = (order: orderProps) => async (dispatch: Dispatch, ge
       config
     )
 
-    dispatch({
+    dispatch<DeliverOrderSuccess>({
       type: ORDER_DELIVER_SUCCESS,
       payload: data,
     })
   } catch (error) {
-    dispatch({
+    dispatch<DeliverOrderFail>({
       type: ORDER_DELIVER_FAIL,
       payload:
         error.response && error.response.data.message
@@ -172,14 +229,27 @@ export const deliverOrder = (order: orderProps) => async (dispatch: Dispatch, ge
   }
 }
 
-export type cancelledOrderAction = {
-  type: typeof ORDER_CANCELLED_REQUEST | typeof ORDER_CANCELLED_SUCCESS | typeof ORDER_CANCELLED_FAIL
-  payload?: orderProps
+export type CancelledOrderRequest = {
+  type: typeof ORDER_CANCELLED_REQUEST
+}
+
+export type CancelledOrderSuccess = {
+  type: typeof ORDER_CANCELLED_SUCCESS
+  payload: orderProps
+}
+
+export type CancelledOrderFail = {
+  type: typeof ORDER_CANCELLED_FAIL
+  payload: string
+}
+
+export type CancelledOrderReset = {
+  type: typeof ORDER_CANCELLED_RESET
 }
 
 export const cancelledOrder = (order: orderProps) => async (dispatch: Dispatch, getState: getStateProps) => {
   try {
-    dispatch<cancelledOrderAction>({
+    dispatch<CancelledOrderRequest>({
       type: ORDER_CANCELLED_REQUEST,
     })
 
@@ -197,12 +267,12 @@ export const cancelledOrder = (order: orderProps) => async (dispatch: Dispatch, 
       config
     )
 
-    dispatch({
+    dispatch<CancelledOrderSuccess>({
       type: ORDER_CANCELLED_SUCCESS,
       payload: data,
     })
   } catch (error) {
-    dispatch({
+    dispatch<CancelledOrderFail>({
       type: ORDER_CANCELLED_FAIL,
       payload:
         error.response && error.response.data.message
@@ -212,10 +282,23 @@ export const cancelledOrder = (order: orderProps) => async (dispatch: Dispatch, 
   }
 }
 
+export type ListMyOrdersRequest = {
+  type: typeof ORDER_LIST_MY_REQUEST
+}
+
+export type ListMyOrdersSuccess = {
+  type: typeof ORDER_LIST_MY_SUCCESS
+  payload: orderProps[]
+}
+
+export type ListMyOrdersFail = {
+  type: typeof ORDER_LIST_MY_FAIL
+  payload: string
+}
 
 export const listMyOrders = () => async (dispatch: Dispatch, getState: getStateProps) => {
   try {
-    dispatch({
+    dispatch<ListMyOrdersRequest>({
       type: ORDER_LIST_MY_REQUEST,
     })
 
@@ -229,12 +312,12 @@ export const listMyOrders = () => async (dispatch: Dispatch, getState: getStateP
 
     const { data } = await axios.get(`/api/orders/myorders`, config)
 
-    dispatch({
+    dispatch<ListMyOrdersSuccess>({
       type: ORDER_LIST_MY_SUCCESS,
       payload: data,
     })
   } catch (error) {
-    dispatch({
+    dispatch<ListMyOrdersFail>({
       type: ORDER_LIST_MY_FAIL,
       payload:
         error.response && error.response.data.message
@@ -244,9 +327,23 @@ export const listMyOrders = () => async (dispatch: Dispatch, getState: getStateP
   }
 }
 
+export type ListOrdersRequest = {
+  type: typeof ORDER_LIST_REQUEST
+}
+
+export type ListOrdersSuccess = {
+  type: typeof ORDER_LIST_SUCCESS
+  payload: orderProps[]
+}
+
+export type ListOrdersFail = {
+  type: typeof ORDER_LIST_FAIL
+  payload: string
+}
+
 export const listOrders = () => async (dispatch: Dispatch, getState: getStateProps) => {
   try {
-    dispatch({
+    dispatch<ListOrdersRequest>({
       type: ORDER_LIST_REQUEST,
     })
 
@@ -260,12 +357,12 @@ export const listOrders = () => async (dispatch: Dispatch, getState: getStatePro
 
     const { data } = await axios.get(`/api/orders/allorders`, config)
 
-    dispatch({
+    dispatch<ListOrdersSuccess>({
       type: ORDER_LIST_SUCCESS,
       payload: data,
     })
   } catch (error) {
-    dispatch({
+    dispatch<ListOrdersFail>({
       type: ORDER_LIST_FAIL,
       payload:
         error.response && error.response.data.message
