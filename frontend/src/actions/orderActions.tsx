@@ -163,7 +163,7 @@ export const getOrderDetails = (id: string) => async (dispatch: Dispatch, getSta
       payload: data,
     })
 
-    dispatch<GetOrderSuccessEmptyCart>({ type: CART_EMPTY, payload: localStorage.removeItem('cartItem') })
+    dispatch<GetOrderSuccessEmptyCart>({ type: CART_EMPTY, payload: localStorage.setItem('cartItems', JSON.stringify([])) })
   } catch (error) {
     dispatch<GetOrderDetailsFail>({
       type: ORDER_DETAILS_FAIL,
