@@ -7,13 +7,20 @@ import {
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS
 } from "../constants/userConstants"
-import { Login, Logout, Register, UserInfo } from "../actions/userActions"
+import {
+  LoginRequest,
+  LoginSuccess,
+  LoginFail,
+  Logout,
+  UserInfo,
+  RegisterRequest,
+  RegisterSuccess,
+  RegisterFail
+} from "../actions/userActions"
 
 
-type Action = {
-  type: any
-  payload: any
-}
+type Action = LoginRequest | LoginSuccess | LoginFail | Logout | RegisterRequest | RegisterSuccess | RegisterFail
+
 
 type StateProps = {
   loading: boolean
@@ -41,6 +48,7 @@ export const userLoginReducer = (state = initialState, action: Action): StatePro
       return state
   }
 }
+
 
 export const userRegisterReducer = (state = {}, action: Action) => {
   switch (action.type) {

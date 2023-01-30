@@ -10,9 +10,19 @@ import {
 } from '../constants/userConstants'
 import { Dispatch } from 'redux';
 
-export type Login = {
-  type: typeof USER_LOGIN_REQUEST | typeof USER_LOGIN_SUCCESS | typeof USER_LOGIN_FAIL;
-  payload: { email: string, password: string };
+export type LoginRequest = {
+  type: typeof USER_LOGIN_REQUEST
+  payload: { email: string, password: string }
+};
+
+export type LoginSuccess = {
+  type: typeof USER_LOGIN_SUCCESS;
+  payload: UserInfo;
+};
+
+export type LoginFail = {
+  type: typeof USER_LOGIN_FAIL;
+  payload: string | null;
 };
 
 export type UserInfo = {
@@ -25,7 +35,7 @@ export type UserInfo = {
 
 export const login = (email: string, password: string) => async (dispatch: Dispatch) => {
   try {
-    dispatch<Login>({
+    dispatch<LoginRequest>({
       type: USER_LOGIN_REQUEST,
       payload: { email, password },
     })
@@ -42,14 +52,14 @@ export const login = (email: string, password: string) => async (dispatch: Dispa
       config
     )
 
-    dispatch({
+    dispatch<LoginSuccess>({
       type: USER_LOGIN_SUCCESS,
       payload: data,
     })
 
     localStorage.setItem('userInfo', JSON.stringify(data))
   } catch (error) {
-    dispatch({
+    dispatch<LoginFail>({
       type: USER_LOGIN_FAIL,
       payload:
         error.response && error.response.data.message
@@ -68,14 +78,25 @@ export const logout = () => (dispatch: Dispatch) => {
   dispatch<Logout>({ type: USER_LOGOUT })
 }
 
-export type Register = {
-  type: typeof USER_REGISTER_REQUEST | typeof USER_REGISTER_SUCCESS | typeof USER_REGISTER_FAIL;
+export type RegisterRequest = {
+  type: typeof USER_REGISTER_REQUEST;
   payload?: { name: string, email: string, password: string };
 };
 
+export type RegisterSuccess = {
+  type: typeof USER_REGISTER_SUCCESS;
+  payload: UserInfo;
+};
+
+export type RegisterFail = {
+  type: typeof USER_REGISTER_FAIL;
+  payload: string | null;
+};
+
+
 export const register = (name: string, email: string, password: string) => async (dispatch: Dispatch) => {
   try {
-    dispatch<Register>({
+    dispatch<RegisterRequest>({
       type: USER_REGISTER_REQUEST,
     })
 
@@ -91,19 +112,14 @@ export const register = (name: string, email: string, password: string) => async
       config
     )
 
-    dispatch({
+    dispatch<RegisterSuccess>({
       type: USER_REGISTER_SUCCESS,
-      payload: data,
-    })
-
-    dispatch({
-      type: USER_LOGIN_SUCCESS,
       payload: data,
     })
 
     localStorage.setItem('userInfo', JSON.stringify(data))
   } catch (error) {
-    dispatch({
+    dispatch<RegisterFail>({
       type: USER_REGISTER_FAIL,
       payload:
         error.response && error.response.data.message
