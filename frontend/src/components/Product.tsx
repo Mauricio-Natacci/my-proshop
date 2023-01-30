@@ -3,7 +3,13 @@ import { Link } from 'react-router-dom'
 import { Card } from 'react-bootstrap'
 
 type ProductProps = {
-  product: any
+  product: {
+    _id: string
+    name: string
+    image: string
+    description: string
+    price: number
+  }
 }
 
 const Product = ({ product }: ProductProps) => {

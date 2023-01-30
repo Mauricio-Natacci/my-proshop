@@ -39,7 +39,7 @@ type createOrderProps = {
     postalCode: string
     country: string
   }
-  itemsPrice: any
+  itemsPrice: number
   totalPrice: string
 }
 
@@ -67,7 +67,7 @@ export type orderProps = {
     postalCode: string
     country: string
   }
-  itemsPrice: any
+  itemsPrice: number
   totalPrice: string
   isDelivered: boolean
 }
