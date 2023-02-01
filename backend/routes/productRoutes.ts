@@ -1,5 +1,4 @@
 import express from 'express'
-const router = express.Router()
 import {
   getProducts,
   getProductById,
@@ -8,6 +7,7 @@ import {
   createProduct
 } from '../controllers/productController'
 import { protect, admin } from '../middleware/authMiddleware'
+const router = express.Router()
 
 router.route('/').get(getProducts).post(protect, admin, createProduct)
 router

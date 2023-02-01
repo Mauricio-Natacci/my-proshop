@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import { Response, NextFunction } from 'express'
+import { type Response, type NextFunction } from 'express'
 import asyncHandler from 'express-async-handler'
 import User from '../models/userModel'
 
@@ -10,7 +10,7 @@ if (process.env.JWT_SECRET) {
   throw new Error('JWT_SECRET environment variable is not set')
 }
 
-type Decoded = {
+interface Decoded {
   id: string
 }
 

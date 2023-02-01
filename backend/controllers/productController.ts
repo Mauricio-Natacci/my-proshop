@@ -1,5 +1,5 @@
 import asyncHandler from 'express-async-handler'
-import { Response } from 'express'
+import { type Response } from 'express'
 import Product from '../models/productModel'
 
 export const getProducts = asyncHandler(async (req: any, res: Response) => {
@@ -9,7 +9,7 @@ export const getProducts = asyncHandler(async (req: any, res: Response) => {
 
 const findProductById = async (id: string) => {
   const product = await Product.findById(id)
-  if (!product) {
+  if (product == null) {
     // TODO: use custom error class with status code 404
     // res.status(404);
     throw new Error('Product not found')

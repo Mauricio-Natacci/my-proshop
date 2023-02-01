@@ -1,5 +1,4 @@
 import express from 'express'
-const router = express.Router()
 import {
   addOrderItems,
   getAllOrders,
@@ -9,6 +8,7 @@ import {
   updateOrderToDelivered
 } from '../controllers/orderController'
 import { protect, admin } from '../middleware/authMiddleware'
+const router = express.Router()
 
 router.route('/').post(protect, addOrderItems)
 // TODO: use kebab-case for the route

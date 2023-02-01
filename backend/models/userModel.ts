@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import bcrypt from 'bcryptjs'
 
-export type User = {
+export interface User {
   _id: string
   name: string
   email: string

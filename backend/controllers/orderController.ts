@@ -1,4 +1,4 @@
-import { Response } from 'express'
+import { type Response } from 'express'
 import asyncHandler from 'express-async-handler'
 import Order from '../models/orderModel'
 
@@ -38,7 +38,7 @@ export const getOrderById = asyncHandler(async (req: any, res: Response) => {
     'name email'
   )
 
-  if (order) {
+  if (order != null) {
     res.json(order)
   } else {
     res.status(404)
@@ -53,7 +53,7 @@ export const updateOrderToDelivered = asyncHandler(
   async (req: any, res: Response) => {
     const order = await Order.findById(req.params.id)
 
-    if (order) {
+    if (order != null) {
       order.isDelivered = true
       order.status = 'fulfilled'
 
@@ -73,7 +73,7 @@ export const updateOrderToDelivered = asyncHandler(
 export const orderCancelled = asyncHandler(async (req: any, res: Response) => {
   const order = await Order.findById(req.params.id)
 
-  if (order) {
+  if (order != null) {
     order.isDelivered = false
     order.status = 'cancelled'
 

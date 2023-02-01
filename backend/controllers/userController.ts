@@ -1,7 +1,7 @@
 import asyncHandler from 'express-async-handler'
 import generateToken from '../utils/generateToken'
-import { Response } from 'express'
-import { User, UserModel } from '../models/userModel'
+import { type Response } from 'express'
+import { type User, UserModel } from '../models/userModel'
 
 // @desc  Auth user & get token
 // @route POST /api/users/login
@@ -31,7 +31,7 @@ const getExistingUser = async (
   res: Response<any, Record<string, any>>
 ) => {
   const user = await UserModel.findOne({ email: req.body.email })
-  if (!user) {
+  if (user == null) {
     res.status(401)
     // TODO: research about error handling with custom Error classes
     throw new Error('Invalid email or password')
@@ -45,7 +45,7 @@ const getExistingUser = async (
 export const getUserProfile = asyncHandler(async (req: any, res: Response) => {
   const user = await UserModel.findById(req.user._id)
 
-  if (user) {
+  if (user != null) {
     res.json({
       _id: user._id,
       name: user.name,
@@ -66,7 +66,7 @@ export const registerUser = asyncHandler(async (req: any, res: Response) => {
 
   const userExists = await UserModel.findOne({ email })
 
-  if (userExists) {
+  if (userExists != null) {
     res.status(400)
     throw new Error('User already exists')
   }

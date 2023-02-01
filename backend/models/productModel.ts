@@ -1,5 +1,4 @@
-import mongoose, { mongo } from 'mongoose'
-import bcrypt from 'bcryptjs'
+import mongoose from 'mongoose'
 
 const productSchema = new mongoose.Schema(
   {

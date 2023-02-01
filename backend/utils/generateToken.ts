@@ -8,6 +8,7 @@ if (process.env.JWT_SECRET) {
   throw new Error('JWT_SECRET environment variable is not set')
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const generateToken = (id: string) => {
   return jwt.sign({ id }, JWT_SECRET, { expiresIn: '100d' })
 }
