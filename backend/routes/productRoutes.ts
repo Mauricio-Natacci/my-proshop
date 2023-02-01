@@ -5,7 +5,7 @@ import {
   getProductById,
   deleteProduct,
   updateProduct,
-  createProduct,
+  createProduct
 } from '../controllers/productController'
 import { protect, admin } from '../middleware/authMiddleware'
 

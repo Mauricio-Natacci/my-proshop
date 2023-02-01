@@ -1,57 +1,55 @@
-import mongoose from "mongoose";
-import dotenv from "dotenv";
-import users from "./data/users";
-import products from "./data/products";
-import User from "./models/userModel";
-import Product from "./models/productModel";
-import Order from "./models/orderModel";
-import connectDB from "./db/connectDb";
+import mongoose from 'mongoose'
+import dotenv from 'dotenv'
+import users from './data/users'
+import products from './data/products'
+import { UserModel } from './models/userModel'
+import Product from './models/productModel'
+import Order from './models/orderModel'
+import connectDB from './db/connectDb'
 
-dotenv.config();
+dotenv.config()
 
-connectDB();
+connectDB()
 
 const importData = async () => {
   try {
-    await Order.deleteMany();
-    await Product.deleteMany();
-    await User.deleteMany();
+    await Order.deleteMany()
+    await Product.deleteMany()
+    await UserModel.deleteMany()
 
-    const createdUsers = await User.insertMany(users);
+    const createdUsers = await UserModel.insertMany(users)
 
-    const adminUser = createdUsers[0]._id;
+    const adminUser = createdUsers[0]._id
 
     const sampleProducts = products.map((product) => {
-      return { ...product, user: adminUser };
-    });
+      return { ...product, user: adminUser }
+    })
 
-    await Product.insertMany(sampleProducts);
+    await Product.insertMany(sampleProducts)
 
-    console.log("Data Imported!");
-    process.exit();
+    console.log('Data Imported!')
+    process.exit()
   } catch (error) {
-    console.error(`${error}`);
-    process.exit(1);
+    console.error(`${error}`)
+    process.exit(1)
   }
-};
-
+}
 const destroyData = async () => {
-  const destroyData = async () => {
-    try {
-      await Order.deleteMany();
-      await Product.deleteMany();
-      await User.deleteMany();
+  try {
+    await Order.deleteMany()
+    await Product.deleteMany()
+    await UserModel.deleteMany()
 
-      console.log("Data Destroyed!");
-      process.exit();
-    } catch (error) {
-      console.error(`${error}`);
-      process.exit(1);
-    }
-  };
-
-  if (process.argv[2] === '-d') {
-    destoyData()
-  } else {
-    importData();
+    console.log('Data Destroyed!')
+    process.exit()
+  } catch (error) {
+    console.error(`${error}`)
+    process.exit(1)
   }
+}
+
+if (process.argv[2] === '-d') {
+  destroyData()
+} else {
+  importData()
+}
