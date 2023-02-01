@@ -1,5 +1,0 @@
-## Config eslint 
-
-
-
-## Config prettier
