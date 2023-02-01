@@ -33,12 +33,25 @@ export type UserInfo = {
   token: string;
 };
 
+export const loginRequest = (email: string, password: string): LoginRequest => ({
+  type: USER_LOGIN_REQUEST,
+  payload: { email, password },
+});
+
+export const loginSuccess = (data: UserInfo): LoginSuccess => ({
+  type: USER_LOGIN_SUCCESS,
+  payload: data,
+});
+
+export const loginFail = (error: string): LoginFail => ({
+  type: USER_LOGIN_FAIL,
+  payload: error,
+});
+
 export const login = (email: string, password: string) => async (dispatch: Dispatch) => {
   try {
-    dispatch<LoginRequest>({
-      type: USER_LOGIN_REQUEST,
-      payload: { email, password },
-    })
+
+    dispatch(loginRequest(email, password))
 
     const config = {
       headers: {
@@ -52,20 +65,17 @@ export const login = (email: string, password: string) => async (dispatch: Dispa
       config
     )
 
-    dispatch<LoginSuccess>({
-      type: USER_LOGIN_SUCCESS,
-      payload: data,
-    })
+    dispatch(loginSuccess(data))
 
-    localStorage.setItem('userInfo', JSON.stringify(data))
+    localStorage.setItem('userInfo', JSON.stringify(data));
+
+
   } catch (error) {
-    dispatch<LoginFail>({
-      type: USER_LOGIN_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    })
+    dispatch(loginFail(
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message
+    ))
   }
 }
 
