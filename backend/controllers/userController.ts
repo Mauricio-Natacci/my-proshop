@@ -1,36 +1,49 @@
-import asyncHandler from 'express-async-handler'
-import generateToken from '../utils/generateToken'
-import { Request, Response } from 'express'
-import User from '../models/userModel'
-
+import asyncHandler from "express-async-handler";
+import generateToken from "../utils/generateToken";
+import { Response } from "express";
+import { User, UserModel } from "../models/userModel";
 
 // @desc  Auth user & get token
 // @route POST /api/users/login
-// @acess Public
-const login = asyncHandler(async (req: any, res: Response) => {
-  const { email, password } = req.body
+// @access Public
+export const login = asyncHandler(async (req: any, res: Response) => {
+  const user = await getExistingUser(req, res);
 
-  const user = await User.findOne({ email })
+  await checkIfPasswordIsCorrect(user, req, res);
 
-  if (user && (await user.matchPassword(password))) {
-    res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      isAdmin: user.isAdmin,
-      token: generateToken(user._id),
-    })
-  } else {
-    res.status(401)
-    throw new Error('Invalid email or password')
+  res.json(buildUserData(user));
+});
+
+const checkIfPasswordIsCorrect = async (
+  user: any,
+  req: any,
+  res: Response<any, Record<string, any>>
+) => {
+  const isPasswordMatch = await user.matchPassword(req.body.password);
+  if (!isPasswordMatch) {
+    res.status(401);
+    throw new Error("Invalid email or password");
   }
-})
+};
+
+const getExistingUser = async (
+  req: any,
+  res: Response<any, Record<string, any>>
+) => {
+  const user = await UserModel.findOne({ email: req.body.email });
+  if (!user) {
+    res.status(401);
+    // TODO: research about error handling with custom Error classes
+    throw new Error("Invalid email or password");
+  }
+  return user;
+};
 
 // @desc  Get user profile
 // @route POST /api/users/profile
-// @acess Private
-const getUserProfile = asyncHandler(async (req: any, res: Response) => {
-  const user = await User.findById(req.user._id)
+// @access Private
+export const getUserProfile = asyncHandler(async (req: any, res: Response) => {
+  const user = await UserModel.findById(req.user._id);
 
   if (user) {
     res.json({
@@ -38,44 +51,42 @@ const getUserProfile = asyncHandler(async (req: any, res: Response) => {
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
-    })
+    });
   } else {
-    res.status(404)
-    throw new Error('User not found')
+    res.status(404);
+    throw new Error("User not found");
   }
-})
+});
 
 // @desc  Register a new user
 // @route POST /api/users
-// @acess Public
-const registerUser = asyncHandler(async (req: any, res: Response) => {
-  const { name, email, password } = req.body
+// @access Public
+export const registerUser = asyncHandler(async (req: any, res: Response) => {
+  const { name, email, password } = req.body;
 
-  const userExists = await User.findOne({ email })
+  const userExists = await UserModel.findOne({ email });
 
   if (userExists) {
-    res.status(400)
-    throw new Error('User already exists')
+    res.status(400);
+    throw new Error("User already exists");
   }
 
-  const user = await User.create({
+  const user = await UserModel.create({
     name,
     email,
     password,
-  })
+  });
 
-  if (user) {
-    res.status(201).json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      isAdmin: user.isAdmin,
-      token: generateToken(user._id),
-    })
-  } else {
-    res.status(400)
-    throw new Error('User not found')
-  }
-})
+  res.status(201).json(buildUserData(user));
+});
 
-export { login, getUserProfile, registerUser }
+// TODO: where's the User type?
+const buildUserData = (user: User) => {
+  return {
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+    isAdmin: user.isAdmin,
+    token: generateToken(user._id),
+  };
+};
