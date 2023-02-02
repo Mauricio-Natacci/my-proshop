@@ -6,7 +6,7 @@ export const config = {
   mongoURI: process.env.MONGO_URI || 'mongodb://127.0.0.1:27017',
   shouldServeReactApp: process.env.SERVE_REACT_APP === 'true',
   showErrorStack: process.env.SHOW_ERROR_STACK === 'true',
-  port: process.env.PORT,
+  port: process.env.PORT || 5000,
   environment: process.env.NODE_ENV,
   jwtSecret: process.env.JWT_SECRET
 }

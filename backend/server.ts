@@ -36,7 +36,7 @@ if (config.shouldServeReactApp) {
 app.use(notFound)
 
 app.use(errorHandler)
-const PORT = config.port || 5000
+const PORT = config.port
 
 connectDB()
   .then(() => {
