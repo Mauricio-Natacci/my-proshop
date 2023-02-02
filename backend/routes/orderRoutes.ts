@@ -7,15 +7,19 @@ import {
   orderCancelled,
   updateOrderToDelivered
 } from '../controllers/orderController'
-import { protect, admin } from '../middleware/authMiddleware'
+import { requireUser } from '../middleware/userMiddleware'
+import { requireAdmin } from '../middleware/adminMiddleware'
+
 const router = express.Router()
 
-router.route('/').post(protect, addOrderItems)
+router.route('/').post(requireUser, addOrderItems)
 // TODO: use kebab-case for the route
-router.route('/myorders').get(protect, getMyOrders)
-router.route('/allorders').get(protect, admin, getAllOrders)
-router.route('/:id').get(protect, getOrderById)
-router.route('/:id/deliver').put(protect, admin, updateOrderToDelivered)
-router.route('/:id/cancelled').put(protect, admin, orderCancelled)
+router.route('/myorders').get(requireUser, getMyOrders)
+router.route('/allorders').get(requireUser, requireAdmin, getAllOrders)
+router.route('/:id').get(requireUser, getOrderById)
+router
+  .route('/:id/deliver')
+  .put(requireUser, requireAdmin, updateOrderToDelivered)
+router.route('/:id/cancelled').put(requireUser, requireAdmin, orderCancelled)
 
 export default router
