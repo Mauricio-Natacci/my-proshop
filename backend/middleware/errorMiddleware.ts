@@ -1,4 +1,5 @@
 import { type Request, type Response, type NextFunction } from 'express'
+import { config } from '../config'
 
 interface Error {
   message: string
@@ -21,7 +22,7 @@ const errorHandler = (
   res.status(statusCode)
   res.json({
     message: err.message,
-    stack: process.env.NODE_ENV === 'production' ? null : err.stack
+    stack: config.productionApplication ? null : err.stack
   })
 }
 
