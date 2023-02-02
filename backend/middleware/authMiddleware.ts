@@ -1,14 +1,8 @@
 import jwt from 'jsonwebtoken'
 import { type Response, type NextFunction } from 'express'
 import asyncHandler from 'express-async-handler'
-import User from '../models/userModel'
-
-let JWT_SECRET: string
-if (process.env.JWT_SECRET) {
-  JWT_SECRET = process.env.JWT_SECRET
-} else {
-  throw new Error('JWT_SECRET environment variable is not set')
-}
+import { UserModel } from '../models/userModel'
+import { config } from '../config'
 
 interface Decoded {
   id: string
@@ -22,9 +16,9 @@ const protect = asyncHandler(async (req: any, res, next) => {
     try {
       token = req.headers.authorization.split(' ')[1]
 
-      const decoded = jwt.verify(token, JWT_SECRET) as Decoded
+      const decoded = jwt.verify(token, config.jwtSecret) as Decoded
 
-      req.user = await User.findById(decoded.id).select('-password')
+      req.user = await UserModel.findById(decoded.id).select('-password')
 
       next()
     } catch (error) {

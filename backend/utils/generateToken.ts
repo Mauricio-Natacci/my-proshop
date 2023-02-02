@@ -1,16 +1,6 @@
 import jwt from 'jsonwebtoken'
+import { config } from '../config'
 
-// TODO: import from config
-let JWT_SECRET: string
-if (process.env.JWT_SECRET) {
-  JWT_SECRET = process.env.JWT_SECRET
-} else {
-  throw new Error('JWT_SECRET environment variable is not set')
+export const generateToken = (id: string) => {
+  return jwt.sign({ id }, config.jwtSecret, { expiresIn: '100d' })
 }
-
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-const generateToken = (id: string) => {
-  return jwt.sign({ id }, JWT_SECRET, { expiresIn: '100d' })
-}
-
-export default generateToken

@@ -1,12 +1,9 @@
-import dotenv from 'dotenv'
 import users from './data/users'
 import products from './data/products'
 import { UserModel } from './models/userModel'
 import Product from './models/productModel'
 import Order from './models/orderModel'
-import connectDB from './db/connectDb'
-
-dotenv.config()
+import { connectDB } from './db/connectDb'
 
 connectDB()
 
