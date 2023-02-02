@@ -4,13 +4,6 @@ import asyncHandler from 'express-async-handler'
 import { UserModel } from '../models/userModel'
 import { config } from '../config'
 
-let JWT_SECRET: string
-if (config.jwtSecret) {
-  JWT_SECRET = config.jwtSecret
-} else {
-  throw new Error('JWT_SECRET environment variable is not set')
-}
-
 interface Decoded {
   id: string
 }
@@ -23,7 +16,7 @@ const protect = asyncHandler(async (req: any, res, next) => {
     try {
       token = req.headers.authorization.split(' ')[1]
 
-      const decoded = jwt.verify(token, JWT_SECRET) as Decoded
+      const decoded = jwt.verify(token, config.jwtSecret) as Decoded
 
       req.user = await UserModel.findById(decoded.id).select('-password')
 

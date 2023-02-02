@@ -22,7 +22,7 @@ const errorHandler = (
   res.status(statusCode)
   res.json({
     message: err.message,
-    stack: config.productionApplication ? null : err.stack
+    stack: config.showErrorStack ? null : err.stack
   })
 }
 
