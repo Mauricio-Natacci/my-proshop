@@ -55,4 +55,28 @@
 5.  Extracting properties from nested objects
     > const { prop: { deepProp } } = object
 6.  Extracting a dynamic name property > const { [propName]: myProp } = object
-    $$
+
+# #TODO 3
+
+## About:
+
+> Optional chaining operator
+
+## Description:
+
+> Research about the optional chaining operator
+
+## Answer:
+
+>      The ?. operator is like the . chaining operator, except that instead of causing an error if a reference is nullish (null or undefined), the expression short-circuits with a return value of undefined. When used with function calls, it returns undefined if the given function does not exist.
+
+>      There a lot of advantages, one of them would be that your code is more readable.
+>      I could say that your code is cleaner as well.
+
+       Like the example below
+
+>     WITHOUT optional chaining operator:
+>     (user.address && user.address.street && user.address.street.name);
+
+>     WITH optional chaining operator:
+>     (user?.address?.street?.name)

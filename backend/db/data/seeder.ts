@@ -1,9 +1,9 @@
-import users from './data/users'
-import products from './data/products'
-import { UserModel } from './models/userModel'
-import Product from './models/productModel'
-import Order from './models/orderModel'
-import { connectDB } from './db/connectDb'
+import users from './users'
+import products from './products'
+import { UserModel } from '../../models/userModel'
+import Product from '../../models/productModel'
+import Order from '../../models/orderModel'
+import { connectDB } from '../connectDb'
 
 connectDB()
 

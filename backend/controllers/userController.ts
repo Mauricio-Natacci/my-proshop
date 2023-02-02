@@ -1,11 +1,8 @@
 import asyncHandler from 'express-async-handler'
-import generateToken from '../utils/generateToken'
+import { generateToken } from '../utils/generateToken'
 import { type Response } from 'express'
 import { type User, UserModel } from '../models/userModel'
 
-// @desc  Auth user & get token
-// @route POST /api/users/login
-// @access Public
 export const login = asyncHandler(async (req: any, res: Response) => {
   const user = await getExistingUser(req, res)
 
@@ -26,10 +23,7 @@ const checkIfPasswordIsCorrect = async (
   }
 }
 
-const getExistingUser = async (
-  req: any,
-  res: Response<any, Record<string, any>>
-) => {
+const getExistingUser = async (req: any, res: Response) => {
   const user = await UserModel.findOne({ email: req.body.email })
   if (user == null) {
     res.status(401)
@@ -39,9 +33,6 @@ const getExistingUser = async (
   return user
 }
 
-// @desc  Get user profile
-// @route POST /api/users/profile
-// @access Private
 export const getUserProfile = asyncHandler(async (req: any, res: Response) => {
   const user = await UserModel.findById(req.user._id)
 
@@ -58,9 +49,6 @@ export const getUserProfile = asyncHandler(async (req: any, res: Response) => {
   }
 })
 
-// @desc  Register a new user
-// @route POST /api/users
-// @access Public
 export const registerUser = asyncHandler(async (req: any, res: Response) => {
   const { name, email, password } = req.body
 
@@ -80,7 +68,6 @@ export const registerUser = asyncHandler(async (req: any, res: Response) => {
   res.status(201).json(buildUserData(user))
 })
 
-// TODO: where's the User type?
 const buildUserData = (user: User) => {
   return {
     _id: user._id,

@@ -11,7 +11,6 @@ interface Decoded {
 const protect = asyncHandler(async (req: any, res, next) => {
   let token
 
-  // TODO: research about the optional chaining operator
   if (req.headers.authorization?.startsWith?.('Bearer')) {
     try {
       token = req.headers.authorization.split(' ')[1]

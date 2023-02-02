@@ -1,4 +1,3 @@
-// TODO: move these files to the `db` directory
 const products = [
   {
     name: 'Airpods Wireless Bluetooth Headphones',
