@@ -10,7 +10,6 @@ if (config.mongoURI) {
 
 export const connectDB = async () => {
   try {
-    // TODO: research what is object destructuring
     const { connection } = await mongoose.connect(mongoURI)
 
     console.log(`MongoDB Connected: ${connection.host}`)
