@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken'
-import { type Response, type NextFunction } from 'express'
 import asyncHandler from 'express-async-handler'
 import { UserModel } from '../models/userModel'
 import { config } from '../config'
@@ -8,7 +7,7 @@ interface Decoded {
   id: string
 }
 
-const protect = asyncHandler(async (req: any, res, next) => {
+export const requireUser = asyncHandler(async (req: any, res, next) => {
   let token
 
   if (req.headers.authorization?.startsWith?.('Bearer')) {
@@ -32,16 +31,3 @@ const protect = asyncHandler(async (req: any, res, next) => {
     throw new Error('Not authorized, no token!')
   }
 })
-
-// TODO: can we have a more explicit name?
-// TODO: can we split these into separate files?
-const admin = (req: any, res: Response, next: NextFunction) => {
-  if (req.user && req.user.isAdmin) {
-    next()
-  } else {
-    res.status(401)
-    throw new Error('Not authorized as an admin')
-  }
-}
-
-export { protect, admin }
