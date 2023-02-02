@@ -1,14 +1,12 @@
 import path from 'path'
 import express from 'express'
 import connectDB from './db/connectDb'
-import dotenv from 'dotenv'
 import { errorHandler, notFound } from './middleware/errorMiddleware'
 import productRoutes from './routes/productRoutes'
 import { userRouter } from './routes/userRoutes'
 import orderRoutes from './routes/orderRoutes'
 import uploadRoutes from './routes/uploadRoutes'
-
-dotenv.config()
+import { config } from './config'
 
 const app = express()
 
@@ -21,7 +19,7 @@ app.use('/api/upload', uploadRoutes)
 
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
 
-if (process.env.NODE_ENV === 'production') {
+if (config.shouldServeReactApp) {
   app.use(express.static(path.join(__dirname, '../frontend/build')))
 
   app.get('*', (_, res) =>
@@ -38,13 +36,12 @@ if (process.env.NODE_ENV === 'production') {
 app.use(notFound)
 
 app.use(errorHandler)
-const PORT = process.env.PORT || 5000
 
 connectDB()
   .then(() => {
-    app.listen(PORT, () => {
+    app.listen(config.port, () => {
       console.log(
-        `Server running in ${process.env.NODE_ENV} mode on port ${PORT}`
+        `Server running in ${process.env.NODE_ENV} mode on port ${config.port}`
       )
     })
   })
