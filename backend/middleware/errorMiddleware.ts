@@ -1,9 +1,9 @@
 import { type Request, type Response, type NextFunction } from 'express'
-import { config } from '../config'
 
 interface Error {
-  message: string
-  stack: string
+  statusCode: number
+  message?: string
+  stack?: string
 }
 
 export const notFound = (req: Request, res: Response, next: NextFunction) => {
@@ -18,10 +18,10 @@ export const errorHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  const statusCode = res.statusCode === 200 ? 500 : res.statusCode
-  res.status(statusCode)
-  res.json({
+  const statusCode = err.statusCode || 500
+  res.status(statusCode).send({
+    success: false,
     message: err.message,
-    stack: config.showErrorStack ? null : err.stack
+    stack: err.stack
   })
 }

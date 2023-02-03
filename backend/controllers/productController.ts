@@ -7,14 +7,15 @@ export const getProducts = asyncHandler(async (req: any, res: Response) => {
   res.json(products)
 })
 
+export class NotFoundError extends Error {
+  readonly statusCode = 404
+}
+
 const findProductById = async (id: string) => {
   const product = await Product.findById(id)
   if (product == null) {
-    // TODO: use custom error class with status code 404
-    // res.status(404);
-    throw new Error('Product not found')
+    throw new NotFoundError('Product not found')
   }
-
   return product
 }
 
