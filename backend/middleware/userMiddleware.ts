@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken'
 import asyncHandler from 'express-async-handler'
 import { UserModel } from '../models/userModel'
 import { config } from '../config'
+import { NotFoundError } from '../errors/NotFoundError'
 
 interface Decoded {
   id: string
@@ -22,12 +23,12 @@ export const requireUser = asyncHandler(async (req: any, res, next) => {
     } catch (error) {
       console.error(error)
       res.status(401)
-      throw new Error('Not authorized, token failed!')
+      throw new NotFoundError('Not authorized, token failed!')
     }
   }
 
   if (!token) {
     res.status(401)
-    throw new Error('Not authorized, no token!')
+    throw new NotFoundError('Not authorized, no token!')
   }
 })
