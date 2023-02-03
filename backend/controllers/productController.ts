@@ -7,7 +7,7 @@ export const getProducts = asyncHandler(async (req: any, res: Response) => {
   res.json(products)
 })
 
-export class NotFoundError extends Error {
+class NotFoundError extends Error {
   readonly statusCode = 404
 }
 
