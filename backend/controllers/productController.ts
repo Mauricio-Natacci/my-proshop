@@ -1,15 +1,12 @@
 import asyncHandler from 'express-async-handler'
 import { type Response } from 'express'
 import Product from '../models/productModel'
+import { NotFoundError } from '../errors/NotFoundError'
 
 export const getProducts = asyncHandler(async (req: any, res: Response) => {
   const products = await Product.find({})
   res.json(products)
 })
-
-class NotFoundError extends Error {
-  readonly statusCode = 404
-}
 
 const findProductById = async (id: string) => {
   const product = await Product.findById(id)

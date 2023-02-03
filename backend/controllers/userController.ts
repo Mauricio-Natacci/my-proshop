@@ -2,6 +2,7 @@ import asyncHandler from 'express-async-handler'
 import { generateToken } from '../utils/generateToken'
 import { type Response } from 'express'
 import { type User, UserModel } from '../models/userModel'
+import { NotFoundError } from '../errors/NotFoundError'
 
 export const login = asyncHandler(async (req: any, res: Response) => {
   const user = await getExistingUser(req, res)
@@ -19,7 +20,7 @@ const checkIfPasswordIsCorrect = async (
   const isPasswordMatch = await user.matchPassword(req.body.password)
   if (!isPasswordMatch) {
     res.status(401)
-    throw new Error('Invalid email or password')
+    throw new NotFoundError('Invalid email or password')
   }
 }
 
@@ -27,8 +28,7 @@ const getExistingUser = async (req: any, res: Response) => {
   const user = await UserModel.findOne({ email: req.body.email })
   if (user == null) {
     res.status(401)
-    // TODO: research about error handling with custom Error classes
-    throw new Error('Invalid email or password')
+    throw new NotFoundError('Invalid email or password')
   }
   return user
 }
@@ -45,7 +45,7 @@ export const getUserProfile = asyncHandler(async (req: any, res: Response) => {
     })
   } else {
     res.status(404)
-    throw new Error('User not found')
+    throw new NotFoundError('User not found')
   }
 })
 
@@ -56,7 +56,7 @@ export const registerUser = asyncHandler(async (req: any, res: Response) => {
 
   if (userExists != null) {
     res.status(400)
-    throw new Error('User already exists')
+    throw new NotFoundError('User already exists')
   }
 
   const user = await UserModel.create({

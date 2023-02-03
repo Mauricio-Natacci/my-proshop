@@ -1,5 +1,6 @@
 import { type Response } from 'express'
 import asyncHandler from 'express-async-handler'
+import { NotFoundError } from '../errors/NotFoundError'
 import Order from '../models/orderModel'
 
 export const addOrderItems = asyncHandler(async (req: any, res: Response) => {
@@ -7,7 +8,7 @@ export const addOrderItems = asyncHandler(async (req: any, res: Response) => {
 
   if (orderItems && orderItems.length === 0) {
     res.status(400)
-    throw new Error('No order items')
+    throw new NotFoundError('No order items')
   } else {
     const order = new Order({
       orderItems,
@@ -33,7 +34,7 @@ export const getOrderById = asyncHandler(async (req: any, res: Response) => {
     res.json(order)
   } else {
     res.status(404)
-    throw new Error('Order not found')
+    throw new NotFoundError('Order not found')
   }
 })
 
@@ -50,7 +51,7 @@ export const updateOrderToDelivered = asyncHandler(
       res.json(updatedOrder)
     } else {
       res.status(404)
-      throw new Error('Order not found')
+      throw new NotFoundError('Order not found')
     }
   }
 )
@@ -67,7 +68,7 @@ export const orderCancelled = asyncHandler(async (req: any, res: Response) => {
     res.json(updatedOrder)
   } else {
     res.status(404)
-    throw new Error('Order not found')
+    throw new NotFoundError('Order not found')
   }
 })
 

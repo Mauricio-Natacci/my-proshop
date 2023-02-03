@@ -1,4 +1,5 @@
 import dotenv from 'dotenv'
+import { NotFoundError } from '../errors/NotFoundError'
 
 dotenv.config()
 
@@ -12,25 +13,25 @@ export const config = {
 }
 
 if (!config.mongoURI) {
-  throw new Error('MONGO_URI environment variable is not set')
+  throw new NotFoundError('MONGO_URI environment variable is not set')
 }
 
 if (config.shouldServeReactApp) {
-  throw new Error('SERVE_REACT_APP environment variable is not set')
+  throw new NotFoundError('SERVE_REACT_APP environment variable is not set')
 }
 
 if (config.showErrorStack) {
-  throw new Error('SHOW_ERROR_STACK environment variable is not set')
+  throw new NotFoundError('SHOW_ERROR_STACK environment variable is not set')
 }
 
 if (!config.port) {
-  throw new Error('PORT environment variable is not set')
+  throw new NotFoundError('PORT environment variable is not set')
 }
 
 if (!config.environment) {
-  throw new Error('NODE_ENV environment variable is not set')
+  throw new NotFoundError('NODE_ENV environment variable is not set')
 }
 
 if (!config.jwtSecret) {
-  throw new Error('JWT_SECRET environment variable is not set')
+  throw new NotFoundError('JWT_SECRET environment variable is not set')
 }
