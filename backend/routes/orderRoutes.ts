@@ -13,9 +13,8 @@ import { requireAdmin } from '../middleware/adminMiddleware'
 const router = express.Router()
 
 router.route('/').post(requireUser, addOrderItems)
-// TODO: use kebab-case for the route
-router.route('/myorders').get(requireUser, getMyOrders)
-router.route('/allorders').get(requireUser, requireAdmin, getAllOrders)
+router.route('/my-orders').get(requireUser, getMyOrders)
+router.route('/all-orders').get(requireUser, requireAdmin, getAllOrders)
 router.route('/:id').get(requireUser, getOrderById)
 router
   .route('/:id/deliver')

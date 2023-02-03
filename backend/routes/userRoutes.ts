@@ -4,10 +4,10 @@ import {
   getUserProfile,
   registerUser
 } from '../controllers/userController'
-import { protect } from '../middleware/authMiddleware'
+import { requireUser } from '../middleware/userMiddleware'
 
 export const userRouter = express.Router()
 
 userRouter.post('/login', login)
 userRouter.post('/', registerUser)
-userRouter.route('/profile').get(protect, getUserProfile)
+userRouter.route('/profile').get(requireUser, getUserProfile)
