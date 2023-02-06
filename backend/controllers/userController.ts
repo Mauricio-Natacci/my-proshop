@@ -1,10 +1,10 @@
 import asyncHandler from 'express-async-handler'
 import { generateToken } from '../utils/generateToken'
-import { type Response } from 'express'
+import { type Request, type Response } from 'express'
 import { type User, UserModel } from '../models/userModel'
 import { NotFoundError } from '../errors/NotFoundError'
 
-export const login = asyncHandler(async (req: any, res: Response) => {
+export const login = asyncHandler(async (req: Request, res: Response) => {
   const user = await getExistingUser(req, res)
 
   await checkIfPasswordIsCorrect(user, req, res)
@@ -13,9 +13,9 @@ export const login = asyncHandler(async (req: any, res: Response) => {
 })
 
 const checkIfPasswordIsCorrect = async (
-  user: any,
-  req: any,
-  res: Response<any, Record<string, any>>
+  user: User,
+  req: Request,
+  res: Response
 ) => {
   const isPasswordMatch = await user.matchPassword(req.body.password)
   if (!isPasswordMatch) {
@@ -24,7 +24,7 @@ const checkIfPasswordIsCorrect = async (
   }
 }
 
-const getExistingUser = async (req: any, res: Response) => {
+const getExistingUser = async (req: Request, res: Response) => {
   const user = await UserModel.findOne({ email: req.body.email })
   if (user == null) {
     res.status(401)
@@ -33,40 +33,44 @@ const getExistingUser = async (req: any, res: Response) => {
   return user
 }
 
-export const getUserProfile = asyncHandler(async (req: any, res: Response) => {
-  const user = await UserModel.findById(req.user._id)
+export const getUserProfile = asyncHandler(
+  async (req: Request, res: Response) => {
+    const user = await UserModel.findById(req.user._id)
 
-  if (user != null) {
-    res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      isAdmin: user.isAdmin
+    if (user != null) {
+      res.json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        isAdmin: user.isAdmin
+      })
+    } else {
+      res.status(404)
+      throw new NotFoundError('User not found')
+    }
+  }
+)
+
+export const registerUser = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { name, email, password } = req.body
+
+    const userExists = await UserModel.findOne({ email })
+
+    if (userExists != null) {
+      res.status(400)
+      throw new NotFoundError('User already exists')
+    }
+
+    const user = await UserModel.create({
+      name,
+      email,
+      password
     })
-  } else {
-    res.status(404)
-    throw new NotFoundError('User not found')
+
+    res.status(201).json(buildUserData(user))
   }
-})
-
-export const registerUser = asyncHandler(async (req: any, res: Response) => {
-  const { name, email, password } = req.body
-
-  const userExists = await UserModel.findOne({ email })
-
-  if (userExists != null) {
-    res.status(400)
-    throw new NotFoundError('User already exists')
-  }
-
-  const user = await UserModel.create({
-    name,
-    email,
-    password
-  })
-
-  res.status(201).json(buildUserData(user))
-})
+)
 
 const buildUserData = (user: User) => {
   return {

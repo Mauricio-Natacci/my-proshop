@@ -2,6 +2,7 @@ import mongoose from 'mongoose'
 import bcrypt from 'bcryptjs'
 
 export interface User {
+  [x: string]: any
   _id: string
   name: string
   email: string
