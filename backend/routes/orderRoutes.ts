@@ -10,15 +10,15 @@ import {
 import { requireUser } from '../middleware/userMiddleware'
 import { requireAdmin } from '../middleware/adminMiddleware'
 
-const router = express.Router()
+export const orderRoutes = express.Router()
 
-router.route('/').post(requireUser, addOrderItems)
-router.route('/my-orders').get(requireUser, getMyOrders)
-router.route('/all-orders').get(requireUser, requireAdmin, getAllOrders)
-router.route('/:id').get(requireUser, getOrderById)
-router
+orderRoutes.route('/').post(requireUser, addOrderItems)
+orderRoutes.route('/my-orders').get(requireUser, getMyOrders)
+orderRoutes.route('/all-orders').get(requireUser, requireAdmin, getAllOrders)
+orderRoutes.route('/:id').get(requireUser, getOrderById)
+orderRoutes
   .route('/:id/deliver')
   .put(requireUser, requireAdmin, updateOrderToDelivered)
-router.route('/:id/cancelled').put(requireUser, requireAdmin, orderCancelled)
-
-export default router
+orderRoutes
+  .route('/:id/cancelled')
+  .put(requireUser, requireAdmin, orderCancelled)

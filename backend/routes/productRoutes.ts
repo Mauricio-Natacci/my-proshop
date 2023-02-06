@@ -8,16 +8,15 @@ import {
 } from '../controllers/productController'
 import { requireUser } from '../middleware/userMiddleware'
 import { requireAdmin } from '../middleware/adminMiddleware'
-const router = express.Router()
 
-router
+export const productRoutes = express.Router()
+
+productRoutes
   .route('/')
   .get(getProducts)
   .post(requireUser, requireAdmin, createProduct)
-router
+productRoutes
   .route('/:id')
   .get(getProductById)
   .delete(requireUser, requireAdmin, deleteProduct)
   .put(requireUser, requireAdmin, updateProduct)
-
-export default router

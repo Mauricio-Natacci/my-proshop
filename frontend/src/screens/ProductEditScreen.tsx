@@ -3,9 +3,9 @@ import axios from 'axios'
 import { Link } from 'react-router-dom'
 import { Form, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import Message from '../components/Message'
-import Loader from '../components/Loader'
-import FormContainer from '../components/FormContainer'
+import { Message } from '../components/Message'
+import { Loader } from '../components/Loader'
+import { FormContainer } from '../components/FormContainer'
 import { listProductDetails, updateProduct } from '../actions/productActions'
 import { PRODUCT_UPDATE_RESET } from '../constants/productConstants'
 import { Dispatch } from 'redux'
@@ -40,7 +40,10 @@ type State = {
   }
 }
 
-const ProductEditScreen = ({ match, history }: ProductEditScreenProps) => {
+export const ProductEditScreen = ({
+  match,
+  history
+}: ProductEditScreenProps) => {
   const productId = match.params.id
 
   const [name, setName] = useState('')
@@ -58,7 +61,7 @@ const ProductEditScreen = ({ match, history }: ProductEditScreenProps) => {
   const {
     loading: loadingUpdate,
     error: errorUpdate,
-    success: successUpdate,
+    success: successUpdate
   } = productUpdate
 
   useEffect(() => {
@@ -86,8 +89,8 @@ const ProductEditScreen = ({ match, history }: ProductEditScreenProps) => {
     try {
       const config = {
         headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+          'Content-Type': 'multipart/form-data'
+        }
       }
 
       const { data } = await axios.post('/api/upload/s3', formData, config)
@@ -100,8 +103,7 @@ const ProductEditScreen = ({ match, history }: ProductEditScreenProps) => {
     }
   }
 
-  const submitHandler = (e: any
-  ) => {
+  const submitHandler = (e: any) => {
     e.preventDefault()
     dispatch(
       updateProduct({
@@ -109,76 +111,76 @@ const ProductEditScreen = ({ match, history }: ProductEditScreenProps) => {
         name,
         price,
         image,
-        description,
+        description
       })
     )
   }
 
   return (
     <>
-      <Link to='/admin/productlist' className='btn btn-light my-3'>
+      <Link to="/admin/productlist" className="btn btn-light my-3">
         {' '}
         Go Back
       </Link>
       <FormContainer>
         <h1>Edit Product</h1>
         {loadingUpdate && <Loader />}
-        {errorUpdate && <Message variant='danger'>{errorUpdate}</Message>}
+        {errorUpdate && <Message variant="danger">{errorUpdate}</Message>}
         {loading ? (
           <Loader />
         ) : error ? (
-          <Message variant='danger'>{error}</Message>
+          <Message variant="danger">{error}</Message>
         ) : (
           <Form onSubmit={submitHandler}>
-            <Form.Group controlId='name'>
+            <Form.Group controlId="name">
               <Form.Label>Name</Form.Label>
               <Form.Control
-                type='name'
-                placeholder='Enter name'
+                type="name"
+                placeholder="Enter name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               ></Form.Control>
             </Form.Group>
 
-            <Form.Group controlId='price'>
+            <Form.Group controlId="price">
               <Form.Label>Price</Form.Label>
               <Form.Control
-                type='number'
-                placeholder='Enter price'
+                type="number"
+                placeholder="Enter price"
                 value={price}
                 onChange={(e) => setPrice(Number(e.target.value))}
               ></Form.Control>
             </Form.Group>
 
-            <Form.Group controlId='image' className='mb-3'>
+            <Form.Group controlId="image" className="mb-3">
               <Form.Label>Image</Form.Label>
               <Form.Control
-                type='text'
-                placeholder='Enter image'
+                type="text"
+                placeholder="Enter image"
                 value={image}
                 onChange={(e) => setImage(e.target.value)}
               ></Form.Control>
               <Form.Control
-                type='file'
+                type="file"
                 onChange={uploadFileHandler}
               ></Form.Control>
               {uploading && <Loader />}
             </Form.Group>
 
-            <Form.Group controlId='description'>
+            <Form.Group controlId="description">
               <Form.Label>Description</Form.Label>
               <Form.Control
-                type='text'
-                placeholder='Enter description'
+                type="text"
+                placeholder="Enter description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
               ></Form.Control>
             </Form.Group>
 
             <Button
-              type='submit'
-              variant='primary'
-              className='btn btn-block rounded mt-3'
+              type="submit"
+              variant="primary"
+              className="btn btn-block rounded mt-3"
             >
               Update
             </Button>
@@ -188,5 +190,3 @@ const ProductEditScreen = ({ match, history }: ProductEditScreenProps) => {
     </>
   )
 }
-
-export default ProductEditScreen

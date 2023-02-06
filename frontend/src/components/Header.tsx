@@ -3,12 +3,12 @@ import { useSelector } from 'react-redux'
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import { useDispatch } from 'react-redux'
-import { Dispatch } from "redux"
+import { Dispatch } from 'redux'
 import { logout } from '../actions/userActions'
 
 type HeaderProps = {
   children: React.ReactNode
-};
+}
 
 type State = {
   userLogin: {
@@ -20,13 +20,11 @@ type State = {
   }
 }
 
-const Header = (props: HeaderProps) => {
-
+export const Header = (props: HeaderProps) => {
   const dispatch: Dispatch<any> = useDispatch()
 
   const userLogin = useSelector((state: State) => state.userLogin)
   const { userInfo } = userLogin
-
 
   const logoutHandler = () => {
     dispatch(logout())
@@ -34,39 +32,39 @@ const Header = (props: HeaderProps) => {
   return (
     <div>
       <header>
-        <Navbar bg='dark' variant='dark' expand='lg' collapseOnSelect>
+        <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
           <Container>
-            <LinkContainer to='/'>
+            <LinkContainer to="/">
               <Navbar.Brand>ProShop</Navbar.Brand>
             </LinkContainer>
-            <Navbar.Toggle aria-controls='basic-navbar-nav' />
-            <Navbar.Collapse id='basic-navbar-nav'>
-              <Nav className='ml-auto'>
-                <LinkContainer to='/cart'>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav">
+              <Nav className="ml-auto">
+                <LinkContainer to="/cart">
                   <Nav.Link>Cart</Nav.Link>
                 </LinkContainer>
                 {userInfo ? (
                   <>
-                    <NavDropdown title={userInfo.name} id='username'>
+                    <NavDropdown title={userInfo.name} id="username">
                       <NavDropdown.Item onClick={logoutHandler}>
                         Logout
                       </NavDropdown.Item>
-                      <LinkContainer to='/orders'>
+                      <LinkContainer to="/orders">
                         <NavDropdown.Item>Orders</NavDropdown.Item>
                       </LinkContainer>
                     </NavDropdown>
                   </>
                 ) : (
-                  <LinkContainer to='/login'>
+                  <LinkContainer to="/login">
                     <Nav.Link>Sign In</Nav.Link>
                   </LinkContainer>
                 )}
                 {userInfo && userInfo.isAdmin && (
-                  <NavDropdown title='Management' id='adminmenu'>
-                    <LinkContainer to='/admin/productlist'>
+                  <NavDropdown title="Management" id="adminmenu">
+                    <LinkContainer to="/admin/productlist">
                       <NavDropdown.Item>Manage Products</NavDropdown.Item>
                     </LinkContainer>
-                    <LinkContainer to='/admin/orders'>
+                    <LinkContainer to="/admin/orders">
                       <NavDropdown.Item>Manage Orders</NavDropdown.Item>
                     </LinkContainer>
                   </NavDropdown>
@@ -80,5 +78,3 @@ const Header = (props: HeaderProps) => {
     </div>
   )
 }
-
-export default Header

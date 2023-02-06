@@ -1,10 +1,7 @@
 import express from 'express'
 import { uploadLocal, uploadS3 } from '../controllers/uploadController'
 
-const router = express.Router()
+export const uploadRoutes = express.Router()
 
-router.post('/', uploadLocal)
-router.post('/s3', uploadS3)
-
-// TODO: use named export as opposed to default export
-export default router
+uploadRoutes.post('/', uploadLocal)
+uploadRoutes.post('/s3', uploadS3)

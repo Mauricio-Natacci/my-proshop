@@ -2,13 +2,13 @@ import React, { useEffect } from 'react'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Table, Button, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { Dispatch } from "redux"
-import Message from '../components/Message'
-import Loader from '../components/Loader'
+import { Dispatch } from 'redux'
+import { Message } from '../components/Message'
+import { Loader } from '../components/Loader'
 import {
   listProducts,
   deleteProduct,
-  createProduct,
+  createProduct
 } from '../actions/productActions'
 import { PRODUCT_CREATE_RESET } from '../constants/productConstants'
 import { UserInfo } from '../actions/userActions'
@@ -55,7 +55,7 @@ type State = {
   }
 }
 
-const ProductListScreen = ({ history }: ProductListScreenProps) => {
+export const ProductListScreen = ({ history }: ProductListScreenProps) => {
   const dispatch: Dispatch<any> = useDispatch()
 
   const productList = useSelector((state: State) => state.productList)
@@ -68,7 +68,7 @@ const ProductListScreen = ({ history }: ProductListScreenProps) => {
   const {
     loading: loadingDelete,
     error: errorDelete,
-    success: successDelete,
+    success: successDelete
   } = productDelete
 
   const productCreate = useSelector((state: State) => state.productCreate)
@@ -76,7 +76,7 @@ const ProductListScreen = ({ history }: ProductListScreenProps) => {
     loading: loadingCreate,
     error: errorCreate,
     success: successCreate,
-    product: createdProduct,
+    product: createdProduct
   } = productCreate
 
   useEffect(() => {
@@ -97,7 +97,7 @@ const ProductListScreen = ({ history }: ProductListScreenProps) => {
     userInfo,
     successDelete,
     successCreate,
-    createdProduct,
+    createdProduct
   ])
 
   const createProductHandler = () => {
@@ -110,26 +110,26 @@ const ProductListScreen = ({ history }: ProductListScreenProps) => {
 
   return (
     <>
-      <Row className='align-items-center'>
+      <Row className="align-items-center">
         <Col>
           <h1>Products</h1>
         </Col>
-        <Col className='text-right'>
-          <Button className='my-3 rounded' onClick={createProductHandler}>
+        <Col className="text-right">
+          <Button className="my-3 rounded" onClick={createProductHandler}>
             Create Product
           </Button>
         </Col>
       </Row>
       {loadingDelete && <Loader />}
-      {errorDelete && <Message variant='danger'>{errorDelete}</Message>}
+      {errorDelete && <Message variant="danger">{errorDelete}</Message>}
       {loadingCreate && <Loader />}
-      {errorCreate && <Message variant='danger'>{errorCreate}</Message>}
+      {errorCreate && <Message variant="danger">{errorCreate}</Message>}
       {loading ? (
         <Loader />
       ) : error ? (
-        <Message variant='danger'>{error}</Message>
+        <Message variant="danger">{error}</Message>
       ) : (
-        <Table striped bordered hover responsive className='table-sm'>
+        <Table striped bordered hover responsive className="table-sm">
           <thead>
             <tr>
               <th>ID</th>
@@ -147,15 +147,15 @@ const ProductListScreen = ({ history }: ProductListScreenProps) => {
                 <td>${product.price}</td>
                 <td>
                   <LinkContainer to={`/admin/product/${product._id}/edit`}>
-                    <Button variant='light' className='btn-sm rounded'>
+                    <Button variant="light" className="btn-sm rounded">
                       Edit
                     </Button>
                   </LinkContainer>
                 </td>
                 <td>
                   <Button
-                    variant='danger'
-                    className='btn-sm rounded'
+                    variant="danger"
+                    className="btn-sm rounded"
                     onClick={() => deleteHandler(product._id)}
                   >
                     Delete{' '}
@@ -169,5 +169,3 @@ const ProductListScreen = ({ history }: ProductListScreenProps) => {
     </>
   )
 }
-
-export default ProductListScreen
