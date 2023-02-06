@@ -2,11 +2,10 @@ import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Row, Col, Image, ListGroup, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import Loader from '../components/Loader'
+import { Message } from '../components/Message'
+import { Loader } from '../components/Loader'
 import { listProductDetails } from '../actions/productActions'
-import { Dispatch } from "redux"
-import Message from '../components/Message'
-
+import { Dispatch } from 'redux'
 
 type ProductScreenProps = {
   history: {
@@ -33,11 +32,13 @@ type ProductDetailsState = {
   }
 }
 
-const ProductScreen = ({ history, match }: ProductScreenProps) => {
+export const ProductScreen = ({ history, match }: ProductScreenProps) => {
   const qty = 1
   const dispatch: Dispatch<any> = useDispatch()
 
-  const productDetails = useSelector((state: ProductDetailsState) => state.productDetails)
+  const productDetails = useSelector(
+    (state: ProductDetailsState) => state.productDetails
+  )
   const { loading, error, product } = productDetails
 
   useEffect(() => {
@@ -50,25 +51,25 @@ const ProductScreen = ({ history, match }: ProductScreenProps) => {
 
   return (
     <>
-      <Link className='btn btn-ligth my-3' to='/'>
+      <Link className="btn btn-ligth my-3" to="/">
         Go Back
       </Link>
       {loading ? (
         <Loader />
       ) : error ? (
-        <Message variant='danger'>{error}</Message>
+        <Message variant="danger">{error}</Message>
       ) : (
         <Row>
           <Col md={6}>
             <Image
-              className='rounded'
+              className="rounded"
               src={product.image}
               alt={product.name}
               fluid
             ></Image>
           </Col>
           <Col md={3}>
-            <ListGroup variant='flush'>
+            <ListGroup variant="flush">
               <ListGroup.Item>
                 <h3>{product.name}</h3>
               </ListGroup.Item>
@@ -77,8 +78,8 @@ const ProductScreen = ({ history, match }: ProductScreenProps) => {
               <ListGroup.Item>
                 <Button
                   onClick={addToCartHandler}
-                  className='btn-block'
-                  type='button'
+                  className="btn-block"
+                  type="button"
                 >
                   Add To Cart
                 </Button>
@@ -90,5 +91,3 @@ const ProductScreen = ({ history, match }: ProductScreenProps) => {
     </>
   )
 }
-
-export default ProductScreen

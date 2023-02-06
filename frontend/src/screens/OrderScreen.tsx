@@ -2,19 +2,19 @@ import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { Dispatch } from "redux"
-import Loader from '../components/Loader'
-import CheckoutSteps from '../components/CheckoutSteps'
+import { Dispatch } from 'redux'
+import { Message } from '../components/Message'
+import { Loader } from '../components/Loader'
+import { CheckoutSteps } from '../components/CheckoutSteps'
 import {
   getOrderDetails,
   deliverOrder,
-  cancelledOrder,
+  cancelledOrder
 } from '../actions/orderActions'
 import {
   ORDER_DELIVER_RESET,
-  ORDER_CANCELLED_RESET,
+  ORDER_CANCELLED_RESET
 } from '../constants/orderConstants'
-import Message from '../components/Message'
 
 type OrderScreenProps = {
   match: {
@@ -60,7 +60,7 @@ type Item = {
   quantity: number
 }
 
-const OrderScreen = ({ match, history }: OrderScreenProps) => {
+export const OrderScreen = ({ match, history }: OrderScreenProps) => {
   const orderId = match.params.id
   const dispatch: Dispatch<any> = useDispatch()
 
@@ -102,14 +102,14 @@ const OrderScreen = ({ match, history }: OrderScreenProps) => {
   return loading ? (
     <Loader />
   ) : error ? (
-    <Message variant='danger'>{error}</Message>
+    <Message variant="danger">{error}</Message>
   ) : (
     <>
       <CheckoutSteps step4 />
       <h1>Order {order._id}</h1>
       <Row>
         <Col md={8}>
-          <ListGroup variant='flush'>
+          <ListGroup variant="flush">
             <ListGroup.Item>
               <h2>Shipping</h2>
               <p>
@@ -132,7 +132,7 @@ const OrderScreen = ({ match, history }: OrderScreenProps) => {
               {order.orderItems.length === 0 ? (
                 <h2>Order is empty</h2>
               ) : (
-                <ListGroup variant='flush'>
+                <ListGroup variant="flush">
                   {order.orderItems.map((item: Item, index: number) => (
                     <ListGroup.Item key={index}>
                       <Row>
@@ -161,9 +161,9 @@ const OrderScreen = ({ match, history }: OrderScreenProps) => {
               {order.isDelivered ? (
                 <Message>Delivered</Message>
               ) : (
-                <Message variant='danger'>Not Delivered</Message>
+                <Message variant="danger">Not Delivered</Message>
               )}
-              <ListGroup.Item className='Uppercase'>
+              <ListGroup.Item className="Uppercase">
                 Status: {order.status}
               </ListGroup.Item>
             </ListGroup.Item>
@@ -171,7 +171,7 @@ const OrderScreen = ({ match, history }: OrderScreenProps) => {
         </Col>
         <Col md={4}>
           <Card>
-            <ListGroup variant='flush'>
+            <ListGroup variant="flush">
               <ListGroup.Item>
                 <h2>Order Summary</h2>
               </ListGroup.Item>
@@ -186,8 +186,8 @@ const OrderScreen = ({ match, history }: OrderScreenProps) => {
               {userInfo && userInfo.isAdmin && !order.isDelivered && (
                 <ListGroup.Item>
                   <Button
-                    type='button'
-                    className='btn btn-block'
+                    type="button"
+                    className="btn btn-block"
                     onClick={deliverHandler}
                   >
                     Mark As Delivered
@@ -199,8 +199,8 @@ const OrderScreen = ({ match, history }: OrderScreenProps) => {
                 <center>
                   <ListGroup.Item>
                     <Button
-                      type='button'
-                      className='btn btn-danger'
+                      type="button"
+                      className="btn btn-danger"
                       onClick={cancelledHanler}
                     >
                       Mark as Cancelled
@@ -215,5 +215,3 @@ const OrderScreen = ({ match, history }: OrderScreenProps) => {
     </>
   )
 }
-
-export default OrderScreen

@@ -1,6 +1,6 @@
 import asyncHandler from 'express-async-handler'
 import { type Request, type Response } from 'express'
-import Product from '../models/productModel'
+import { Product } from '../models/productModel'
 import { NotFoundError } from '../errors/NotFoundError'
 
 export const getProducts = asyncHandler(async (req: Request, res: Response) => {

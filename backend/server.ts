@@ -3,10 +3,10 @@ import express from 'express'
 import { config } from './config'
 import { connectDB } from './db/connectDb'
 import { errorHandler, notFound } from './middleware/errorMiddleware'
-import productRoutes from './routes/productRoutes'
+import { productRoutes } from './routes/productRoutes'
 import { userRouter } from './routes/userRoutes'
-import orderRoutes from './routes/orderRoutes'
-import uploadRoutes from './routes/uploadRoutes'
+import { orderRoutes } from './routes/orderRoutes'
+import { uploadRoutes } from './routes/uploadRoutes'
 
 const app = express()
 

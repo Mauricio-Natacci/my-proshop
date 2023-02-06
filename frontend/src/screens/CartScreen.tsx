@@ -2,9 +2,9 @@ import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Row, Col, ListGroup, Image, Button, Card } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { Dispatch } from "redux"
+import { Dispatch } from 'redux'
 import { addToCart, removeFromCart } from '../actions/cartActions'
-import Message from '../components/Message'
+import { Message } from '../components/Message'
 
 type CartScreenProps = {
   match: {
@@ -37,7 +37,7 @@ type updateItemQuantityProps = {
   value: number
 }
 
-const CartScreen = ({ match, location, history }: CartScreenProps) => {
+export const CartScreen = ({ match, location, history }: CartScreenProps) => {
   const productId = match.params.id
 
   const qty = location.search ? Number(location.search.split('=')[1]) : 1
@@ -61,7 +61,10 @@ const CartScreen = ({ match, location, history }: CartScreenProps) => {
     history.push('/login?redirect=shipping')
   }
 
-  const updateItemQuantity = ({ productId, value }: updateItemQuantityProps) => {
+  const updateItemQuantity = ({
+    productId,
+    value
+  }: updateItemQuantityProps) => {
     dispatch(addToCart(productId, value))
   }
 
@@ -71,10 +74,10 @@ const CartScreen = ({ match, location, history }: CartScreenProps) => {
         <h1>Shopping Cart</h1>
         {cartItems.length === 0 ? (
           <Message>
-            Your cart is empty! <Link to='/'>Go Back</Link>
+            Your cart is empty! <Link to="/">Go Back</Link>
           </Message>
         ) : (
-          <ListGroup variant='flush'>
+          <ListGroup variant="flush">
             {cartItems.map((item) => (
               <ListGroup.Item key={item.productId}>
                 <Row>
@@ -92,23 +95,23 @@ const CartScreen = ({ match, location, history }: CartScreenProps) => {
                   <Col md={2}>$ {item.price}</Col>
                   <Col md={2}>
                     <input
-                      type='number'
+                      type="number"
                       value={item.quantity}
                       onChange={(e) =>
                         updateItemQuantity({
                           productId: item.productId,
-                          value: Number(e.target.value),
+                          value: Number(e.target.value)
                         })
                       }
-                      min='1'
-                      max='10'
+                      min="1"
+                      max="10"
                     />
                     <p>Quantity: {item.quantity}</p>
                   </Col>
                   <Col md={2}>
                     <Button
-                      type='button'
-                      variant='light'
+                      type="button"
+                      variant="light"
                       onClick={() => removeFromCartHandler(item.productId)}
                     >
                       <p>Remove</p>{' '}
@@ -122,7 +125,7 @@ const CartScreen = ({ match, location, history }: CartScreenProps) => {
       </Col>
       <Col md={4}>
         <Card>
-          <ListGroup variant='fluid'>
+          <ListGroup variant="fluid">
             <ListGroup.Item>
               <h4>
                 Subtotal (
@@ -137,8 +140,8 @@ const CartScreen = ({ match, location, history }: CartScreenProps) => {
             </ListGroup.Item>
             <ListGroup.Item>
               <Button
-                type='button'
-                className='btn-block'
+                type="button"
+                className="btn-block"
                 disabled={cartItems.length === 0}
                 onClick={checkoutHandler}
               >
@@ -151,5 +154,3 @@ const CartScreen = ({ match, location, history }: CartScreenProps) => {
     </Row>
   )
 }
-
-export default CartScreen

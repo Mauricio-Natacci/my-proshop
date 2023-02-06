@@ -2,10 +2,10 @@ import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { Dispatch } from "redux"
-import CheckoutSteps from '../components/CheckoutSteps'
+import { Dispatch } from 'redux'
+import { CheckoutSteps } from '../components/CheckoutSteps'
 import { createOrder } from '../actions/orderActions'
-import Message from '../components/Message'
+import { Message } from '../components/Message'
 
 type PlaceOrderScreenProps = {
   history: {
@@ -35,7 +35,7 @@ type StateCart = {
   }
 }
 
-const PlaceOrderScreen = ({ history }: PlaceOrderScreenProps) => {
+export const PlaceOrderScreen = ({ history }: PlaceOrderScreenProps) => {
   const dispatch: Dispatch<any> = useDispatch()
 
   const cart = useSelector((state: StateCart) => state.cart)
@@ -46,7 +46,10 @@ const PlaceOrderScreen = ({ history }: PlaceOrderScreenProps) => {
   }
 
   cart.itemsPrice = addDecimals(
-    cart.cartItems.reduce((acc: string, item: any) => acc + item.price * item.quantity, 0)
+    cart.cartItems.reduce(
+      (acc: string, item: any) => acc + item.price * item.quantity,
+      0
+    )
   )
   cart.totalPrice = Number(cart.itemsPrice).toFixed(2)
 
@@ -66,7 +69,7 @@ const PlaceOrderScreen = ({ history }: PlaceOrderScreenProps) => {
         orderItems: cart.cartItems,
         shippingAddress: cart.shippingAddress,
         itemsPrice: cart.itemsPrice,
-        totalPrice: cart.totalPrice,
+        totalPrice: cart.totalPrice
       })
     )
   }
@@ -76,7 +79,7 @@ const PlaceOrderScreen = ({ history }: PlaceOrderScreenProps) => {
       <CheckoutSteps step3 />
       <Row>
         <Col md={8}>
-          <ListGroup variant='flush'>
+          <ListGroup variant="flush">
             <ListGroup.Item>
               <h2>Shipping</h2>
               <p>
@@ -91,7 +94,7 @@ const PlaceOrderScreen = ({ history }: PlaceOrderScreenProps) => {
               {cart.cartItems.length === 0 ? (
                 <Message>Your cart is empty</Message>
               ) : (
-                <ListGroup variant='flush'>
+                <ListGroup variant="flush">
                   {cart.cartItems.map((item: CartItem, index: number) => (
                     <ListGroup.Item key={index}>
                       <Row>
@@ -122,7 +125,7 @@ const PlaceOrderScreen = ({ history }: PlaceOrderScreenProps) => {
         </Col>
         <Col md={4}>
           <Card>
-            <ListGroup variant='flush'>
+            <ListGroup variant="flush">
               <ListGroup.Item>
                 <h2>Order Summary</h2>
               </ListGroup.Item>
@@ -134,12 +137,12 @@ const PlaceOrderScreen = ({ history }: PlaceOrderScreenProps) => {
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
-                {error && <Message variant='danger'>{error}</Message>}
+                {error && <Message variant="danger">{error}</Message>}
               </ListGroup.Item>
               <ListGroup.Item>
                 <Button
-                  type='button'
-                  className='btn-block'
+                  type="button"
+                  className="btn-block"
                   disabled={cart.cartItems === 0}
                   onClick={placeOrderHandler}
                 >
@@ -153,5 +156,3 @@ const PlaceOrderScreen = ({ history }: PlaceOrderScreenProps) => {
     </>
   )
 }
-
-export default PlaceOrderScreen

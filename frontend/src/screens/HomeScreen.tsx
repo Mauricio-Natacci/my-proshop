@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Col, Row } from 'react-bootstrap'
-import Product from '../components/Product'
-import { Dispatch } from "redux"
-import Loader from '../components/Loader'
+import { Product } from '../components/Product'
+import { Dispatch } from 'redux'
+import { Message } from '../components/Message'
+import { Loader } from '../components/Loader'
 import { listProducts } from '../actions/productActions'
-import Message from '../components/Message'
 
-const HomeScreen = () => {
+export const HomeScreen = () => {
   const dispatch: Dispatch<any> = useDispatch()
 
   type ProductListState = {
@@ -18,9 +18,10 @@ const HomeScreen = () => {
     }
   }
 
-  const productList = useSelector((state: ProductListState) => state.productList)
+  const productList = useSelector(
+    (state: ProductListState) => state.productList
+  )
   const { loading, error, products } = productList
-
 
   useEffect(() => {
     dispatch(listProducts())
@@ -32,7 +33,7 @@ const HomeScreen = () => {
       {loading ? (
         <Loader />
       ) : error ? (
-        <Message variant='danger'>{error}</Message>
+        <Message variant="danger">{error}</Message>
       ) : (
         <Row>
           {products.map((product) => (
@@ -45,5 +46,3 @@ const HomeScreen = () => {
     </>
   )
 }
-
-export default HomeScreen

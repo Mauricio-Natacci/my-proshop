@@ -5,10 +5,10 @@ type FormContainerProps = {
   children: React.ReactNode
 }
 
-const FormContainer = ({ children }: FormContainerProps) => {
+export const FormContainer = ({ children }: FormContainerProps) => {
   return (
     <Container>
-      <Row className='justify-content-mid-center'>
+      <Row className="justify-content-mid-center">
         <Col xs={12} md={6}>
           {children}
         </Col>
@@ -16,5 +16,3 @@ const FormContainer = ({ children }: FormContainerProps) => {
     </Container>
   )
 }
-
-export default FormContainer

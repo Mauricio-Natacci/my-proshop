@@ -2,9 +2,9 @@ import React, { useEffect } from 'react'
 import { Table, Button, Row, Col } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { Dispatch } from "redux"
-import Message from '../components/Message'
-import Loader from '../components/Loader'
+import { Dispatch } from 'redux'
+import { Message } from '../components/Message'
+import { Loader } from '../components/Loader'
 import { listOrders } from '../actions/orderActions'
 
 type AllOrdersScreenProps = {
@@ -54,8 +54,7 @@ type State = {
   }
 }
 
-const AllOrdersScreen = ({ history }: AllOrdersScreenProps) => {
-
+export const AllOrdersScreen = ({ history }: AllOrdersScreenProps) => {
   const dispatch: Dispatch<any> = useDispatch()
 
   const orderList = useSelector((state: State) => state.orderList)
@@ -80,9 +79,9 @@ const AllOrdersScreen = ({ history }: AllOrdersScreenProps) => {
           {loading ? (
             <Loader />
           ) : error ? (
-            <Message variant='danger'>{error}</Message>
+            <Message variant="danger">{error}</Message>
           ) : (
-            <Table striped bordered hover responsive className='table-sm'>
+            <Table striped bordered hover responsive className="table-sm">
               <thead>
                 <tr>
                   <th>NAME</th>
@@ -108,7 +107,7 @@ const AllOrdersScreen = ({ history }: AllOrdersScreenProps) => {
                     </td>
                     <td>
                       <LinkContainer to={`/order/${order._id}`}>
-                        <Button className='btn-sm rounded' variant='light'>
+                        <Button className="btn-sm rounded" variant="light">
                           Details
                         </Button>
                       </LinkContainer>
@@ -123,5 +122,3 @@ const AllOrdersScreen = ({ history }: AllOrdersScreenProps) => {
     </>
   )
 }
-
-export default AllOrdersScreen
