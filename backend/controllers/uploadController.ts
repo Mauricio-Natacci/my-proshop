@@ -2,12 +2,13 @@ import multer from 'multer'
 import multerS3 from 'multer-s3'
 import aws from 'aws-sdk'
 import { v4 as uuid } from 'uuid'
+import { type Response, type Request } from 'express'
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {
     cb(null, 'uploads/')
   },
-  filename(req: any, file: any, cb: any) {
+  filename(req: Request, _file: any, cb: any) {
     cb(null, `${Date.now()}.jpg`)
   }
 })
@@ -15,7 +16,7 @@ const storage = multer.diskStorage({
 const setLocal = multer({ storage })
 const singleLocal = setLocal.single('image')
 
-export const uploadLocal = (req: any, res: any) => {
+export const uploadLocal = (req: Request, res: Response) => {
   singleLocal(req, res, function (err) {
     if (err) {
       console.log(err)
@@ -39,7 +40,7 @@ const storageS3 = multerS3({
 const setS3 = multer({ storage: storageS3 })
 const singleS3 = setS3.single('file')
 
-export const uploadS3 = (req: any, res: any) => {
+export const uploadS3 = (req: Request, res: Response) => {
   singleS3(req, res, function (err) {
     if (err) {
       console.log(err)
@@ -48,5 +49,3 @@ export const uploadS3 = (req: any, res: any) => {
     }
   })
 }
-
-// TODO: find out how to correctly type req with custom properties
