@@ -19,9 +19,9 @@ export class Product {
   @prop({ required: true })
   description: string
 
-  @Field(() => String)
+  @Field(() => Number)
   @prop({ required: true })
-  price: string
+  price: number
 
   @Field(() => String)
   @prop({ required: true })
