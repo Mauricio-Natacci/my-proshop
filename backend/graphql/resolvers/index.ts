@@ -1,3 +1,3 @@
-import BasicResolver from './basic.resolver'
+import ProductResolver from './product.resolver'
 
-export const resolvers = [BasicResolver] as const
+export const resolvers = [ProductResolver] as const

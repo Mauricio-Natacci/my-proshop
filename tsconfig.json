@@ -10,6 +10,7 @@
     "forceConsistentCasingInFileNames": true,
     "useUnknownInCatchVariables": false,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "strictPropertyInitialization": false
   }
 }
