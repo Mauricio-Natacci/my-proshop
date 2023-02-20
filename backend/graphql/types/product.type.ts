@@ -4,13 +4,4 @@ import { Field, InputType } from 'type-graphql'
 export class GetProductInput {
   @Field()
   _id: string
-
-  @Field()
-  name: string
-
-  @Field()
-  description: string
-
-  @Field()
-  price: number
 }
