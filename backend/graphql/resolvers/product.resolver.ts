@@ -15,7 +15,7 @@ export default class ProductResolver {
   }
 
   @Query(() => Product)
-  async getProductById(@Arg('input') input: GetProductInput): Promise<Product> {
+  async getProduct(@Arg('input') input: GetProductInput): Promise<Product> {
     return await this.productService.findSingleProduct(input)
   }
 }
