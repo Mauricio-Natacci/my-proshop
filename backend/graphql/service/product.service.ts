@@ -1,14 +1,12 @@
 import { ProductModel } from '../schema/product.schema'
-import { type inputProduct } from '../types/product.type'
+import { type GetProductInput } from '../types/product.type'
 
-class ProductService {
+export class ProductService {
   findProducts() {
     return ProductModel.find()
   }
 
-  async findSingleProduct(input: inputProduct) {
+  async findSingleProduct(input: GetProductInput) {
     return await ProductModel.findOne(input)
   }
 }
-
-export default ProductService
