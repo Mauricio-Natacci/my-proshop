@@ -1,6 +1,6 @@
 import { Arg, Query, Resolver } from 'type-graphql'
 import { Product } from '../schema/product.schema'
-import ProductService from '../service/product.service'
+import { ProductService } from '../service/product.service'
 import { inputProduct } from '../types/product.type'
 
 @Resolver()
@@ -10,8 +10,8 @@ export default class ProductResolver {
   }
 
   @Query(() => [Product])
-  getAllProducts() {
-    return this.productService.findProducts()
+  async getAllProducts() {
+    return await this.productService.findProducts()
   }
 
   @Query(() => Product)
