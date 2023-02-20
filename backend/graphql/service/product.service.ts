@@ -1,12 +1,18 @@
 import { ProductModel } from '../schema/product.schema'
-import { type inputProduct } from '../types/product.type'
+import { type GetProductInput } from '../types/product.type'
+import { NotFoundError } from '../errors/notFoundError'
 
 export class ProductService {
-  async findProducts() {
-    return await ProductModel.find()
+  findProducts() {
+    return ProductModel.find()
   }
 
-  async findSingleProduct(input: inputProduct) {
-    return await ProductModel.findOne(input)
+  async findSingleProduct(input: GetProductInput) {
+    const product = await ProductModel.findOne(input)
+
+    if (!product) {
+      throw new NotFoundError('Product not found')
+    }
+    return product
   }
 }

@@ -1,7 +1,7 @@
 import { Arg, Query, Resolver } from 'type-graphql'
 import { Product } from '../schema/product.schema'
 import { ProductService } from '../service/product.service'
-import { inputProduct } from '../types/product.type'
+import { GetProductInput } from '../types/product.type'
 
 @Resolver()
 export default class ProductResolver {
@@ -10,12 +10,12 @@ export default class ProductResolver {
   }
 
   @Query(() => [Product])
-  async getAllProducts() {
+  async getAllProducts(): Promise<Product[]> {
     return await this.productService.findProducts()
   }
 
   @Query(() => Product)
-  async getProductById(@Arg('input') input: inputProduct) {
+  async getProduct(@Arg('input') input: GetProductInput): Promise<Product> {
     return await this.productService.findSingleProduct(input)
   }
 }
