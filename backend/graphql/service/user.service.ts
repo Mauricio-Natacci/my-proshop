@@ -1,4 +1,4 @@
-import { UserModel } from '../schema/user.schema'
+import { type User, UserModel } from '../schema/user.schema'
 import { NotFoundError } from '../errors/notFoundError'
 import {
   type CreateUserInput,
@@ -6,8 +6,6 @@ import {
   type LoginInput
 } from '../types/user.type'
 import bcrypt from 'bcryptjs'
-import type Context from '../types/context.type'
-import { config } from '../../config'
 import { generateToken } from '../utils/jwt'
 
 export class UserService {
@@ -24,7 +22,7 @@ export class UserService {
     return user
   }
 
-  async login(input: LoginInput, context: Context) {
+  async login(input: LoginInput): Promise<User> {
     const errorMessage = 'Invalid email or password'
 
     const user = await UserModel.findOne({ email: input.email }).lean()
@@ -43,14 +41,8 @@ export class UserService {
 
     const token = generateToken(_id)
 
-    context.res.cookie('accessToken', token, {
-      maxAge: 1000 * 60 * 60, // 1 hour
-      httpOnly: true,
-      domain: 'localhost',
-      path: '/',
-      sameSite: 'strict',
-      secure: config.shouldServeReactApp
-    })
-    return token
+    user.token = token
+
+    return user
   }
 }

@@ -10,8 +10,8 @@ import {
 } from 'apollo-server-core'
 import { connectToMongo } from './utils/mongo'
 import { graphqlHTTP } from 'express-graphql'
-import authChecker from './utils/authChecker'
-import type Context from './types/context.type'
+import { authChecker } from './utils/authChecker'
+import { type Context } from './types/context.type'
 import { config } from '../config'
 
 async function bootstrap() {

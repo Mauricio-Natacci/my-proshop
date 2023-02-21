@@ -1,7 +1,7 @@
 import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
 import { User } from '../schema/user.schema'
 import { UserService } from '../service/user.service'
-import Context from '../types/context.type'
+import { Context } from '../types/context.type'
 import { CreateUserInput, GetUserInput, LoginInput } from '../types/user.type'
 
 @Resolver()
@@ -11,13 +11,14 @@ export default class UserResolver {
   }
 
   @Mutation(() => User)
-  async createUser(@Arg('input') input: CreateUserInput): Promise<User> {
+  async createUser(@Arg('input') input: CreateUserInput) {
     return await this.userService.createUser(input)
   }
 
-  @Mutation(() => String)
+  @Mutation(() => User, { nullable: true })
   async login(@Arg('input') input: LoginInput, @Ctx() context: Context) {
-    return await this.userService.login(input, context)
+    const user = await this.userService.login(input)
+    return user
   }
 
   @Query(() => User)
