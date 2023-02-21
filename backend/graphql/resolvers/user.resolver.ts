@@ -1,7 +1,8 @@
-import { Arg, Mutation, Query, Resolver } from 'type-graphql'
+import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
 import { User } from '../schema/user.schema'
 import { UserService } from '../service/user.service'
-import { CreateUserInput, GetUserInput } from '../types/user.type'
+import Context from '../types/context.type'
+import { CreateUserInput, GetUserInput, LoginInput } from '../types/user.type'
 
 @Resolver()
 export default class UserResolver {
@@ -12,6 +13,11 @@ export default class UserResolver {
   @Mutation(() => User)
   async createUser(@Arg('input') input: CreateUserInput): Promise<User> {
     return await this.userService.createUser(input)
+  }
+
+  @Mutation(() => String)
+  async login(@Arg('input') input: LoginInput, @Ctx() context: Context) {
+    return await this.userService.login(input, context)
   }
 
   @Query(() => User)

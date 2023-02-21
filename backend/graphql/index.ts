@@ -1,5 +1,5 @@
-import express from 'express'
 import 'reflect-metadata'
+import express from 'express'
 import cookieParser from 'cookie-parser'
 import { resolvers } from './resolvers'
 import { buildSchema } from 'type-graphql'
@@ -9,14 +9,17 @@ import {
   ApolloServerPluginLandingPageProductionDefault
 } from 'apollo-server-core'
 import { connectToMongo } from './utils/mongo'
-import { config } from '../config'
 import { graphqlHTTP } from 'express-graphql'
+import authChecker from './utils/authChecker'
+import type Context from './types/context.type'
+import { config } from '../config'
 
 async function bootstrap() {
   // Build the schema
 
   const schema = await buildSchema({
-    resolvers
+    resolvers,
+    authChecker
   })
 
   // Init express
@@ -27,6 +30,15 @@ async function bootstrap() {
   // Create the apollo server
   const server = new ApolloServer({
     schema,
+    context: (ctx: Context) => {
+      const context = ctx
+
+      if (ctx.req.cookies.accessToken) {
+        const user = ctx.req.cookies.accessToken
+        context.user = user
+      }
+      return context
+    },
     plugins: [
       config.shouldServeReactApp
         ? ApolloServerPluginLandingPageProductionDefault()
