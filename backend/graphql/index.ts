@@ -4,15 +4,12 @@ import cookieParser from 'cookie-parser'
 import { resolvers } from './resolvers'
 import { buildSchema } from 'type-graphql'
 import { ApolloServer } from 'apollo-server-express'
-import {
-  ApolloServerPluginLandingPageGraphQLPlayground,
-  ApolloServerPluginLandingPageProductionDefault
-} from 'apollo-server-core'
 import { connectToMongo } from './utils/mongo'
-import { graphqlHTTP } from 'express-graphql'
 import { authChecker } from './utils/authChecker'
 import { type Context } from './types/context.type'
 import { config } from '../config'
+import { verifyJwt } from './utils/jwt'
+import { type User, UserModel } from './schema/user.schema'
 
 async function bootstrap() {
   // Build the schema
@@ -30,32 +27,29 @@ async function bootstrap() {
   // Create the apollo server
   const server = new ApolloServer({
     schema,
-    context: (ctx: Context) => {
+    context: async (ctx: Context) => {
       const context = ctx
 
-      if (ctx.req.cookies.accessToken) {
-        const user = ctx.req.cookies.accessToken
+      if (context.req.cookies.accessToken) {
+        const decoded = verifyJwt<User>(context.req.cookies.accessToken)
+
+        const user = await UserModel.findById(decoded)
+          .select('-password')
+          .lean()
+
         context.user = user
       }
+
       return context
     },
-    plugins: [
-      config.shouldServeReactApp
-        ? ApolloServerPluginLandingPageProductionDefault()
-        : ApolloServerPluginLandingPageGraphQLPlayground()
-    ]
+    playground: true
   })
 
   await server.start()
   // apply middleware to server
 
-  app.use(
-    '/graphql',
-    graphqlHTTP({
-      schema,
-      graphiql: true
-    })
-  )
+  server.applyMiddleware({ app })
+
   // app.listen on express server
   app.listen({ port: config.port }, () => {
     console.log(`App is listening on port ${config.port}!`)

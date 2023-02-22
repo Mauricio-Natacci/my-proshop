@@ -7,6 +7,7 @@ import {
 } from '../types/user.type'
 import bcrypt from 'bcryptjs'
 import { generateToken } from '../utils/jwt'
+import { type Context } from '../types/context.type'
 
 export class UserService {
   async createUser(input: CreateUserInput) {
@@ -22,7 +23,7 @@ export class UserService {
     return user
   }
 
-  async login(input: LoginInput): Promise<User> {
+  async login(input: LoginInput, context: Context): Promise<User> {
     const errorMessage = 'Invalid email or password'
 
     const user = await UserModel.findOne({ email: input.email }).lean()
@@ -41,7 +42,10 @@ export class UserService {
 
     const token = generateToken(_id)
 
-    user.token = token
+    context.res.cookie('accessToken', token, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
+    })
 
     return user
   }

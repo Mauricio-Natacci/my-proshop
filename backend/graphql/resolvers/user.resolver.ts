@@ -17,12 +17,25 @@ export default class UserResolver {
 
   @Mutation(() => User, { nullable: true })
   async login(@Arg('input') input: LoginInput, @Ctx() context: Context) {
-    const user = await this.userService.login(input)
-    return user
+    return await this.userService.login(input, context)
+  }
+
+  @Mutation(() => Boolean)
+  logout(@Ctx() context: Context) {
+    context.res.clearCookie('accessToken')
+    return true
   }
 
   @Query(() => User)
   async getUser(@Arg('input') input: GetUserInput): Promise<User> {
     return await this.userService.getUser(input)
+  }
+
+  @Query(() => User, { nullable: true })
+  me(@Ctx() context: Context): User | null {
+    if (context.req.cookies.accessToken) {
+      return context.user
+    }
+    return null
   }
 }
