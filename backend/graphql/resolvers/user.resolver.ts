@@ -11,19 +11,21 @@ export default class UserResolver {
   }
 
   @Mutation(() => User)
-  async createUser(@Arg('input') input: CreateUserInput) {
+  async createUser(@Arg('input') input: CreateUserInput): Promise<User> {
     return await this.userService.createUser(input)
   }
 
   @Mutation(() => User, { nullable: true })
-  async login(@Arg('input') input: LoginInput, @Ctx() context: Context) {
+  async login(
+    @Arg('input') input: LoginInput,
+    @Ctx() context: Context
+  ): Promise<User | null> {
     return await this.userService.login(input, context)
   }
 
   @Mutation(() => Boolean)
-  logout(@Ctx() context: Context) {
-    context.res.clearCookie('accessToken')
-    return true
+  logout(@Ctx() context: Context): boolean {
+    return this.userService.logout(context)
   }
 
   @Query(() => User)
@@ -33,9 +35,6 @@ export default class UserResolver {
 
   @Query(() => User, { nullable: true })
   me(@Ctx() context: Context): User | null {
-    if (context.req.cookies.accessToken) {
-      return context.user
-    }
-    return null
+    return this.userService.me(context)
   }
 }

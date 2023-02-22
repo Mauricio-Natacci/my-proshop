@@ -49,4 +49,20 @@ export class UserService {
 
     return user
   }
+
+  logout(context: Context): boolean {
+    context.res.clearCookie('accessToken')
+
+    if (!context.req.cookies.accessToken) {
+      return true
+    }
+    return false
+  }
+
+  me(context: Context): User | null {
+    if (context.req.cookies.accessToken) {
+      return context.user
+    }
+    return null
+  }
 }

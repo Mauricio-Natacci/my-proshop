@@ -12,19 +12,15 @@ import { verifyJwt } from './utils/jwt'
 import { type User, UserModel } from './schema/user.schema'
 
 async function bootstrap() {
-  // Build the schema
-
   const schema = await buildSchema({
     resolvers,
     authChecker
   })
 
-  // Init express
   const app = express()
 
   app.use(cookieParser())
 
-  // Create the apollo server
   const server = new ApolloServer({
     schema,
     context: async (ctx: Context) => {
@@ -46,11 +42,9 @@ async function bootstrap() {
   })
 
   await server.start()
-  // apply middleware to server
 
   server.applyMiddleware({ app })
 
-  // app.listen on express server
   app.listen({ port: config.port }, () => {
     console.log(`App is listening on port ${config.port}!`)
   })
