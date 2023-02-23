@@ -34,8 +34,11 @@ export default class ProductResolver {
 
   @Authorized()
   @Mutation(() => Boolean)
-  async deleteProduct(@Arg('input') input: GetProductInput): Promise<boolean> {
-    return await this.productService.deleteProduct(input)
+  async deleteProduct(
+    @Arg('input') input: GetProductInput,
+    @Ctx() context: Context
+  ): Promise<boolean> {
+    return await this.productService.deleteProduct(input, context)
   }
 
   @Query(() => [Product])

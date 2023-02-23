@@ -6,7 +6,6 @@ import {
 } from '../types/product.type'
 import { NotFoundError } from '../errors/notFoundError'
 import { type Context } from '../types/context.type'
-import { Authorized } from 'type-graphql'
 
 export class ProductService {
   async createProduct(
@@ -46,12 +45,18 @@ export class ProductService {
     return await product.save()
   }
 
-  @Authorized()
-  async deleteProduct(input: GetProductInput): Promise<boolean> {
+  async deleteProduct(
+    input: GetProductInput,
+    context: Context
+  ): Promise<boolean> {
     const product = await ProductModel.findOne(input)
 
     if (!product) {
       throw new NotFoundError('Product not found')
+    }
+
+    if (!context.user?.isAdmin) {
+      throw new NotFoundError('You are not authorized to delete a product')
     }
 
     await product.remove()
