@@ -28,3 +28,13 @@ export class CreateUserInput {
   @Field(() => Boolean, { defaultValue: false })
   isAdmin: boolean
 }
+
+@InputType()
+export class LoginInput {
+  @IsEmail()
+  @Field(() => String)
+  email: string
+
+  @Field(() => String)
+  password: string
+}

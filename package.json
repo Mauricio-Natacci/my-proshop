@@ -24,6 +24,8 @@
     "@types/express-serve-static-core": "^4.17.33",
     "@typescript-eslint/parser": "^5.50.0",
     "apollo-server": "^3.5.0",
+    "apollo-server-express": "^2.9.16",
+    "apollo-server-testing": "^2.9.16",
     "aws-sdk": "^2.1261.0",
     "bcryptjs": "^2.4.3",
     "class-validator": "^0.13.2",
@@ -31,6 +33,7 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-async-handler": "^1.2.0",
+    "express-graphql": "^0.12.0",
     "graphql": "15.x",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.8.1",
@@ -39,8 +42,7 @@
     "reflect-metadata": "^0.1.13",
     "sucrase": "^3.29.0",
     "type-graphql": "^1.1.1",
-    "uuidv4": "^6.2.13",
-    "express-graphql": "^0.12.0"
+    "uuidv4": "^6.2.13"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
