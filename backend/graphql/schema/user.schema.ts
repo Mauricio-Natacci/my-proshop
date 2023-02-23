@@ -61,9 +61,6 @@ export class User {
   @Field(() => Date)
   @prop({ required: true, default: Date.now })
   updatedAt: Date
-
-  @Field(() => String)
-  token: string
 }
 
 export const UserModel = getModelForClass<typeof User, QueryHelpers>(User)

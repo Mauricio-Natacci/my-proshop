@@ -9,7 +9,8 @@ export const config = {
   showErrorStack: process.env.SHOW_ERROR_STACK === 'true',
   port: process.env.PORT || 5000,
   environment: process.env.NODE_ENV,
-  jwtSecret: process.env.JWT_SECRET
+  jwtSecret: process.env.JWT_SECRET,
+  playgroundEnabled: process.env.PLAYGROUND_ENABLED === 'true'
 }
 
 if (!config.mongoURI) {

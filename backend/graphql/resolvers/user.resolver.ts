@@ -19,7 +19,7 @@ export default class UserResolver {
   async login(
     @Arg('input') input: LoginInput,
     @Ctx() context: Context
-  ): Promise<User | null> {
+  ): Promise<User> {
     return await this.userService.login(input, context)
   }
 

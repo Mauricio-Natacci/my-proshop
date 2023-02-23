@@ -38,7 +38,7 @@ async function bootstrap() {
 
       return context
     },
-    playground: true
+    playground: config.playgroundEnabled
   })
 
   await server.start()
