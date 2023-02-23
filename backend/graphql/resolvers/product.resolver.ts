@@ -1,12 +1,5 @@
-import {
-  Arg,
-  Ctx,
-  Mutation,
-  Query,
-  Resolver,
-  UseMiddleware
-} from 'type-graphql'
-import { isAdmin } from '../middleware/decoratorMiddleware'
+import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
+import { IsAdmin } from '../decorators/adminDecorator'
 import { Product } from '../schema/product.schema'
 import { ProductService } from '../service/product.service'
 import { Context } from '../types/context.type'
@@ -22,7 +15,7 @@ export default class ProductResolver {
     this.productService = new ProductService()
   }
 
-  @UseMiddleware(isAdmin)
+  @IsAdmin()
   @Mutation(() => Product)
   async createProduct(
     @Arg('input') input: CreateProductInput,
@@ -31,7 +24,7 @@ export default class ProductResolver {
     return await this.productService.createProduct(input, context)
   }
 
-  @UseMiddleware(isAdmin)
+  @IsAdmin()
   @Mutation(() => Product)
   async updateProduct(
     @Arg('input') input: UpdateProductInput,
@@ -40,7 +33,7 @@ export default class ProductResolver {
     return await this.productService.updateProduct(input, context)
   }
 
-  @UseMiddleware(isAdmin)
+  @IsAdmin()
   @Mutation(() => Boolean)
   async deleteProduct(@Arg('input') input: GetProductInput): Promise<boolean> {
     return await this.productService.deleteProduct(input)

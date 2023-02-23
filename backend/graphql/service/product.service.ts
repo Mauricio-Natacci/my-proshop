@@ -14,7 +14,8 @@ export class ProductService {
   ): Promise<Product> {
     const product = new ProductModel({
       ...input,
-      user: context.user?._id
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      user: context.user!._id
     })
     return await product.save()
   }
