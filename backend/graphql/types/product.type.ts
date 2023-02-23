@@ -20,3 +20,21 @@ export class CreateProductInput {
   @Field(() => String)
   image: string
 }
+
+@InputType()
+export class UpdateProductInput {
+  @Field(() => String)
+  _id: string
+
+  @Field(() => String, { nullable: true })
+  name?: string
+
+  @Field(() => String, { nullable: true })
+  description?: string
+
+  @Field(() => Number, { nullable: true })
+  price?: number
+
+  @Field(() => String, { nullable: true })
+  image?: string
+}

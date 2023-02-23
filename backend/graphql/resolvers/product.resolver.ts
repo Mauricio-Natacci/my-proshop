@@ -2,7 +2,11 @@ import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from 'type-graphql'
 import { Product } from '../schema/product.schema'
 import { ProductService } from '../service/product.service'
 import { Context } from '../types/context.type'
-import { CreateProductInput, GetProductInput } from '../types/product.type'
+import {
+  CreateProductInput,
+  GetProductInput,
+  UpdateProductInput
+} from '../types/product.type'
 
 @Resolver()
 export default class ProductResolver {
@@ -17,6 +21,15 @@ export default class ProductResolver {
     @Ctx() context: Context
   ): Promise<Product> {
     return await this.productService.createProduct(input, context)
+  }
+
+  @Authorized()
+  @Mutation(() => Product)
+  async updateProduct(
+    @Arg('input') input: UpdateProductInput,
+    @Ctx() context: Context
+  ): Promise<Product> {
+    return await this.productService.updateProduct(input, context)
   }
 
   @Authorized()
