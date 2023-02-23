@@ -19,6 +19,12 @@ export default class ProductResolver {
     return await this.productService.createProduct(input, context)
   }
 
+  @Authorized()
+  @Mutation(() => Boolean)
+  async deleteProduct(@Arg('input') input: GetProductInput): Promise<boolean> {
+    return await this.productService.deleteProduct(input)
+  }
+
   @Query(() => [Product])
   async getAllProducts(): Promise<Product[]> {
     return await this.productService.findProducts()

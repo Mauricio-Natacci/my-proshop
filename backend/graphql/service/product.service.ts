@@ -26,6 +26,16 @@ export class ProductService {
     return await product.save()
   }
 
+  async deleteProduct(input: GetProductInput): Promise<boolean> {
+    const product = await ProductModel.findOne(input)
+
+    if (!product) {
+      throw new NotFoundError('Product not found')
+    }
+    await product.remove()
+    return true
+  }
+
   async findProducts(): Promise<Product[]> {
     return await ProductModel.find()
   }
