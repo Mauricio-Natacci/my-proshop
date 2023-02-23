@@ -17,15 +17,23 @@ export class Product {
 
   @Field(() => String)
   @prop({ required: true })
+  image: string
+
+  @Field(() => String)
+  @prop({ required: true })
   description: string
 
   @Field(() => Number)
   @prop({ required: true })
   price: number
 
-  @Field(() => String)
-  @prop({ required: true })
-  image: string
+  @Field(() => Date)
+  @prop({ required: true, default: Date.now })
+  createdAt: Date
+
+  @Field(() => Date)
+  @prop({ required: true, default: Date.now })
+  updatedAt: Date
 }
 
 export const ProductModel = getModelForClass<typeof Product>(Product)

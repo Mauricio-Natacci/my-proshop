@@ -3,7 +3,7 @@ import { Field, InputType } from 'type-graphql'
 
 @InputType()
 export class GetUserInput {
-  @Field()
+  @Field(() => String)
   _id: string
 }
 
