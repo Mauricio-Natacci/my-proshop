@@ -12,13 +12,9 @@ export class ProductService {
     input: CreateProductInput,
     context: Context
   ): Promise<Product> {
-    if (!context.user?.isAdmin) {
-      throw new NotFoundError('You are not authorized to create a product')
-    }
-
     const product = new ProductModel({
       ...input,
-      user: context.user._id
+      user: context.user?._id
     })
     return await product.save()
   }
@@ -27,10 +23,6 @@ export class ProductService {
     input: UpdateProductInput,
     context: Context
   ): Promise<Product> {
-    if (!context.user?.isAdmin) {
-      throw new NotFoundError('You are not authorized to update a product')
-    }
-
     const product = await ProductModel.findOne({ _id: input._id })
 
     if (!product) {
@@ -45,18 +37,11 @@ export class ProductService {
     return await product.save()
   }
 
-  async deleteProduct(
-    input: GetProductInput,
-    context: Context
-  ): Promise<boolean> {
+  async deleteProduct(input: GetProductInput): Promise<boolean> {
     const product = await ProductModel.findOne(input)
 
     if (!product) {
       throw new NotFoundError('Product not found')
-    }
-
-    if (!context.user?.isAdmin) {
-      throw new NotFoundError('You are not authorized to delete a product')
     }
 
     await product.remove()
