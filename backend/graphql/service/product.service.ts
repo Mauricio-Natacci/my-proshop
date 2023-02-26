@@ -1,11 +1,12 @@
-import { type Product, ProductModel } from '../schema/product.schema'
+import { ProductModel } from '../../database/models/product.model'
 import {
   type UpdateProductInput,
   type CreateProductInput,
   type GetProductInput
-} from '../types/product.type'
+} from '../inputs/product.input'
 import { NotFoundError } from '../errors/notFoundError'
 import { type Context } from '../types/context.type'
+import { type Product } from '../types/product.type'
 
 export class ProductService {
   async createProduct(
@@ -24,7 +25,7 @@ export class ProductService {
     input: UpdateProductInput,
     context: Context
   ): Promise<Product> {
-    const product = await ProductModel.findOne({ _id: input._id })
+    const product = await ProductModel.findOne({ _id: input.productId })
 
     if (!product) {
       throw new NotFoundError('Product not found')

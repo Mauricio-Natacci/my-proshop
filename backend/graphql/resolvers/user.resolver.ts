@@ -1,8 +1,8 @@
 import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
-import { User } from '../schema/user.schema'
+import { User } from '../types/user.type'
 import { UserService } from '../service/user.service'
 import { Context } from '../types/context.type'
-import { CreateUserInput, GetUserInput, LoginInput } from '../types/user.type'
+import { CreateUserInput, GetUserInput, LoginInput } from '../inputs/user.input'
 
 @Resolver()
 export default class UserResolver {

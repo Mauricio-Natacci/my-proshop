@@ -1,13 +1,14 @@
-import { type User, UserModel } from '../schema/user.schema'
+import { UserModel } from '../../database/models/user.model'
 import { NotFoundError } from '../errors/notFoundError'
 import {
   type CreateUserInput,
   type GetUserInput,
   type LoginInput
-} from '../types/user.type'
+} from '../inputs/user.input'
 import bcrypt from 'bcryptjs'
 import { generateToken } from '../utils/jwt'
 import { type Context } from '../types/context.type'
+import { type User } from '../types/user.type'
 
 export class UserService {
   async createUser(input: CreateUserInput) {

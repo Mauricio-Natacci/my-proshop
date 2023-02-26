@@ -1,13 +1,13 @@
 import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
 import { IsAdmin } from '../decorators/adminDecorator'
-import { Product } from '../schema/product.schema'
+import { Product } from '../types/product.type'
 import { ProductService } from '../service/product.service'
 import { Context } from '../types/context.type'
 import {
   CreateProductInput,
   GetProductInput,
   UpdateProductInput
-} from '../types/product.type'
+} from '../inputs/product.input'
 
 @Resolver()
 export default class ProductResolver {

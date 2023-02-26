@@ -1,15 +1,19 @@
-import { Field, InputType } from 'type-graphql'
+import { Field, ObjectType } from 'type-graphql'
+import { type User } from '../types/user.type'
 
-@InputType()
-export class GetProductInput {
+@ObjectType()
+export class Product {
   @Field(() => String)
   _id: string
-}
 
-@InputType()
-export class CreateProductInput {
+  @Field(() => String)
+  user: User
+
   @Field(() => String)
   name: string
+
+  @Field(() => String)
+  image: string
 
   @Field(() => String)
   description: string
@@ -17,24 +21,9 @@ export class CreateProductInput {
   @Field(() => Number)
   price: number
 
-  @Field(() => String)
-  image: string
-}
+  @Field(() => Date)
+  createdAt: Date
 
-@InputType()
-export class UpdateProductInput {
-  @Field(() => String)
-  _id: string
-
-  @Field(() => String, { nullable: true })
-  name?: string
-
-  @Field(() => String, { nullable: true })
-  description?: string
-
-  @Field(() => Number, { nullable: true })
-  price?: number
-
-  @Field(() => String, { nullable: true })
-  image?: string
+  @Field(() => Date)
+  updatedAt: Date
 }
