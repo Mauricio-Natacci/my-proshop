@@ -1,5 +1,5 @@
 import { Field, ObjectType } from 'type-graphql'
-import { OrderItem } from './orderItem.type'
+import { Item } from './Item.type'
 import { ShippingAddress } from './shippingAddress.type'
 
 @ObjectType()
@@ -10,8 +10,8 @@ export class Order {
   @Field(() => String)
   user: any
 
-  @Field(() => [OrderItem])
-  orderItems: OrderItem[]
+  @Field(() => [Item])
+  orderItems: Item[]
 
   @Field(() => ShippingAddress)
   shippingAddress: ShippingAddress

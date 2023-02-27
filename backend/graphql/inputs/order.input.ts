@@ -1,7 +1,7 @@
 import { Field, InputType } from 'type-graphql'
 
 @InputType()
-export class getOrderInput {
+export class GetOrderInput {
   @Field(() => String)
-  id: string
+  _id: string
 }
