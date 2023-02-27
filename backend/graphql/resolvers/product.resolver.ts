@@ -18,7 +18,8 @@ export default class ProductResolver {
   @IsAdmin()
   @Mutation(() => Product)
   async createProduct(
-    @Arg('input') input: CreateProductInput,
+    @Arg('input')
+    input: CreateProductInput,
     @Ctx() context: Context
   ): Promise<Product> {
     return await this.productService.createProduct(input, context)

@@ -2,11 +2,10 @@ import { getModelForClass, prop, Ref } from '@typegoose/typegoose'
 import { User } from './user.model'
 
 export class Product {
-  @prop({ required: true })
-  productId: string
+  _id: string
 
   @prop({ required: true, ref: () => User })
-  user: Ref<User>
+  createdBy: Ref<User>
 
   @prop({ required: true })
   name: string

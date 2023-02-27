@@ -1,5 +1,4 @@
 import { Field, ObjectType } from 'type-graphql'
-import { type User } from '../types/user.type'
 
 @ObjectType()
 export class Product {
@@ -7,7 +6,7 @@ export class Product {
   _id: string
 
   @Field(() => String)
-  user: User
+  createdBy: any
 
   @Field(() => String)
   name: string

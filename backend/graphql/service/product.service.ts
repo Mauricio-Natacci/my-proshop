@@ -16,7 +16,7 @@ export class ProductService {
     const product = new ProductModel({
       ...input,
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      user: context.user!._id
+      createdBy: context.user!._id
     })
     return await product.save()
   }
@@ -25,7 +25,7 @@ export class ProductService {
     input: UpdateProductInput,
     context: Context
   ): Promise<Product> {
-    const product = await ProductModel.findOne({ _id: input.productId })
+    const product = await ProductModel.findOne({ _id: input._id })
 
     if (!product) {
       throw new NotFoundError('Product not found')
@@ -55,7 +55,7 @@ export class ProductService {
   }
 
   async findSingleProduct(input: GetProductInput): Promise<Product> {
-    const product = await ProductModel.findOne(input)
+    const product = await ProductModel.findOne({ input })
 
     if (!product) {
       throw new NotFoundError('Product not found')

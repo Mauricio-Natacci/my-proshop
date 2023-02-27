@@ -3,7 +3,7 @@ import { Field, InputType } from 'type-graphql'
 @InputType()
 export class GetProductInput {
   @Field(() => String)
-  productId: string
+  _id: string
 }
 
 @InputType()
@@ -24,7 +24,7 @@ export class CreateProductInput {
 @InputType()
 export class UpdateProductInput {
   @Field(() => String)
-  productId: string
+  _id: string
 
   @Field(() => String, { nullable: true })
   name?: string
