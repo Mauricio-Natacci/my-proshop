@@ -9,7 +9,7 @@ import { authChecker } from './utils/authChecker'
 import { type Context } from './types/context.type'
 import { config } from '../config'
 import { verifyJwt } from './utils/jwt'
-import { type User, UserModel } from './schema/user.schema'
+import { type User, UserModel } from '../database/models/user.model'
 
 async function bootstrap() {
   const schema = await buildSchema({

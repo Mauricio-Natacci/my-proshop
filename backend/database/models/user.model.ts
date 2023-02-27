@@ -7,7 +7,6 @@ import {
   type ReturnModelType
 } from '@typegoose/typegoose'
 import { type AsQueryMethod } from '@typegoose/typegoose/lib/types'
-import { Field, ObjectType } from 'type-graphql'
 import bcrypt from 'bcryptjs'
 
 function findByEmail(
@@ -34,31 +33,24 @@ interface QueryHelpers {
 })
 @index({ email: 1 })
 @queryMethod(findByEmail)
-@ObjectType()
 export class User {
-  @Field(() => String)
   _id: string
 
-  @Field(() => String)
   @prop({ required: true })
   name: string
 
-  @Field(() => String)
   @prop({ required: true })
   email: string
 
   @prop({ required: true })
   password: string
 
-  @Field(() => Boolean)
   @prop({ required: true, default: false })
   isAdmin: boolean
 
-  @Field(() => Date)
   @prop({ required: true, default: Date.now })
   createdAt: Date
 
-  @Field(() => Date)
   @prop({ required: true, default: Date.now })
   updatedAt: Date
 }

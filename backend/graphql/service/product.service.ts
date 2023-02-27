@@ -1,11 +1,12 @@
-import { type Product, ProductModel } from '../schema/product.schema'
+import { ProductModel } from '../../database/models/product.model'
 import {
   type UpdateProductInput,
   type CreateProductInput,
   type GetProductInput
-} from '../types/product.type'
+} from '../inputs/product.input'
 import { NotFoundError } from '../errors/notFoundError'
 import { type Context } from '../types/context.type'
+import { type Product } from '../types/product.type'
 
 export class ProductService {
   async createProduct(
@@ -15,7 +16,7 @@ export class ProductService {
     const product = new ProductModel({
       ...input,
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      user: context.user!._id
+      createdBy: context.user!._id
     })
     return await product.save()
   }
@@ -54,7 +55,7 @@ export class ProductService {
   }
 
   async findSingleProduct(input: GetProductInput): Promise<Product> {
-    const product = await ProductModel.findOne(input)
+    const product = await ProductModel.findOne({ input })
 
     if (!product) {
       throw new NotFoundError('Product not found')
