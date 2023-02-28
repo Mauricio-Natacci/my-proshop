@@ -9,19 +9,10 @@ export class Order {
   user: Ref<User>
 
   @prop({ required: true })
-  orderItems: Array<{
-    quantity: number
-    price: number
-    productId: string
-  }>
+  orderItems: OrderItem[]
 
   @prop({ required: true })
-  shippingAddress: {
-    address: string
-    city: string
-    postalCode: string
-    country: string
-  }
+  shippingAddress: ShippingAddress
 
   @prop({ required: true, default: 'Pending' })
   status: string
@@ -40,3 +31,16 @@ export class Order {
 }
 
 export const OrderModel = getModelForClass<typeof Order>(Order)
+
+export type OrderItem = {
+  quantity: number
+  price: number
+  productId: string
+}
+
+export type ShippingAddress = {
+  address: string
+  city: string
+  postalCode: string
+  country: string
+}

@@ -4,8 +4,8 @@ import { IsLoggedIn } from '../decorators/authDecorator'
 import {
   CreateOrderInput,
   GetOrderInput,
-  orderCanceledInput,
-  orderDeliveredInput
+  OrderCanceledInput,
+  OrderDeliveredInput
 } from '../inputs/order.input'
 import { OrderService } from '../service/order.service'
 import { Context } from '../types/context.type'
@@ -41,7 +41,7 @@ export default class OrderResolver {
   @IsAdmin()
   @Mutation(() => Order)
   async orderDelivered(
-    @Arg('input') input: orderDeliveredInput
+    @Arg('input') input: OrderDeliveredInput
   ): Promise<Order> {
     return await this.orderService.updateOrderToDelivered(input)
   }
@@ -49,7 +49,7 @@ export default class OrderResolver {
   @IsAdmin()
   @Mutation(() => Order)
   async orderCancelled(
-    @Arg('input') input: orderCanceledInput
+    @Arg('input') input: OrderCanceledInput
   ): Promise<Order> {
     return await this.orderService.updateOrderToCanceled(input)
   }

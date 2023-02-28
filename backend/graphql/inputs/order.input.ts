@@ -8,25 +8,31 @@ export class GetOrderInput {
 }
 
 @InputType()
-export class CreateOrderInput {
+export class CreateItemInput {
   @Field(() => String)
-  _id: string
+  productId: string
 
   @Field(() => Number)
   quantity: number
+}
+
+@InputType()
+export class CreateOrderInput {
+  @Field(() => [CreateItemInput])
+  items: CreateItemInput[]
 
   @Field(() => ShippingAddressInput)
   shippingAddress: ShippingAddressInput
 }
 
 @InputType()
-export class orderDeliveredInput {
+export class OrderDeliveredInput {
   @Field(() => String)
   _id: string
 }
 
 @InputType()
-export class orderCanceledInput {
+export class OrderCanceledInput {
   @Field(() => String)
   _id: string
 }
