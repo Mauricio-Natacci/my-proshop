@@ -26,7 +26,6 @@ export class OrderService {
 
   async updateOrderToDelivered(input: OrderDeliveredInput): Promise<Order> {
     const order = await OrderModel.findOne({ _id: input._id })
-
     if (!order) {
       throw new NotFoundError('Order not found')
     }
@@ -51,11 +50,7 @@ export class OrderService {
   }
 
   async getMyOrders(context: Context): Promise<Order[]> {
-    const user = context.user
-
-    if (!user) {
-      throw new NotFoundError('User not found')
-    }
+    const user = context.user!
 
     return await OrderModel.find({ user: user._id })
   }

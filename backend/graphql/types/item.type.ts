@@ -1,7 +1,7 @@
 import { Field, ObjectType } from 'type-graphql'
 
 @ObjectType()
-export class Item {
+export class OrderItem {
   @Field(() => Number)
   quantity: number
 

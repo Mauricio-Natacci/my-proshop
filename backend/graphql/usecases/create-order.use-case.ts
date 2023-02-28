@@ -8,20 +8,21 @@ import { type Order } from '../types/order.type'
 
 export class CreateOrderUseCase {
   async execute(input: CreateOrderInput, context: Context): Promise<Order> {
-    const user = context.user
-
-    if (!user) {
-      throw new NotFoundError('User not found')
-    }
-
-    const _id = input.items.map((item) => item.productId)
+    const user = context.user!
 
     const products = await ProductModel.find({
-      _id
+      productIds: { $in: input.items.map((item) => item.productId) }
     })
 
-    if (products.length !== input.items.length) {
-      throw new NotFoundError('Some products not found')
+    const productsNotFound = input.items.filter(
+      (item) =>
+        !products.find((product) => product._id.toString() === item.productId)
+    )
+
+    if (productsNotFound.length > 0) {
+      throw new NotFoundError(
+        `Products not found: ${productsNotFound.map((item) => item.productId)}`
+      )
     }
 
     const orderItems = input.items.map((item) => {
@@ -36,9 +37,11 @@ export class CreateOrderUseCase {
       }
     })
 
-    const totalPrice = orderItems
-      .reduce((acc, item) => acc + item.price * item.quantity, 0)
-      .toFixed(2)
+    const totalPrice = Number(
+      orderItems
+        .reduce((acc, item) => acc + item.price * item.quantity, 0)
+        .toFixed(2)
+    )
 
     const order = new OrderModel({
       user: user._id,
