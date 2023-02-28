@@ -10,11 +10,16 @@ import {
 import { OrderService } from '../service/order.service'
 import { Context } from '../types/context.type'
 import { Order } from '../types/order.type'
+import { CreateOrderUseCase } from '../usecases/create-order.use-case'
 
 @Resolver()
 export default class OrderResolver {
-  constructor(private readonly orderService: OrderService) {
+  constructor(
+    private readonly orderService: OrderService,
+    private readonly createOrderUseCase: CreateOrderUseCase
+  ) {
     this.orderService = new OrderService()
+    this.createOrderUseCase = new CreateOrderUseCase()
   }
 
   @IsAdmin()
@@ -35,7 +40,7 @@ export default class OrderResolver {
     @Arg('input') input: CreateOrderInput,
     @Ctx() context: Context
   ): Promise<Order> {
-    return await this.orderService.createOrder(input, context)
+    return await this.createOrderUseCase.execute(input, context)
   }
 
   @IsAdmin()
