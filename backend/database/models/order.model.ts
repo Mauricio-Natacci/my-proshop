@@ -1,6 +1,7 @@
-import { getModelForClass, prop, Ref } from '@typegoose/typegoose'
+import { getModelForClass, modelOptions, prop, Ref } from '@typegoose/typegoose'
 import { User } from './user.model'
 
+@modelOptions({ options: { allowMixed: 0 } })
 export class Order {
   _id: string
 
