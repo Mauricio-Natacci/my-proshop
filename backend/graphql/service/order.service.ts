@@ -2,9 +2,10 @@ import { OrderModel } from '../../database/models/order.model'
 import { ProductModel } from '../../database/models/product.model'
 import { NotFoundError } from '../errors/notFoundError'
 import {
-  type uploadOrderToDeliveredInput,
+  type orderDeliveredInput,
   type CreateOrderInput,
-  type GetOrderInput
+  type GetOrderInput,
+  type orderCanceledInput
 } from '../inputs/order.input'
 import { type Context } from '../types/context.type'
 import { type Order } from '../types/order.type'
@@ -48,9 +49,7 @@ export class OrderService {
     return await order.save()
   }
 
-  async updateOrderToDelivered(
-    input: uploadOrderToDeliveredInput
-  ): Promise<Order> {
+  async updateOrderToDelivered(input: orderDeliveredInput): Promise<Order> {
     const order = await OrderModel.findOne({ _id: input._id })
 
     if (!order) {
@@ -59,6 +58,19 @@ export class OrderService {
 
     order.isDelivered = true
     order.status = 'fulfilled'
+
+    return await order.save()
+  }
+
+  async updateOrderToCancelled(input: orderCanceledInput): Promise<Order> {
+    const order = await OrderModel.findOne({ _id: input._id })
+
+    if (!order) {
+      throw new NotFoundError('Order not found')
+    }
+
+    order.isDelivered = false
+    order.status = 'cancelled'
 
     return await order.save()
   }

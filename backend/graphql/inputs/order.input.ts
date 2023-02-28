@@ -20,7 +20,13 @@ export class CreateOrderInput {
 }
 
 @InputType()
-export class uploadOrderToDeliveredInput {
+export class orderDeliveredInput {
+  @Field(() => String)
+  _id: string
+}
+
+@InputType()
+export class orderCanceledInput {
   @Field(() => String)
   _id: string
 }

@@ -2,7 +2,8 @@ import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
 import {
   CreateOrderInput,
   GetOrderInput,
-  uploadOrderToDeliveredInput
+  orderCanceledInput,
+  orderDeliveredInput
 } from '../inputs/order.input'
 import { OrderService } from '../service/order.service'
 import { Context } from '../types/context.type'
@@ -33,9 +34,16 @@ export default class OrderResolver {
   }
 
   @Mutation(() => Order)
-  async updateOrderToDelivered(
-    @Arg('input') input: uploadOrderToDeliveredInput
+  async orderDelivered(
+    @Arg('input') input: orderDeliveredInput
   ): Promise<Order> {
     return await this.orderService.updateOrderToDelivered(input)
+  }
+
+  @Mutation(() => Order)
+  async orderCancelled(
+    @Arg('input') input: orderCanceledInput
+  ): Promise<Order> {
+    return await this.orderService.updateOrderToCancelled(input)
   }
 }
