@@ -3,6 +3,7 @@ import { User } from '../types/user.type'
 import { UserService } from '../service/user.service'
 import { Context } from '../types/context.type'
 import { CreateUserInput, GetUserInput, LoginInput } from '../inputs/user.input'
+import { IsLoggedIn } from '../decorators/authDecorator'
 
 @Resolver()
 export default class UserResolver {
@@ -23,6 +24,7 @@ export default class UserResolver {
     return await this.userService.login(input, context)
   }
 
+  @IsLoggedIn()
   @Mutation(() => Boolean)
   logout(@Ctx() context: Context): boolean {
     return this.userService.logout(context)

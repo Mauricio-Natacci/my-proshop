@@ -62,7 +62,7 @@ export class OrderService {
     return await order.save()
   }
 
-  async updateOrderToCancelled(input: orderCanceledInput): Promise<Order> {
+  async updateOrderToCanceled(input: orderCanceledInput): Promise<Order> {
     const order = await OrderModel.findOne({ _id: input._id })
 
     if (!order) {
@@ -73,5 +73,15 @@ export class OrderService {
     order.status = 'cancelled'
 
     return await order.save()
+  }
+
+  async getMyOrders(context: Context): Promise<Order[]> {
+    const user = context.user
+
+    if (!user) {
+      throw new NotFoundError('User not found')
+    }
+
+    return await OrderModel.find({ user: user._id })
   }
 }
