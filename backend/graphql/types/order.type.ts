@@ -1,5 +1,5 @@
 import { Field, ObjectType } from 'type-graphql'
-import { Item } from './Item.type'
+import { Item } from './item.type'
 import { ShippingAddress } from './shippingAddress.type'
 
 @ObjectType()
