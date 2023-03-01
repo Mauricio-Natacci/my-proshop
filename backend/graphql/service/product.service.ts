@@ -51,7 +51,7 @@ export class ProductService {
   }
 
   async findProducts(): Promise<Product[]> {
-    return await ProductModel.find()
+    return await ProductModel.find().populate('createdBy', '-password')
   }
 
   async findSingleProduct(input: GetProductInput): Promise<Product> {
