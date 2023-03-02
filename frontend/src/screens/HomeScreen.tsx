@@ -6,8 +6,18 @@ import { Dispatch } from 'redux'
 import { Message } from '../components/Message'
 import { Loader } from '../components/Loader'
 import { listProducts } from '../actions/productActions'
+import { useQuery } from '@apollo/client'
+import { GET_ALL_PRODUCTS } from '../graphql/queries/product/product-query'
 
 export const HomeScreen = () => {
+  const {
+    loading: loadingnew,
+    error: errornew,
+    data: datanew
+  } = useQuery(GET_ALL_PRODUCTS)
+
+  console.log('datanew:', datanew)
+
   const dispatch: Dispatch<any> = useDispatch()
 
   type ProductListState = {
