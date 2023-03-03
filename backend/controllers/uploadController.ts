@@ -19,7 +19,7 @@ const singleLocal = setLocal.single('image')
 export const uploadLocal = (req: Request, res: Response) => {
   singleLocal(req, res, function (err) {
     if (err) {
-      console.log(err)
+      res.status(400).send(err)
     } else {
       res.send(`/${req.file.path}`)
     }
