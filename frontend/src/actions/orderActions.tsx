@@ -30,7 +30,7 @@ type createOrderProps = {
     image: string
     price: number
     product: string
-    qty: number
+    quantity: number
   }[]
   shippingAddress: {
     address: string
@@ -64,7 +64,7 @@ export type orderProps = {
     image: string
     price: number
     product: string
-    qty: number
+    quantity: number
   }[]
   shippingAddress: {
     address: string
