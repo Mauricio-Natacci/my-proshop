@@ -24,6 +24,9 @@ export class Order {
   isDelivered: boolean
 
   @prop({ required: true, default: Date.now })
+  createdAt: Date
+
+  @prop({ required: true, default: Date.now })
   deliveredAt: Date
 
   @prop({ required: true, default: Date.now })
