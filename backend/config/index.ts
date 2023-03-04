@@ -12,7 +12,7 @@ export const config = {
   environment: process.env.NODE_ENV,
   jwtSecret: process.env.JWT_SECRET,
   playgroundEnabled: process.env.PLAYGROUND_ENABLED === 'true',
-  graphqlURI: process.env.GRAPHQL_URI || 'http://localhost:5000/graphql'
+  portGraphql: process.env.PORT_GRAPHQL || 8081
 }
 
 if (!config.mongoURI) {
@@ -41,8 +41,4 @@ if (!config.jwtSecret) {
 
 if (config.playgroundEnabled) {
   throw new NotFoundError('PLAYGROUND_ENABLED environment variable is not set')
-}
-
-if (!config.graphqlURI) {
-  throw new NotFoundError('GRAPHQL_URI environment variable is not set')
 }

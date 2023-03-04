@@ -47,8 +47,10 @@ async function bootstrap() {
 
   server.applyMiddleware({ app })
 
-  app.listen({ port: 8081 }, () => {
-    console.log(`App is listening on port 8081!`)
+  const port = config.portGraphql
+
+  app.listen({ port }, () => {
+    console.log(`App is listening on port ${port}!`)
   })
   connectToMongo()
 }
