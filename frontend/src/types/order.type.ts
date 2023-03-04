@@ -1,6 +1,8 @@
+import { User } from './user.type'
+
 export type Order = {
   _id: string
-  buyer: Buyer
+  buyer: User
   orderItems: OrderItem[]
   shippingAddress: shippingAddress
   createdAt: string
@@ -8,13 +10,6 @@ export type Order = {
   isPaid: boolean
   isDelivered: boolean
   updatedAt: string
-}
-
-type Buyer = {
-  _id: string
-  name: string
-  email: string
-  isAdmin: boolean
 }
 
 type OrderItem = {
