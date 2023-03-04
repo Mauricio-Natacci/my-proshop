@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
 import dotenv from 'dotenv'
 import { NotFoundError } from '../errors/NotFoundError'
 
@@ -10,7 +11,8 @@ export const config = {
   port: process.env.PORT || 5000,
   environment: process.env.NODE_ENV,
   jwtSecret: process.env.JWT_SECRET,
-  playgroundEnabled: process.env.PLAYGROUND_ENABLED === 'true'
+  playgroundEnabled: process.env.PLAYGROUND_ENABLED === 'true',
+  graphqlURI: process.env.GRAPHQL_URI || 'http://localhost:5000/graphql'
 }
 
 if (!config.mongoURI) {
@@ -35,4 +37,12 @@ if (!config.environment) {
 
 if (!config.jwtSecret) {
   throw new NotFoundError('JWT_SECRET environment variable is not set')
+}
+
+if (config.playgroundEnabled) {
+  throw new NotFoundError('PLAYGROUND_ENABLED environment variable is not set')
+}
+
+if (!config.graphqlURI) {
+  throw new NotFoundError('GRAPHQL_URI environment variable is not set')
 }
