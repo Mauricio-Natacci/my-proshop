@@ -55,7 +55,10 @@ export class ProductService {
   }
 
   async findSingleProduct(input: GetProductInput): Promise<Product> {
-    const product = await ProductModel.findOne({ input })
+    const product = await ProductModel.findOne({ _id: input._id }).populate(
+      'createdBy',
+      '-password'
+    )
 
     if (!product) {
       throw new NotFoundError('Product not found')

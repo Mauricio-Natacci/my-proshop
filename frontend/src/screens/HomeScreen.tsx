@@ -1,31 +1,13 @@
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { Col, Row } from 'react-bootstrap'
 import { Product } from '../components/Product'
-import { Dispatch } from 'redux'
 import { Message } from '../components/Message'
 import { Loader } from '../components/Loader'
-import { listProducts } from '../actions/productActions'
+import { useQuery } from '@apollo/client'
+import { GET_ALL_PRODUCTS } from '../graphql/queries/product-query'
+import { ProductType } from '../types/product.type'
 
 export const HomeScreen = () => {
-  const dispatch: Dispatch<any> = useDispatch()
-
-  type ProductListState = {
-    productList: {
-      loading: boolean
-      error: string
-      products: any[]
-    }
-  }
-
-  const productList = useSelector(
-    (state: ProductListState) => state.productList
-  )
-  const { loading, error, products } = productList
-
-  useEffect(() => {
-    dispatch(listProducts())
-  }, [dispatch])
+  const { loading, error, data: products } = useQuery(GET_ALL_PRODUCTS)
 
   return (
     <>
@@ -36,7 +18,7 @@ export const HomeScreen = () => {
         <Message variant="danger">{error}</Message>
       ) : (
         <Row>
-          {products.map((product) => (
+          {products.getAllProducts.map((product: ProductType) => (
             <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
               <Product product={product} />
             </Col>

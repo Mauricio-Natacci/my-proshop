@@ -10,6 +10,7 @@ import { type Context } from './types/context.type'
 import { config } from '../config'
 import { verifyJwt } from './utils/jwt'
 import { type User, UserModel } from '../database/models/user.model'
+import cors from 'cors'
 
 async function bootstrap() {
   const schema = await buildSchema({
@@ -19,6 +20,7 @@ async function bootstrap() {
 
   const app = express()
 
+  app.use(cors())
   app.use(cookieParser())
 
   const server = new ApolloServer({
@@ -45,8 +47,10 @@ async function bootstrap() {
 
   server.applyMiddleware({ app })
 
-  app.listen({ port: config.port }, () => {
-    console.log(`App is listening on port ${config.port}!`)
+  const port = config.portGraphql
+
+  app.listen({ port }, () => {
+    console.log(`App is listening on port ${port}!`)
   })
   connectToMongo()
 }
