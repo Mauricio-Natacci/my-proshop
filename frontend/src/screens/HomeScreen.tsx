@@ -3,7 +3,7 @@ import { Product } from '../components/Product'
 import { Message } from '../components/Message'
 import { Loader } from '../components/Loader'
 import { useQuery } from '@apollo/client'
-import { GET_ALL_PRODUCTS } from '../graphql/queries/product/product-query'
+import { GET_ALL_PRODUCTS } from '../graphql/queries/product-query'
 
 export const HomeScreen = () => {
   const { loading, error, data: products } = useQuery(GET_ALL_PRODUCTS)

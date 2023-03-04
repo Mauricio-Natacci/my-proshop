@@ -3,7 +3,7 @@ import { Row, Col, Image, ListGroup, Button } from 'react-bootstrap'
 import { Message } from '../components/Message'
 import { Loader } from '../components/Loader'
 import { useQuery } from '@apollo/client'
-import { GET_PRODUCT } from '../graphql/queries/product/product-query'
+import { GET_PRODUCT } from '../graphql/queries/product-query'
 
 type ProductScreenProps = {
   history: {
