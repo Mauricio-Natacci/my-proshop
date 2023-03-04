@@ -1,14 +1,16 @@
+import { Ref } from '@typegoose/typegoose'
 import { Field, ObjectType } from 'type-graphql'
 import { OrderItem } from './item.type'
 import { ShippingAddress } from './shippingAddress.type'
+import { User } from './user.type'
 
 @ObjectType()
 export class Order {
   @Field(() => String)
   _id: string
 
-  @Field(() => String)
-  user: any
+  @Field(() => User)
+  buyer: Ref<User>
 
   @Field(() => [OrderItem])
   orderItems: OrderItem[]

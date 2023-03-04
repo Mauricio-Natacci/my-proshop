@@ -6,7 +6,7 @@ export class Order {
   _id: string
 
   @prop({ required: true, ref: () => User })
-  user: Ref<User>
+  buyer: Ref<User>
 
   @prop({ required: true })
   orderItems: OrderItem[]

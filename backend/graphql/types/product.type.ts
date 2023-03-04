@@ -1,3 +1,4 @@
+import { Ref } from '@typegoose/typegoose'
 import { Field, ObjectType } from 'type-graphql'
 import { User } from './user.type'
 
@@ -7,7 +8,7 @@ export class Product {
   _id: string
 
   @Field(() => User)
-  createdBy: any
+  createdBy: Ref<User>
 
   @Field(() => String)
   name: string

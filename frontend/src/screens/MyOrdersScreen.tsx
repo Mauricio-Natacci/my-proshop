@@ -6,7 +6,7 @@ import { Dispatch } from 'redux'
 import { Message } from '../components/Message'
 import { Loader } from '../components/Loader'
 import { listMyOrders } from '../actions/orderActions'
-import { Orders } from './AllOrdersScreen'
+import { Order } from '../types/order.type'
 
 type MyOrdersScreenProps = {
   history: {
@@ -25,7 +25,7 @@ type State = {
   orderListMy: {
     loading: boolean
     error: string
-    orders: Orders[]
+    orders: Order[]
   }
   userLogin: {
     userInfo: userInfoProps

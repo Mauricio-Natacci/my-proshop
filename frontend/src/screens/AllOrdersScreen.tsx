@@ -1,75 +1,21 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Table, Button, Row, Col } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
-import { useDispatch, useSelector } from 'react-redux'
-import { Dispatch } from 'redux'
 import { Message } from '../components/Message'
 import { Loader } from '../components/Loader'
-import { listOrders } from '../actions/orderActions'
-
-type AllOrdersScreenProps = {
-  history: {
-    push: (url: string) => void
-  }
-}
-
-export type Orders = {
-  _id: string
-  user: {
-    name: string
-    _id: string
-  }
-  orderItems: {
-    name: string
-    qty: number
-    image: string
-    price: number
-    product: string
-  }[]
-  shippingAddress: {
-    address: string
-    city: string
-    postalCode: string
-    country: string
-  }
-  createdAt: string
-  totalPrice: number
-  isPaid: boolean
-  isDelivered: boolean
-}
-
-type State = {
-  orderList: {
-    loading: boolean
-    error: string
-    orders: Orders[]
-  }
-  userLogin: {
-    userInfo: {
-      _id: string
-      name: string
-      email: string
-      isAdmin: boolean
-    }
-  }
-}
+import { useQuery } from '@apollo/client'
+import { GET_ALL_ORDERS } from '../graphql/queries/order/order-query'
+import { AllOrdersScreenProps, Order } from '../types/order.type'
 
 export const AllOrdersScreen = ({ history }: AllOrdersScreenProps) => {
-  const dispatch: Dispatch<any> = useDispatch()
+  const { loading, error, data } = useQuery(GET_ALL_ORDERS)
 
-  const orderList = useSelector((state: State) => state.orderList)
-  const { loading, error, orders } = orderList
+  if (loading) return <Loader />
+  if (error) return <Message variant="danger">{error.message}</Message>
 
-  const userLogin = useSelector((state: State) => state.userLogin)
-  const { userInfo } = userLogin
+  const orders = data.getAllOrders
 
-  useEffect(() => {
-    if (userInfo && userInfo.isAdmin) {
-      dispatch(listOrders())
-    } else {
-      history.push('/')
-    }
-  }, [dispatch, history, userInfo])
+  //TODO: add history.push to home page if user is not admin, requirement: login feature needs to be implemented
 
   return (
     <>
@@ -92,11 +38,11 @@ export const AllOrdersScreen = ({ history }: AllOrdersScreenProps) => {
                 </tr>
               </thead>
               <tbody>
-                {orders.map((order) => (
+                {orders.map((order: Order) => (
                   <tr key={order._id}>
-                    <td>{order.user.name}</td>
-                    <td>{order.createdAt.substring(0, 10)}</td>
-                    <td>{order.totalPrice}</td>
+                    <td>{order.buyer.name}</td>
+                    <td>{order.updatedAt.substring(0, 10)}</td>
+                    <td>$ {order.totalPrice}</td>
 
                     <td>
                       {order.isDelivered ? (

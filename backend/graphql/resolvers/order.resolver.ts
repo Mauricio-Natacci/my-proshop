@@ -22,7 +22,6 @@ export default class OrderResolver {
     this.createOrderUseCase = new CreateOrderUseCase()
   }
 
-  @IsAdmin()
   @Query(() => [Order])
   async getAllOrders(): Promise<Order[]> {
     return await this.orderService.getAllOrders()
