@@ -30,7 +30,7 @@ type createOrderProps = {
     image: string
     price: number
     product: string
-    qty: number
+    quantity: number
   }[]
   shippingAddress: {
     address: string
@@ -52,13 +52,19 @@ type getStateProps = () => {
 
 export type orderProps = {
   _id: string
-  user: string
+  user: {
+    _id: string
+    name: string
+    email: string
+    isAdmin: boolean
+  }
+
   orderItems: {
     name: string
     image: string
     price: number
     product: string
-    qty: number
+    quantity: number
   }[]
   shippingAddress: {
     address: string

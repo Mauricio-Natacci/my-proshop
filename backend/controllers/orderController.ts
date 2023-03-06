@@ -29,7 +29,7 @@ export const addOrderItems = asyncHandler(
 export const getOrderById = asyncHandler(
   async (req: Request, res: Response) => {
     const order = await Order.findById(req.params.id).populate(
-      'user',
+      'buyer',
       'name email'
     )
 
@@ -86,7 +86,7 @@ export const getMyOrders = asyncHandler(async (req: Request, res: Response) => {
 
 export const getAllOrders = asyncHandler(
   async (req: Request, res: Response) => {
-    const orders = await Order.find({}).populate('user', 'id name')
+    const orders = await Order.find({}).populate('buyer', 'id name')
 
     res.json(orders)
   }

@@ -6,7 +6,7 @@ export class Order {
   _id: string
 
   @prop({ required: true, ref: () => User })
-  user: Ref<User>
+  buyer: Ref<User>
 
   @prop({ required: true })
   orderItems: OrderItem[]
@@ -22,6 +22,9 @@ export class Order {
 
   @prop({ required: true, default: false })
   isDelivered: boolean
+
+  @prop({ required: true, default: Date.now })
+  createdAt: Date
 
   @prop({ required: true, default: Date.now })
   deliveredAt: Date

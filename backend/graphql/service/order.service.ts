@@ -11,11 +11,11 @@ import { type Order } from '../types/order.type'
 
 export class OrderService {
   async getAllOrders(): Promise<Order[]> {
-    return await OrderModel.find().populate('user', '-password')
+    return await OrderModel.find().populate('buyer', '-password')
   }
 
   async findSingleOrder(input: GetOrderInput): Promise<Order> {
-    const order = await OrderModel.findOne(input)
+    const order = await OrderModel.findOne(input).populate('buyer', '-password')
 
     if (!order) {
       throw new NotFoundError('Order not found')

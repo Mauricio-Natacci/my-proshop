@@ -22,7 +22,7 @@ export default class OrderResolver {
     this.createOrderUseCase = new CreateOrderUseCase()
   }
 
-  @IsAdmin()
+  // TODO: add admin decorator to this query, requirement: login feature needs to be implemented
   @Query(() => [Order])
   async getAllOrders(): Promise<Order[]> {
     return await this.orderService.getAllOrders()
