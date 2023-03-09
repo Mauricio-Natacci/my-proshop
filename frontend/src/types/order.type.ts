@@ -32,3 +32,16 @@ export type AllOrdersScreenProps = {
     push: (url: string) => void
   }
 }
+
+export type State = {
+  orderList: {
+    loading: boolean
+    error: string
+    orders: Order[]
+  }
+  userLogin: {
+    userInfo: {
+      login: User
+    }
+  }
+}

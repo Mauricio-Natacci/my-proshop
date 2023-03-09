@@ -45,7 +45,9 @@ type createOrderProps = {
 type getStateProps = () => {
   userLogin: {
     userInfo: {
-      token: string
+      login: {
+        token: string
+      }
     }
   }
 }
@@ -106,7 +108,7 @@ export const createOrder =
       const config = {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${userInfo.token}`
+          Authorization: `Bearer ${userInfo.login.token}`
         }
       }
 
@@ -159,7 +161,7 @@ export const getOrderDetails =
 
       const config = {
         headers: {
-          Authorization: `Bearer ${userInfo.token}`
+          Authorization: `Bearer ${userInfo.login.token}`
         }
       }
 
@@ -216,7 +218,7 @@ export const deliverOrder =
       } = getState()
 
       const config = {
-        headers: { Authorization: `Bearer ${userInfo.token}` }
+        headers: { Authorization: `Bearer ${userInfo.login.token}` }
       }
 
       const { data } = await axios.put(
@@ -271,7 +273,7 @@ export const cancelledOrder =
       } = getState()
 
       const config = {
-        headers: { Authorization: `Bearer ${userInfo.token}` }
+        headers: { Authorization: `Bearer ${userInfo.login.token}` }
       }
 
       const { data } = await axios.put(
@@ -321,7 +323,7 @@ export const listMyOrders =
       } = getState()
 
       const config = {
-        headers: { Authorization: `Bearer ${userInfo.token}` }
+        headers: { Authorization: `Bearer ${userInfo.login.token}` }
       }
 
       const { data } = await axios.get(`/api/orders/my-orders`, config)
@@ -367,7 +369,7 @@ export const listOrders =
       } = getState()
 
       const config = {
-        headers: { Authorization: `Bearer ${userInfo.token}` }
+        headers: { Authorization: `Bearer ${userInfo.login.token}` }
       }
 
       const { data } = await axios.get(`/api/orders/all-orders`, config)

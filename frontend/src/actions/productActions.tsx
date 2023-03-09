@@ -20,7 +20,10 @@ import {
 } from '../constants/productConstants'
 import { Dispatch } from 'redux'
 import { client } from '../graphql/service/index'
-import { GET_ALL_PRODUCTS, GET_PRODUCT } from '../graphql/queries/product-query'
+import {
+  GET_ALL_PRODUCTS,
+  GET_PRODUCT
+} from '../graphql/queries/order/product-query'
 
 type Product = {
   _id: string
