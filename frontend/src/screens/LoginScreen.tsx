@@ -7,23 +7,7 @@ import { Message } from '../components/Message'
 import { Loader } from '../components/Loader'
 import { FormContainer } from '../components/FormContainer'
 import { login } from '../actions/userActions'
-
-type LoginScreenProps = {
-  location: {
-    search: string
-  }
-  history: {
-    push: (url: string) => void
-  }
-}
-
-type stateProps = {
-  userLogin: {
-    loading: boolean
-    error: string
-    userInfo: any
-  }
-}
+import { LoginScreenProps, StateUserInfo } from '../types/user.type'
 
 export const LoginScreen = ({ location, history }: LoginScreenProps) => {
   const [email, setEmail] = useState('')
@@ -31,7 +15,7 @@ export const LoginScreen = ({ location, history }: LoginScreenProps) => {
 
   const dispatch: Dispatch<any> = useDispatch()
 
-  const userLogin = useSelector((state: stateProps) => state.userLogin)
+  const userLogin = useSelector((state: StateUserInfo) => state.userLogin)
   const { loading, error, userInfo } = userLogin
 
   const redirect = location.search ? location.search.split('=')[1] : '/'

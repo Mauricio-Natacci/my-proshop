@@ -27,18 +27,28 @@ type shippingAddress = {
   country: string
 }
 
-export type AllOrdersScreenProps = {
+export type OrdersScreenProps = {
   history: {
     push: (url: string) => void
   }
 }
 
-export type State = {
+export type StateOrderList = {
   orderList: {
     loading: boolean
     error: string
     orders: {
       getAllOrders: Order[]
+    }
+  }
+}
+
+export type StateOrderListMy = {
+  orderListMy: {
+    loading: boolean
+    error: string
+    orders: {
+      getMyOrders: Order[]
     }
   }
   userLogin: {

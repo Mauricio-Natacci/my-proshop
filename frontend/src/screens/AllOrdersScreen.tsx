@@ -5,16 +5,17 @@ import { Table, Button, Row, Col } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Message } from '../components/Message'
 import { Loader } from '../components/Loader'
-import { AllOrdersScreenProps, Order, State } from '../types/order.type'
+import { OrdersScreenProps, Order, StateOrderList } from '../types/order.type'
 import { listOrders } from '../actions/orderActions'
+import { StateUserInfo } from '../types/user.type'
 
-export const AllOrdersScreen = ({ history }: AllOrdersScreenProps) => {
+export const AllOrdersScreen = ({ history }: OrdersScreenProps) => {
   const dispatch: Dispatch<any> = useDispatch()
 
-  const orderList = useSelector((state: State) => state.orderList)
+  const orderList = useSelector((state: StateOrderList) => state.orderList)
   const { loading, error, orders } = orderList
 
-  const userLogin = useSelector((state: State) => state.userLogin)
+  const userLogin = useSelector((state: StateUserInfo) => state.userLogin)
   const { userInfo } = userLogin
 
   useEffect(() => {
