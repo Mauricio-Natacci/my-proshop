@@ -21,3 +21,12 @@ export const GET_ALL_ORDERS = gql`
     }
   }
 `
+
+export const GET_MY_ORDERS = gql`
+  ${ORDER_FIELDS_FRAGMENT}
+  query getMyOrders {
+    getMyOrders {
+      ...OrderFields
+    }
+  }
+`

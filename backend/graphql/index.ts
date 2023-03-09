@@ -26,16 +26,13 @@ async function bootstrap() {
     context: async (ctx: Context) => {
       const context = ctx
 
-      if (context.req.headers.authorization?.startsWith?.('Bearer')) {
-        if (context.req.cookies.accessToken) {
-          const decoded = verifyJwt<User>(context.req.cookies.accessToken)
+      if (context.req.cookies.accessToken) {
+        const decoded = verifyJwt<User>(context.req.cookies.accessToken)
 
-          const user = await UserModel.findById(decoded)
-            .select('-password')
-            .lean()
-
-          context.user = user
-        }
+        const user = await UserModel.findById(decoded)
+          .select('-password')
+          .lean()
+        context.user = user
       }
 
       return context

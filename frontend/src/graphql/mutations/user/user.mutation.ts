@@ -17,3 +17,12 @@ export const LOGIN = gql`
     }
   }
 `
+
+export const ME = gql`
+  ${USER_FIELDS_FRAGMENT}
+  query me {
+    me {
+      ...UserFields
+    }
+  }
+`

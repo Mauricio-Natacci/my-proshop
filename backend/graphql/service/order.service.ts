@@ -52,6 +52,9 @@ export class OrderService {
   async getMyOrders(context: Context): Promise<Order[]> {
     const user = context.user!
 
-    return await OrderModel.find({ user: user._id })
+    return await OrderModel.find({ buyer: user._id }).populate(
+      'buyer',
+      '-password'
+    )
   }
 }

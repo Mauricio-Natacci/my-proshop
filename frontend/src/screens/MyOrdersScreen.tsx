@@ -7,6 +7,7 @@ import { Message } from '../components/Message'
 import { Loader } from '../components/Loader'
 import { listMyOrders } from '../actions/orderActions'
 import { Order } from '../types/order.type'
+import { User } from '../types/user.type'
 
 type MyOrdersScreenProps = {
   history: {
@@ -14,21 +15,18 @@ type MyOrdersScreenProps = {
   }
 }
 
-type userInfoProps = {
-  _id: string
-  name: string
-  email: string
-  isAdmin: boolean
-}
-
 type State = {
   orderListMy: {
     loading: boolean
     error: string
-    orders: Order[]
+    orders: {
+      getMyOrders: Order[]
+    }
   }
   userLogin: {
-    userInfo: userInfoProps
+    userInfo: {
+      login: User
+    }
   }
 }
 
@@ -70,10 +68,10 @@ export const MyOrdersScreen = ({ history }: MyOrdersScreenProps) => {
                 </tr>
               </thead>
               <tbody>
-                {orders.map((order) => (
+                {orders?.getMyOrders?.map((order) => (
                   <tr key={order._id}>
-                    <td>{userInfo.name}</td>
-                    <td>{order.createdAt.substring(0, 10)}</td>
+                    <td>{userInfo?.login?.name}</td>
+                    <td>{order.createdAt?.substring(0, 10)}</td>
                     <td>$ {order.totalPrice}</td>
 
                     <td>
