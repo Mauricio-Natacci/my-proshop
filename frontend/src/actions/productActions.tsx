@@ -20,7 +20,7 @@ import {
 } from '../constants/productConstants'
 import { Dispatch } from 'redux'
 import { client } from '../graphql/service/index'
-import { GET_ALL_PRODUCTS } from '../graphql/queries/product-query'
+import { GET_ALL_PRODUCTS, GET_PRODUCT } from '../graphql/queries/product-query'
 
 type Product = {
   _id: string
@@ -81,7 +81,13 @@ export const listProductDetails =
     try {
       dispatch<ProductDetailsRequest>({ type: PRODUCT_DETAILS_REQUEST })
 
-      const { data } = await axios.get(`/api/products/${id}`)
+      const { data } = await client.query({
+        query: GET_PRODUCT,
+        variables: { id: { _id: id } }
+      })
+
+      // REST API
+      // const { data } = await axios.get(`/api/products/${id}`)
 
       dispatch<ProductDetailsSuccess>({
         type: PRODUCT_DETAILS_SUCCESS,

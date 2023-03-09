@@ -1,70 +1,70 @@
+import { useEffect } from 'react'
+import { Dispatch } from 'redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Row, Col, Image, ListGroup, Button } from 'react-bootstrap'
 import { Message } from '../components/Message'
 import { Loader } from '../components/Loader'
-import { useQuery } from '@apollo/client'
-import { GET_PRODUCT } from '../graphql/queries/product-query'
-
-type ProductScreenProps = {
-  history: {
-    push: (url: string) => void
-  }
-  match: {
-    params: {
-      id: string
-    }
-  }
-}
+import { ProductScreenProps, State } from '../types/product.type'
+import { listProductDetails } from '../actions/productActions'
 
 export const ProductScreen = ({ history, match }: ProductScreenProps) => {
-  const { loading, error, data } = useQuery(GET_PRODUCT, {
-    fetchPolicy: 'no-cache',
-    variables: { id: { _id: match.params.id } }
-  })
+  const dispatch: Dispatch<any> = useDispatch()
 
-  if (loading) return <Loader />
-  if (error) return <Message variant="danger">{error}</Message>
+  const productDetails = useSelector((state: State) => state.productDetails)
+  const { loading, error, product } = productDetails
 
-  const product = data.getProduct
   const qty = 1
 
   const addToCartHandler = () => {
     history.push(`/cart/${match.params.id}?qty=${qty}`)
   }
 
+  useEffect(() => {
+    dispatch(listProductDetails(match.params.id))
+  }, [dispatch, match])
+
   return (
     <>
       <Link className="btn btn-ligth my-3" to="/">
         Go Back
       </Link>
-      <Row>
-        <Col md={6}>
-          <Image
-            className="rounded"
-            src={product.image}
-            alt={product.name}
-            fluid
-          ></Image>
-        </Col>
-        <Col md={3}>
-          <ListGroup variant="flush">
-            <ListGroup.Item>
-              <h3>{product.name}</h3>
-            </ListGroup.Item>
-            <ListGroup.Item>{product.description}</ListGroup.Item>
-            <ListGroup.Item>Price: $ {product.price}</ListGroup.Item>
-            <ListGroup.Item>
-              <Button
-                onClick={addToCartHandler}
-                className="btn-block"
-                type="button"
-              >
-                Add To Cart
-              </Button>
-            </ListGroup.Item>
-          </ListGroup>
-        </Col>
-      </Row>
+      {loading ? (
+        <Loader />
+      ) : error ? (
+        <Message variant="danger">{error}</Message>
+      ) : (
+        <Row>
+          <Col md={6}>
+            <Image
+              className="rounded"
+              src={product.getProduct?.image}
+              alt={product.getProduct?.name}
+              fluid
+            ></Image>
+          </Col>
+          <Col md={3}>
+            <ListGroup variant="flush">
+              <ListGroup.Item>
+                <h3>{product.getProduct?.name}</h3>
+              </ListGroup.Item>
+              <ListGroup.Item>{product.getProduct?.description}</ListGroup.Item>
+              <ListGroup.Item>
+                Price: $ {product.getProduct?.price}
+              </ListGroup.Item>
+              <ListGroup.Item>
+                <Button
+                  onClick={addToCartHandler}
+                  className="btn-block"
+                  type="button"
+                >
+                  Add To Cart
+                </Button>
+              </ListGroup.Item>
+            </ListGroup>
+          </Col>
+        </Row>
+      )}
     </>
   )
 }
