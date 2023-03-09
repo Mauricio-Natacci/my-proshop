@@ -17,8 +17,6 @@ export const AllOrdersScreen = ({ history }: AllOrdersScreenProps) => {
   const userLogin = useSelector((state: State) => state.userLogin)
   const { userInfo } = userLogin
 
-  console.log(userInfo)
-
   useEffect(() => {
     if (userInfo?.login?.isAdmin) {
       dispatch(listOrders())
@@ -48,7 +46,7 @@ export const AllOrdersScreen = ({ history }: AllOrdersScreenProps) => {
                 </tr>
               </thead>
               <tbody>
-                {orders.map((order: Order) => (
+                {orders.getAllOrders?.map((order: Order) => (
                   <tr key={order._id}>
                     <td>{order.buyer.name}</td>
                     <td>{order.updatedAt.substring(0, 10)}</td>

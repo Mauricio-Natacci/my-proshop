@@ -34,8 +34,6 @@ export const LoginScreen = ({ location, history }: LoginScreenProps) => {
   const userLogin = useSelector((state: stateProps) => state.userLogin)
   const { loading, error, userInfo } = userLogin
 
-  console.log(userInfo)
-
   const redirect = location.search ? location.search.split('=')[1] : '/'
 
   useEffect(() => {

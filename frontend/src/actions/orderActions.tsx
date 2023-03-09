@@ -23,6 +23,8 @@ import {
   ORDER_LIST_SUCCESS
 } from '../constants/orderConstants'
 import { Dispatch } from 'redux'
+import { client } from '../graphql/service/index'
+import { GET_ALL_ORDERS } from '../graphql/queries/order/order-query'
 
 type createOrderProps = {
   orderItems: {
@@ -368,11 +370,16 @@ export const listOrders =
         userLogin: { userInfo }
       } = getState()
 
-      const config = {
-        headers: { Authorization: `Bearer ${userInfo.login.token}` }
-      }
+      // const config = {
+      //   headers: { Authorization: `Bearer ${userInfo.login.token}` }
+      // }
 
-      const { data } = await axios.get(`/api/orders/all-orders`, config)
+      const { data } = await client.query({
+        query: GET_ALL_ORDERS,
+        variables: { token: userInfo.login.token }
+      })
+
+      // const { data } = await axios.get(`/api/orders/all-orders`, config)
 
       dispatch<ListOrdersSuccess>({
         type: ORDER_LIST_SUCCESS,

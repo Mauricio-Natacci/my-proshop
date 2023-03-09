@@ -37,7 +37,9 @@ export type State = {
   orderList: {
     loading: boolean
     error: string
-    orders: Order[]
+    orders: {
+      getAllOrders: Order[]
+    }
   }
   userLogin: {
     userInfo: {
