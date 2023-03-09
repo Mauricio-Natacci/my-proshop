@@ -10,7 +10,6 @@ import { type Context } from './types/context.type'
 import { config } from '../config'
 import { verifyJwt } from './utils/jwt'
 import { type User, UserModel } from '../database/models/user.model'
-import cors from 'cors'
 
 async function bootstrap() {
   const schema = await buildSchema({
@@ -20,7 +19,6 @@ async function bootstrap() {
 
   const app = express()
 
-  app.use(cors())
   app.use(cookieParser())
 
   const server = new ApolloServer({
@@ -45,7 +43,13 @@ async function bootstrap() {
 
   await server.start()
 
-  server.applyMiddleware({ app })
+  server.applyMiddleware({
+    app,
+    cors: {
+      origin: 'http://localhost:3000',
+      credentials: true
+    }
+  })
 
   const port = config.portGraphql
 

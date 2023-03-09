@@ -13,9 +13,12 @@ type HeaderProps = {
 type State = {
   userLogin: {
     userInfo: {
-      name: string
-      email: string
-      isAdmin: boolean
+      login: {
+        _id: string
+        name: string
+        email: string
+        isAdmin: boolean
+      }
     }
   }
 }
@@ -43,9 +46,9 @@ export const Header = (props: HeaderProps) => {
                 <LinkContainer to="/cart">
                   <Nav.Link>Cart</Nav.Link>
                 </LinkContainer>
-                {userInfo ? (
+                {userInfo?.login ? (
                   <>
-                    <NavDropdown title={userInfo.name} id="username">
+                    <NavDropdown title={userInfo.login?.name} id="username">
                       <NavDropdown.Item onClick={logoutHandler}>
                         Logout
                       </NavDropdown.Item>
@@ -59,7 +62,7 @@ export const Header = (props: HeaderProps) => {
                     <Nav.Link>Sign In</Nav.Link>
                   </LinkContainer>
                 )}
-                {userInfo && userInfo.isAdmin && (
+                {userInfo?.login?.isAdmin && (
                   <NavDropdown title="Management" id="adminmenu">
                     <LinkContainer to="/admin/productlist">
                       <NavDropdown.Item>Manage Products</NavDropdown.Item>
