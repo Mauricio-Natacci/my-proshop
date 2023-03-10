@@ -15,3 +15,24 @@ export type ProductListState = {
     }
   }
 }
+
+export type State = {
+  productDetails: {
+    loading: boolean
+    error: string
+    product: {
+      getProduct: ProductItem
+    }
+  }
+}
+
+export type ProductScreenProps = {
+  history: {
+    push: (url: string) => void
+  }
+  match: {
+    params: {
+      id: string
+    }
+  }
+}

@@ -6,39 +6,19 @@ import { Dispatch } from 'redux'
 import { Message } from '../components/Message'
 import { Loader } from '../components/Loader'
 import { listMyOrders } from '../actions/orderActions'
-import { Order } from '../types/order.type'
+import { StateOrderListMy } from '../types/order.type'
+import { StateUserInfo } from '../types/user.type'
+import { OrdersScreenProps } from '../types/order.type'
 
-type MyOrdersScreenProps = {
-  history: {
-    push: (url: string) => void
-  }
-}
-
-type userInfoProps = {
-  _id: string
-  name: string
-  email: string
-  isAdmin: boolean
-}
-
-type State = {
-  orderListMy: {
-    loading: boolean
-    error: string
-    orders: Order[]
-  }
-  userLogin: {
-    userInfo: userInfoProps
-  }
-}
-
-export const MyOrdersScreen = ({ history }: MyOrdersScreenProps) => {
+export const MyOrdersScreen = ({ history }: OrdersScreenProps) => {
   const dispatch: Dispatch<any> = useDispatch()
 
-  const orderListMy = useSelector((state: State) => state.orderListMy)
+  const orderListMy = useSelector(
+    (state: StateOrderListMy) => state.orderListMy
+  )
   const { loading, error, orders } = orderListMy
 
-  const userLogin = useSelector((state: State) => state.userLogin)
+  const userLogin = useSelector((state: StateUserInfo) => state.userLogin)
   const { userInfo } = userLogin
 
   useEffect(() => {
@@ -70,10 +50,10 @@ export const MyOrdersScreen = ({ history }: MyOrdersScreenProps) => {
                 </tr>
               </thead>
               <tbody>
-                {orders.map((order) => (
+                {orders?.getMyOrders?.map((order) => (
                   <tr key={order._id}>
-                    <td>{userInfo.name}</td>
-                    <td>{order.createdAt.substring(0, 10)}</td>
+                    <td>{userInfo?.login?.name}</td>
+                    <td>{order.createdAt?.substring(0, 10)}</td>
                     <td>$ {order.totalPrice}</td>
 
                     <td>

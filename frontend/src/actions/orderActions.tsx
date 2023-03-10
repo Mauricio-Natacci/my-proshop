@@ -23,6 +23,12 @@ import {
   ORDER_LIST_SUCCESS
 } from '../constants/orderConstants'
 import { Dispatch } from 'redux'
+import { client } from '../graphql/service/index'
+import {
+  GET_ALL_ORDERS,
+  GET_MY_ORDERS
+} from '../graphql/queries/order/order-query'
+import { ME } from '../graphql/mutations/user/user.mutation'
 
 type createOrderProps = {
   orderItems: {
@@ -45,7 +51,13 @@ type createOrderProps = {
 type getStateProps = () => {
   userLogin: {
     userInfo: {
-      token: string
+      login: {
+        _id: string
+        name: string
+        email: string
+        isAdmin: boolean
+        token: string
+      }
     }
   }
 }
@@ -106,7 +118,7 @@ export const createOrder =
       const config = {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${userInfo.token}`
+          Authorization: `Bearer ${userInfo.login.token}`
         }
       }
 
@@ -159,7 +171,7 @@ export const getOrderDetails =
 
       const config = {
         headers: {
-          Authorization: `Bearer ${userInfo.token}`
+          Authorization: `Bearer ${userInfo.login.token}`
         }
       }
 
@@ -216,7 +228,7 @@ export const deliverOrder =
       } = getState()
 
       const config = {
-        headers: { Authorization: `Bearer ${userInfo.token}` }
+        headers: { Authorization: `Bearer ${userInfo.login.token}` }
       }
 
       const { data } = await axios.put(
@@ -271,7 +283,7 @@ export const cancelledOrder =
       } = getState()
 
       const config = {
-        headers: { Authorization: `Bearer ${userInfo.token}` }
+        headers: { Authorization: `Bearer ${userInfo.login.token}` }
       }
 
       const { data } = await axios.put(
@@ -320,11 +332,15 @@ export const listMyOrders =
         userLogin: { userInfo }
       } = getState()
 
-      const config = {
-        headers: { Authorization: `Bearer ${userInfo.token}` }
-      }
+      const { data } = await client.query({
+        query: GET_MY_ORDERS
+      })
 
-      const { data } = await axios.get(`/api/orders/my-orders`, config)
+      //REST API
+      // const config = {
+      //   headers: { Authorization: `Bearer ${userInfo.login.token}` }
+      // }
+      // const { data } = await axios.get(`/api/orders/my-orders`, config)
 
       dispatch<ListMyOrdersSuccess>({
         type: ORDER_LIST_MY_SUCCESS,
@@ -366,11 +382,15 @@ export const listOrders =
         userLogin: { userInfo }
       } = getState()
 
-      const config = {
-        headers: { Authorization: `Bearer ${userInfo.token}` }
-      }
+      const { data } = await client.query({
+        query: GET_ALL_ORDERS
+      })
 
-      const { data } = await axios.get(`/api/orders/all-orders`, config)
+      // REST API
+      // const config = {
+      //   headers: { Authorization: `Bearer ${userInfo.login.token}` }
+      // }
+      // const { data } = await axios.get(`/api/orders/all-orders`, config)
 
       dispatch<ListOrdersSuccess>({
         type: ORDER_LIST_SUCCESS,

@@ -1,21 +1,30 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Dispatch } from 'redux'
 import { Table, Button, Row, Col } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Message } from '../components/Message'
 import { Loader } from '../components/Loader'
-import { useQuery } from '@apollo/client'
-import { GET_ALL_ORDERS } from '../graphql/queries/order/order-query'
-import { AllOrdersScreenProps, Order } from '../types/order.type'
+import { OrdersScreenProps, Order, StateOrderList } from '../types/order.type'
+import { listOrders } from '../actions/orderActions'
+import { StateUserInfo } from '../types/user.type'
 
-export const AllOrdersScreen = ({ history }: AllOrdersScreenProps) => {
-  const { loading, error, data } = useQuery(GET_ALL_ORDERS)
+export const AllOrdersScreen = ({ history }: OrdersScreenProps) => {
+  const dispatch: Dispatch<any> = useDispatch()
 
-  if (loading) return <Loader />
-  if (error) return <Message variant="danger">{error.message}</Message>
+  const orderList = useSelector((state: StateOrderList) => state.orderList)
+  const { loading, error, orders } = orderList
 
-  const orders = data.getAllOrders
+  const userLogin = useSelector((state: StateUserInfo) => state.userLogin)
+  const { userInfo } = userLogin
 
-  //TODO: add history.push to home page if user is not admin, requirement: login feature needs to be implemented
+  useEffect(() => {
+    if (userInfo?.login?.isAdmin) {
+      dispatch(listOrders())
+    } else {
+      history.push('/')
+    }
+  }, [dispatch, history, userInfo])
 
   return (
     <>
@@ -38,7 +47,7 @@ export const AllOrdersScreen = ({ history }: AllOrdersScreenProps) => {
                 </tr>
               </thead>
               <tbody>
-                {orders.map((order: Order) => (
+                {orders.getAllOrders?.map((order: Order) => (
                   <tr key={order._id}>
                     <td>{order.buyer.name}</td>
                     <td>{order.updatedAt.substring(0, 10)}</td>
