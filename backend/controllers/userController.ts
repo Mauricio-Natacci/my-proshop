@@ -1,7 +1,7 @@
 import asyncHandler from 'express-async-handler'
 import { generateToken } from '../utils/generateToken'
-import { type Request, type Response } from 'express'
-import { type User, UserModel } from '../models/userModel'
+import { Request, Response } from 'express'
+import { User, UserModel } from '../models/userModel'
 import { NotFoundError } from '../errors/NotFoundError'
 
 export const login = asyncHandler(async (req: Request, res: Response) => {

@@ -1,25 +1,18 @@
-import 'reflect-metadata'
-import express from 'express'
-import cookieParser from 'cookie-parser'
 import { resolvers } from './resolvers'
 import { buildSchema } from 'type-graphql'
 import { ApolloServer } from 'apollo-server-express'
-import { connectToMongo } from './utils/mongo'
 import { authChecker } from './utils/authChecker'
-import { type Context } from './types/context.type'
+import { Context } from './types/context.type'
 import { config } from '../config'
 import { verifyJwt } from './utils/jwt'
-import { type User, UserModel } from '../database/models/user.model'
+import { User, UserModel } from '../database/models/user.model'
+import { Express } from 'express'
 
-async function bootstrap() {
+export async function createGraphqlServer(app: Express): Promise<ApolloServer> {
   const schema = await buildSchema({
     resolvers,
     authChecker
   })
-
-  const app = express()
-
-  app.use(cookieParser())
 
   const server = new ApolloServer({
     schema,
@@ -40,22 +33,15 @@ async function bootstrap() {
     playground: config.playgroundEnabled
   })
 
-  await server.start()
+  // await server.start()
 
-  server.applyMiddleware({
-    app,
-    cors: {
-      origin: 'http://localhost:3000',
-      credentials: true
-    }
-  })
+  // server.applyMiddleware({
+  //   app,
+  //   cors: {
+  //     origin: config.originFrontend,
+  //     credentials: true
+  //   }
+  // })
 
-  const port = config.portGraphql
-
-  app.listen({ port }, () => {
-    console.log(`App is listening on port ${port}!`)
-  })
-  connectToMongo()
+  return server
 }
-
-bootstrap()

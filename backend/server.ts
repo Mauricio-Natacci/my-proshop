@@ -1,5 +1,7 @@
+import 'reflect-metadata'
 import path from 'path'
 import express from 'express'
+import cookieParser from 'cookie-parser'
 import { config } from './config'
 import { connectDB } from './db/connectDb'
 import { errorHandler, notFound } from './middleware/errorMiddleware'
@@ -7,8 +9,10 @@ import { productRoutes } from './routes/productRoutes'
 import { userRouter } from './routes/userRoutes'
 import { orderRoutes } from './routes/orderRoutes'
 import { uploadRoutes } from './routes/uploadRoutes'
+import { createGraphqlServer } from './graphql'
 
 const app = express()
+app.use(cookieParser())
 
 app.use(express.json())
 
@@ -39,7 +43,8 @@ app.use(errorHandler)
 const PORT = config.port
 
 connectDB()
-  .then(() => {
+  .then(async () => {
+    await createGraphqlServer(app)
     app.listen(PORT, () => {
       console.log(
         `Server running in ${config.environment} mode on port ${PORT}`

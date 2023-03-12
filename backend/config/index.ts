@@ -5,14 +5,15 @@ import { NotFoundError } from '../errors/NotFoundError'
 dotenv.config()
 
 export const config = {
-  mongoURI: process.env.MONGO_URI || 'mongodb://127.0.0.1:27017',
+  mongoURI: process.env.MONGO_URI,
   shouldServeReactApp: process.env.SERVE_REACT_APP === 'true',
   showErrorStack: process.env.SHOW_ERROR_STACK === 'true',
-  port: process.env.PORT || 5000,
+  port: process.env.PORT,
   environment: process.env.NODE_ENV,
   jwtSecret: process.env.JWT_SECRET,
   playgroundEnabled: process.env.PLAYGROUND_ENABLED === 'true',
-  portGraphql: process.env.PORT_GRAPHQL || 8081
+  portGraphql: process.env.PORT_GRAPHQL,
+  originFrontend: process.env.ORIGIN_FRONTEND
 }
 
 if (!config.mongoURI) {
@@ -41,4 +42,12 @@ if (!config.jwtSecret) {
 
 if (config.playgroundEnabled) {
   throw new NotFoundError('PLAYGROUND_ENABLED environment variable is not set')
+}
+
+if (!config.portGraphql) {
+  throw new NotFoundError('PORT_GRAPHQL environment variable is not set')
+}
+
+if (!config.originFrontend) {
+  throw new NotFoundError('ORIGIN_FRONTEND environment variable is not set')
 }
