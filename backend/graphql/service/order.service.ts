@@ -11,11 +11,15 @@ import { Order } from '../types/order.type'
 
 export class OrderService {
   async getAllOrders(): Promise<Order[]> {
-    return await OrderModel.find().populate('buyer', '-password')
+    return await OrderModel.find()
+      .populate('buyer', '-password')
+      .populate('orderItems.productId')
   }
 
   async findSingleOrder(input: GetOrderInput): Promise<Order> {
-    const order = await OrderModel.findOne(input).populate('buyer', '-password')
+    const order = await OrderModel.findOne(input)
+      .populate('buyer', '-password')
+      .populate('orderItems.productId')
 
     if (!order) {
       throw new NotFoundError('Order not found')
@@ -52,10 +56,8 @@ export class OrderService {
   async getMyOrders(context: Context): Promise<Order[]> {
     const user = context.user!
 
-    const test = await OrderModel.find({ buyer: user._id }).populate(
-      'buyer',
-      '-password'
-    )
-    return test
+    return await OrderModel.find({ buyer: user._id })
+      .populate('buyer', '-password')
+      .populate('orderItems.productId')
   }
 }

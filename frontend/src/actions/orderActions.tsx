@@ -26,9 +26,11 @@ import { Dispatch } from 'redux'
 import { client } from '../graphql/service/index'
 import {
   GET_ALL_ORDERS,
-  GET_MY_ORDERS
+  GET_MY_ORDERS,
+  GET_ORDER
 } from '../graphql/queries/order/order-query'
 import { ME } from '../graphql/mutations/user/user.mutation'
+import { GET_PRODUCT } from '../graphql/queries/order/product-query'
 
 type createOrderProps = {
   orderItems: {
@@ -169,13 +171,19 @@ export const getOrderDetails =
         userLogin: { userInfo }
       } = getState()
 
-      const config = {
-        headers: {
-          Authorization: `Bearer ${userInfo.login.token}`
-        }
-      }
+      const { data } = await client.query({
+        query: GET_ORDER,
+        variables: { input: { _id: id } }
+      })
 
-      const { data } = await axios.get(`/api/orders/${id}`, config)
+      // REST API
+      // const config = {
+      //   headers: {
+      //     Authorization: `Bearer ${userInfo.login.token}`
+      //   }
+      // }
+
+      // const { data } = await axios.get(`/api/orders/${id}`, config)
 
       dispatch<GetOrderDetailsSuccess>({
         type: ORDER_DETAILS_SUCCESS,

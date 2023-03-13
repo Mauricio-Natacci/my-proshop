@@ -62,10 +62,13 @@ type Item = {
 
 export const OrderScreen = ({ match, history }: OrderScreenProps) => {
   const orderId = match.params.id
+
   const dispatch: Dispatch<any> = useDispatch()
 
   const orderDetails = useSelector((state: State) => state.orderDetails)
   const { order, loading, error } = orderDetails
+
+  console.log('orderDetails:', order)
 
   const orderDeliver = useSelector((state: State) => state.orderDeliver)
   const { loading: loadingDeliver, success: successDeliver } = orderDeliver
@@ -95,7 +98,7 @@ export const OrderScreen = ({ match, history }: OrderScreenProps) => {
     dispatch(deliverOrder(order))
   }
 
-  const cancelledHanler = () => {
+  const cancelledHandler = () => {
     dispatch(cancelledOrder(order))
   }
 
@@ -106,63 +109,70 @@ export const OrderScreen = ({ match, history }: OrderScreenProps) => {
   ) : (
     <>
       <CheckoutSteps step4 />
-      <h1>Order {order._id}</h1>
+      <h1>Order {order.getOrder?._id}</h1>
       <Row>
         <Col md={8}>
           <ListGroup variant="flush">
             <ListGroup.Item>
               <h2>Shipping</h2>
-              <p>{/* <strong>Name: </strong> {order.user.name} */}</p>
+              <p>
+                <strong>Name: </strong> {order.getOrder?.buyer.name}
+              </p>
               <p>
                 <strong>Email: </strong>{' '}
-                <a href={`mailto:${order.user.email}`}>{order.user.email}</a>
+                <a href={`mailto:${order.getOrder?.buyer.email}`}>
+                  {order.getOrder?.buyer.email}
+                </a>
               </p>
-              <p>
+              {/* <p>
                 <strong>Address: </strong>
-                {order.shippingAddress.address}, {order.shippingAddress.city},
-                {order.shippingAddress.postalCode},
-                {order.shippingAddress.country}
-              </p>
+                {order.getOrder.shippingAddress.address},{' '}
+                {order.getOrder.shippingAddress.city},
+                {order.getOrder.shippingAddress.postalCode},
+                {order.getOrder.shippingAddress.country}
+              </p> */}
             </ListGroup.Item>
 
             <ListGroup.Item>
               <h2>Order Items</h2>
-              {order.orderItems.length === 0 ? (
+              {/* {order.getOrder.orderItems.length === 0 ? (
                 <h2>Order is empty</h2>
               ) : (
                 <ListGroup variant="flush">
-                  {order.orderItems.map((item: Item, index: number) => (
-                    <ListGroup.Item key={index}>
-                      <Row>
-                        <Col md={1}>
-                          <Image
-                            src={item.image}
-                            alt={item.name}
-                            fluid
-                            rounded
-                          />
-                        </Col>
-                        <Col>
-                          <Link to={`/product/${item.product}`}>
-                            {item.name}
-                          </Link>
-                        </Col>
-                        <Col md={4}>
-                          {item.quantity} x ${item.price} = $
-                          {item.quantity * item.price}
-                        </Col>
-                      </Row>
-                    </ListGroup.Item>
-                  ))}
+                  {order.getOrder.orderItems.map(
+                    (item: Item, index: number) => (
+                      <ListGroup.Item key={index}>
+                        <Row>
+                          <Col md={1}>
+                            <Image
+                              src={item.image}
+                              alt={item.name}
+                              fluid
+                              rounded
+                            />
+                          </Col>
+                          <Col>
+                            <Link to={`/product/${item.product}`}>
+                              {item.name}
+                            </Link>
+                          </Col>
+                          <Col md={4}>
+                            {item.quantity} x ${item.price} = $
+                            {item.quantity * item.price}
+                          </Col>
+                        </Row>
+                      </ListGroup.Item>
+                    )
+                  )}
                 </ListGroup>
-              )}
-              {order.isDelivered ? (
+              )} */}
+              {order.getOrder?.isDelivered ? (
                 <Message>Delivered</Message>
               ) : (
                 <Message variant="danger">Not Delivered</Message>
               )}
               <ListGroup.Item className="Uppercase">
-                Status: {order.status}
+                Status: {order.getOrder?.status}
               </ListGroup.Item>
             </ListGroup.Item>
           </ListGroup>
@@ -177,11 +187,11 @@ export const OrderScreen = ({ match, history }: OrderScreenProps) => {
               <ListGroup.Item>
                 <Row>
                   <Col>Total Price:</Col>
-                  <Col>${order.totalPrice}</Col>
+                  <Col>${order.getOrder?.totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
               {loadingDeliver && <Loader />}
-              {userInfo && userInfo.isAdmin && !order.isDelivered && (
+              {userInfo?.isAdmin && !order.getOrder?.isDelivered && (
                 <ListGroup.Item>
                   <Button
                     type="button"
@@ -199,7 +209,7 @@ export const OrderScreen = ({ match, history }: OrderScreenProps) => {
                     <Button
                       type="button"
                       className="btn btn-danger"
-                      onClick={cancelledHanler}
+                      onClick={cancelledHandler}
                     >
                       Mark as Cancelled
                     </Button>
