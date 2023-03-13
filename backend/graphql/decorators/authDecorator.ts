@@ -1,5 +1,5 @@
 import { createMethodDecorator } from 'type-graphql'
-import { type adminDecoratorContext } from '../types/adminDecorator.type'
+import { adminDecoratorContext } from '../types/adminDecorator.type'
 
 export function IsLoggedIn() {
   return createMethodDecorator<adminDecoratorContext>(

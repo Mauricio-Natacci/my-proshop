@@ -112,9 +112,7 @@ export const OrderScreen = ({ match, history }: OrderScreenProps) => {
           <ListGroup variant="flush">
             <ListGroup.Item>
               <h2>Shipping</h2>
-              <p>
-                <strong>Name: </strong> {order.user.name}
-              </p>
+              <p>{/* <strong>Name: </strong> {order.user.name} */}</p>
               <p>
                 <strong>Email: </strong>{' '}
                 <a href={`mailto:${order.user.email}`}>{order.user.email}</a>

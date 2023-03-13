@@ -1,21 +1,20 @@
-import { type Request, type Response } from 'express'
+import { Request, Response } from 'express'
 import asyncHandler from 'express-async-handler'
 import { NotFoundError } from '../errors/NotFoundError'
-import { Order } from '../models/orderModel'
+import { OrderModel } from '../models/order.model'
 
 export const addOrderItems = asyncHandler(
   async (req: Request, res: Response) => {
-    const { orderItems, shippingAddress, itemsPrice, totalPrice } = req.body
+    const { orderItems, shippingAddress, totalPrice } = req.body
 
     if (orderItems && orderItems.length === 0) {
       res.status(400)
       throw new NotFoundError('No order items')
     } else {
-      const order = new Order({
+      const order = new OrderModel({
+        buyer: req.user._id,
         orderItems,
-        user: req.user._id,
         shippingAddress,
-        itemsPrice,
         totalPrice
       })
 
@@ -28,7 +27,7 @@ export const addOrderItems = asyncHandler(
 
 export const getOrderById = asyncHandler(
   async (req: Request, res: Response) => {
-    const order = await Order.findById(req.params.id).populate(
+    const order = await OrderModel.findById(req.params.id).populate(
       'buyer',
       'name email'
     )
@@ -44,7 +43,7 @@ export const getOrderById = asyncHandler(
 
 export const updateOrderToDelivered = asyncHandler(
   async (req: Request, res: Response) => {
-    const order = await Order.findById(req.params.id)
+    const order = await OrderModel.findById(req.params.id)
 
     if (order != null) {
       order.isDelivered = true
@@ -62,7 +61,7 @@ export const updateOrderToDelivered = asyncHandler(
 
 export const orderCancelled = asyncHandler(
   async (req: Request, res: Response) => {
-    const order = await Order.findById(req.params.id)
+    const order = await OrderModel.findById(req.params.id)
 
     if (order != null) {
       order.isDelivered = false
@@ -79,14 +78,14 @@ export const orderCancelled = asyncHandler(
 )
 
 export const getMyOrders = asyncHandler(async (req: Request, res: Response) => {
-  const orders = await Order.find({ user: req.user._id })
+  const orders = await OrderModel.find({ user: req.user._id })
 
   res.json(orders)
 })
 
 export const getAllOrders = asyncHandler(
   async (req: Request, res: Response) => {
-    const orders = await Order.find({}).populate('buyer', 'id name')
+    const orders = await OrderModel.find({}).populate('buyer', 'id name')
 
     res.json(orders)
   }

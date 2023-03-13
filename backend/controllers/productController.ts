@@ -1,15 +1,15 @@
 import asyncHandler from 'express-async-handler'
-import { type Request, type Response } from 'express'
-import { Product } from '../models/productModel'
+import { Request, Response } from 'express'
+import { ProductModel } from '../models/product.model'
 import { NotFoundError } from '../errors/NotFoundError'
 
 export const getProducts = asyncHandler(async (req: Request, res: Response) => {
-  const products = await Product.find({})
+  const products = await ProductModel.find({})
   res.json(products)
 })
 
 const findProductById = async (id: string) => {
-  const product = await Product.findById(id)
+  const product = await ProductModel.findById(id)
   if (product == null) {
     throw new NotFoundError('Product not found')
   }
@@ -31,20 +31,20 @@ export const deleteProduct = asyncHandler(
   }
 )
 
-export const createProduct = asyncHandler(
-  async (req: Request, res: Response) => {
-    const product = new Product({
-      name: 'Sample name',
-      price: 0,
-      user: req.user._id,
-      image: '/images/sample.jpg',
-      description: 'Sample description'
-    })
+// export const createProduct = asyncHandler(
+//   async (req: Request, res: Response) => {
+//     const product = new Product({
+//       name: 'Sample name',
+//       price: 0,
+//       user: req.user._id,
+//       image: '/images/sample.jpg',
+//       description: 'Sample description'
+//     })
 
-    const createdProduct = await product.save()
-    res.status(201).json(createdProduct)
-  }
-)
+//     const createdProduct = await product.save()
+//     res.status(201).json(createdProduct)
+//   }
+// )
 
 export const updateProduct = asyncHandler(
   async (req: Request, res: Response) => {

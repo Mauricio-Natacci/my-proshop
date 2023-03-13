@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
 import dotenv from 'dotenv'
 import { NotFoundError } from '../errors/NotFoundError'
 

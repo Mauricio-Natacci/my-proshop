@@ -1,5 +1,5 @@
-import { type Request, type Response } from 'express'
-import { type User } from '../../database/models/user.model'
+import { Request, Response } from 'express'
+import { User } from '../../models/user.model'
 
 export interface Context {
   req: Request

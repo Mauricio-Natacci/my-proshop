@@ -1,28 +1,28 @@
 import asyncHandler from 'express-async-handler'
 import { generateToken } from '../utils/generateToken'
 import { Request, Response } from 'express'
-import { User, UserModel } from '../models/userModel'
+import { User, UserModel } from '../models/user.model'
 import { NotFoundError } from '../errors/NotFoundError'
 
 export const login = asyncHandler(async (req: Request, res: Response) => {
   const user = await getExistingUser(req, res)
 
-  await checkIfPasswordIsCorrect(user, req, res)
+  //   await checkIfPasswordIsCorrect(user, req, res)
 
   res.json(buildUserData(user))
 })
 
-const checkIfPasswordIsCorrect = async (
-  user: User,
-  req: Request,
-  res: Response
-) => {
-  const isPasswordMatch = await user.matchPassword(req.body.password)
-  if (!isPasswordMatch) {
-    res.status(401)
-    throw new NotFoundError('Invalid email or password')
-  }
-}
+// const checkIfPasswordIsCorrect = async (
+//   user: User,
+//   req: Request,
+//   res: Response
+// ) => {
+//   const isPasswordMatch = await UserModel.matchPassword(req.body.password)
+//   if (!isPasswordMatch) {
+//     res.status(401)
+//     throw new NotFoundError('Invalid email or password')
+//   }
+// }
 
 const getExistingUser = async (req: Request, res: Response) => {
   const user = await UserModel.findOne({ email: req.body.email })

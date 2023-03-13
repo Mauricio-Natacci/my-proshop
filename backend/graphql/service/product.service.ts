@@ -1,12 +1,12 @@
-import { ProductModel } from '../../database/models/product.model'
+import { ProductModel } from '../../models/product.model'
 import {
-  type UpdateProductInput,
-  type CreateProductInput,
-  type GetProductInput
+  UpdateProductInput,
+  CreateProductInput,
+  GetProductInput
 } from '../inputs/product.input'
 import { NotFoundError } from '../errors/notFoundError'
-import { type Context } from '../types/context.type'
-import { type Product } from '../types/product.type'
+import { Context } from '../types/context.type'
+import { Product } from '../types/product.type'
 
 export class ProductService {
   async createProduct(

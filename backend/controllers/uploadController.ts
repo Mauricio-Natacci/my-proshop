@@ -2,7 +2,7 @@ import multer from 'multer'
 import multerS3 from 'multer-s3'
 import aws from 'aws-sdk'
 import { v4 as uuid } from 'uuid'
-import { type Response, type Request } from 'express'
+import { Response, Request } from 'express'
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {

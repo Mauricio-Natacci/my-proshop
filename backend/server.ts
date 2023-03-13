@@ -10,16 +10,25 @@ import { userRouter } from './routes/userRoutes'
 import { orderRoutes } from './routes/orderRoutes'
 import { uploadRoutes } from './routes/uploadRoutes'
 import { createGraphqlServer } from './graphql'
+import cors from 'cors'
 
 const app = express()
 app.use(cookieParser())
 
 app.use(express.json())
 
+app.use(
+  cors({
+    origin: config.originFrontend,
+    credentials: true
+  })
+)
+
 app.use('/api/products', productRoutes)
 app.use('/api/users', userRouter)
 app.use('/api/orders', orderRoutes)
 app.use('/api/upload', uploadRoutes)
+app.use('/api/graphql', createGraphqlServer)
 
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
 

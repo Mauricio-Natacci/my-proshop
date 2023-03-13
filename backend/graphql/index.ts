@@ -5,7 +5,7 @@ import { authChecker } from './utils/authChecker'
 import { Context } from './types/context.type'
 import { config } from '../config'
 import { verifyJwt } from './utils/jwt'
-import { User, UserModel } from '../database/models/user.model'
+import { User, UserModel } from '../models/user.model'
 import { Express } from 'express'
 
 export async function createGraphqlServer(app: Express): Promise<ApolloServer> {
@@ -33,15 +33,9 @@ export async function createGraphqlServer(app: Express): Promise<ApolloServer> {
     playground: config.playgroundEnabled
   })
 
-  // await server.start()
+  await server.start()
 
-  // server.applyMiddleware({
-  //   app,
-  //   cors: {
-  //     origin: config.originFrontend,
-  //     credentials: true
-  //   }
-  // })
+  server.applyMiddleware({ app })
 
   return server
 }

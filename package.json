@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "Shopping cart app",
   "main": "server.ts",
-  "engines": {
-    "node": "18"
-  },
   "scripts": {
     "server:ts": "ts-node-dev --respawn --transpile-only backend/server.ts",
     "build": "tsup backend",

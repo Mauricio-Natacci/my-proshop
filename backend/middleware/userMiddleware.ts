@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 import asyncHandler from 'express-async-handler'
-import { UserModel } from '../models/userModel'
+import { UserModel } from '../models/user.model'
 import { config } from '../config'
 import { NotFoundError } from '../errors/NotFoundError'
 
