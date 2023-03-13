@@ -50,7 +50,7 @@ export const AllOrdersScreen = ({ history }: OrdersScreenProps) => {
                 {orders.getAllOrders?.map((order: Order) => (
                   <tr key={order._id}>
                     <td>{order.buyer.name}</td>
-                    <td>{order.updatedAt.substring(0, 10)}</td>
+                    <td>{order.createdAt.substring(0, 10)}</td>
                     <td>$ {order.totalPrice}</td>
 
                     <td>

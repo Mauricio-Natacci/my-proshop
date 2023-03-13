@@ -1,4 +1,4 @@
-import { type Response, type NextFunction } from 'express'
+import { Response, NextFunction } from 'express'
 import { NotFoundError } from '../errors/NotFoundError'
 
 export const requireAdmin = (req: any, res: Response, next: NextFunction) => {

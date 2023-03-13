@@ -6,10 +6,10 @@ import { buildSchema } from 'type-graphql'
 import { ApolloServer } from 'apollo-server-express'
 import { connectToMongo } from './utils/mongo'
 import { authChecker } from './utils/authChecker'
-import { type Context } from './types/context.type'
+import { Context } from './types/context.type'
 import { config } from '../config'
 import { verifyJwt } from './utils/jwt'
-import { type User, UserModel } from '../database/models/user.model'
+import { User, UserModel } from '../models/user.model'
 
 async function bootstrap() {
   const schema = await buildSchema({
@@ -28,10 +28,8 @@ async function bootstrap() {
 
       if (context.req.cookies.accessToken) {
         const decoded = verifyJwt<User>(context.req.cookies.accessToken)
-
         const user = await UserModel.findById(decoded)
-          .select('-password')
-          .lean()
+
         context.user = user
       }
 

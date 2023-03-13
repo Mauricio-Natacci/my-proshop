@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { OrderModel } from '../../database/models/order.model'
+import { OrderModel } from '../../models/order.model'
 import { NotFoundError } from '../errors/notFoundError'
 import {
-  type OrderDeliveredInput,
-  type GetOrderInput,
-  type OrderCanceledInput
+  OrderDeliveredInput,
+  GetOrderInput,
+  OrderCanceledInput
 } from '../inputs/order.input'
-import { type Context } from '../types/context.type'
-import { type Order } from '../types/order.type'
+import { Context } from '../types/context.type'
+import { Order } from '../types/order.type'
 
 export class OrderService {
   async getAllOrders(): Promise<Order[]> {
@@ -52,9 +52,10 @@ export class OrderService {
   async getMyOrders(context: Context): Promise<Order[]> {
     const user = context.user!
 
-    return await OrderModel.find({ buyer: user._id }).populate(
+    const test = await OrderModel.find({ buyer: user._id }).populate(
       'buyer',
       '-password'
     )
+    return test
   }
 }

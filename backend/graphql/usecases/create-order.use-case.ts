@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { OrderModel } from '../../database/models/order.model'
-import { ProductModel } from '../../database/models/product.model'
+import { OrderModel } from '../../models/order.model'
+import { ProductModel } from '../../models/product.model'
 import { NotFoundError } from '../errors/notFoundError'
-import { type CreateOrderInput } from '../inputs/order.input'
-import { type Context } from '../types/context.type'
-import { type Order } from '../types/order.type'
+import { CreateOrderInput } from '../inputs/order.input'
+import { Context } from '../types/context.type'
+import { Order } from '../types/order.type'
 
 export class CreateOrderUseCase {
   async execute(input: CreateOrderInput, context: Context): Promise<Order> {
@@ -42,11 +42,12 @@ export class CreateOrderUseCase {
         .reduce((acc, item) => acc + item.price * item.quantity, 0)
         .toFixed(2)
     )
+    const shippingAddress = input.shippingAddress
 
     const order = new OrderModel({
-      user: user._id,
+      buyer: user._id,
       orderItems,
-      shippingAddress: input.shippingAddress,
+      shippingAddress,
       totalPrice
     })
 
