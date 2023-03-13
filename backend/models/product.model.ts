@@ -7,22 +7,22 @@ export class Product {
   @prop({ required: true, ref: () => User })
   createdBy: Ref<User>
 
-  @prop({ required: true })
+  @prop({ required: true, type: () => String })
   name: string
 
-  @prop({ required: true })
+  @prop({ required: true, type: () => String })
   image: string
 
-  @prop({ required: true })
+  @prop({ required: true, type: () => String })
   description: string
 
-  @prop({ required: true })
+  @prop({ required: true, type: () => Number })
   price: number
 
-  @prop({ required: true, default: Date.now })
+  @prop({ required: true, default: Date.now, type: () => Date })
   createdAt: Date
 
-  @prop({ required: true, default: Date.now })
+  @prop({ required: true, default: Date.now, type: () => Date })
   updatedAt: Date
 }
 

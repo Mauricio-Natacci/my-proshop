@@ -59,7 +59,7 @@ export default class OrderResolver {
     return await this.orderService.updateOrderToCanceled(input)
   }
 
-  // @IsLoggedIn()
+  @IsLoggedIn()
   @Query(() => [Order])
   async getMyOrders(@Ctx() context: Context): Promise<Order[]> {
     return await this.orderService.getMyOrders(context)
