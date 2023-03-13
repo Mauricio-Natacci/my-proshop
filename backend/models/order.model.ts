@@ -1,6 +1,4 @@
 import { getModelForClass, modelOptions, prop, Ref } from '@typegoose/typegoose'
-import { OrderItem } from '../graphql/types/item.type'
-import { ShippingAddress } from '../graphql/types/shippingAddress.type'
 import { User } from './user.model'
 
 @modelOptions({ options: { allowMixed: 0 } })
@@ -36,3 +34,16 @@ export class Order {
 }
 
 export const OrderModel = getModelForClass<typeof Order>(Order)
+
+export type OrderItem = {
+  quantity: number
+  price: number
+  productId: string
+}
+
+export type ShippingAddress = {
+  address: string
+  city: string
+  postalCode: string
+  country: string
+}
