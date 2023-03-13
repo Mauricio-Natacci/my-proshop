@@ -4,9 +4,9 @@ import {
   pre,
   prop,
   queryMethod,
-  ReturnModelType
+  type ReturnModelType
 } from '@typegoose/typegoose'
-import { AsQueryMethod } from '@typegoose/typegoose/lib/types'
+import { type AsQueryMethod } from '@typegoose/typegoose/lib/types'
 import bcrypt from 'bcryptjs'
 
 function findByEmail(
@@ -36,22 +36,22 @@ interface QueryHelpers {
 export class User {
   _id: string
 
-  @prop({ required: true, type: () => String })
+  @prop({ required: true })
   name: string
 
-  @prop({ required: true, type: () => String })
+  @prop({ required: true })
   email: string
 
-  @prop({ required: true, type: () => String })
+  @prop({ required: true })
   password: string
 
-  @prop({ required: true, default: false, type: () => Boolean })
+  @prop({ required: true, default: false })
   isAdmin: boolean
 
-  @prop({ required: true, default: Date.now, type: () => Date })
+  @prop({ required: true, default: Date.now })
   createdAt: Date
 
-  @prop({ required: true, default: Date.now, type: () => Date })
+  @prop({ required: true, default: Date.now })
   updatedAt: Date
 }
 

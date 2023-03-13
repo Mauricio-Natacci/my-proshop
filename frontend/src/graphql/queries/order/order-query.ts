@@ -8,6 +8,7 @@ export const ORDER_FIELDS_FRAGMENT = gql`
       name
     }
     updatedAt
+    createdAt
     isDelivered
     totalPrice
   }

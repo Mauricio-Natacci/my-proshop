@@ -32,4 +32,7 @@ export class Order {
 
   @Field(() => Date)
   updatedAt: Date
+
+  @Field(() => Date)
+  createdAt: Date
 }
