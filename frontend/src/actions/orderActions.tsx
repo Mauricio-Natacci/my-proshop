@@ -36,6 +36,7 @@ import {
   DELIVER_ORDER,
 } from '../graphql/mutations/order/order.mutation'
 import { ShippingAddress } from '../../../backend/graphql/types/shippingAddress.type'
+import { CartItem } from './cartActions'
 
 type getStateProps = () => {
   userLogin: {
@@ -97,13 +98,7 @@ export type CreateOrderFail = {
 }
 
 export const createOrder =
-  (
-    items: {
-      productId: string
-      quantity: number
-    }[],
-    shippingAddress: ShippingAddress,
-  ) =>
+  (items: CartItem, shippingAddress: ShippingAddress) =>
   async (dispatch: Dispatch, getState: any) => {
     try {
       dispatch<CreateOrderRequest>({

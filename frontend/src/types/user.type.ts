@@ -24,6 +24,15 @@ export type LoginScreenProps = {
   }
 }
 
+export type RegisterScreenProps = {
+  location: {
+    search: string
+  }
+  history: {
+    push: (url: string) => void
+  }
+}
+
 export type StateUserRegister = {
   userRegister: {
     loading: boolean

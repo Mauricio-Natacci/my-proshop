@@ -1,37 +1,6 @@
 import { ProductItem } from './product.type'
 import { User } from './user.type'
 
-export type Order = {
-  _id: string
-  buyer: User
-  orderItems: OrderItem[]
-  shippingAddress: shippingAddress
-  createdAt: string
-  totalPrice: number
-  status: boolean
-  isDelivered: boolean
-  updatedAt: string
-}
-
-export type OrderItem = {
-  quantity: number
-  price: number
-  productId: ProductItem
-}
-
-type shippingAddress = {
-  address: string
-  city: string
-  postalCode: string
-  country: string
-}
-
-export type OrdersScreenProps = {
-  history: {
-    push: (url: string) => void
-  }
-}
-
 export type OrderScreenProps = {
   match: {
     params: {
@@ -76,11 +45,6 @@ export type StateOrderDetails = {
       getOrder: Order
     }
   }
-  userLogin: {
-    userInfo: {
-      login: User
-    }
-  }
 }
 
 export type StatusOrderState = {
@@ -92,4 +56,29 @@ export type StatusOrderState = {
     loading: boolean
     success: boolean
   }
+}
+
+export type shippingAddress = {
+  address: string
+  city: string
+  postalCode: string
+  country: string
+}
+
+export type Order = {
+  _id: string
+  buyer: User
+  orderItems: OrderItem[]
+  shippingAddress: shippingAddress
+  createdAt: string
+  totalPrice: number
+  status: boolean
+  isDelivered: boolean
+  updatedAt: string
+}
+
+export type OrderItem = {
+  quantity: number
+  price: number
+  productId: ProductItem
 }

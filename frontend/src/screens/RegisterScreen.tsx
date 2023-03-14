@@ -7,10 +7,10 @@ import { Message } from '../components/Message'
 import { Loader } from '../components/Loader'
 import { FormContainer } from '../components/FormContainer'
 import { register } from '../actions/userActions'
-import { LoginScreenProps, StateUserRegister } from '../types/user.type'
+import { RegisterScreenProps, StateUserRegister } from '../types/user.type'
 import { Event } from '../types/event.type'
 
-export const RegisterScreen = ({ location, history }: LoginScreenProps) => {
+export const RegisterScreen = ({ location, history }: RegisterScreenProps) => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')

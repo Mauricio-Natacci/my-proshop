@@ -8,13 +8,13 @@ import { Loader } from '../components/Loader'
 import { listMyOrders } from '../actions/orderActions'
 import { StateOrderListMy } from '../types/order.type'
 import { StateUserInfo } from '../types/user.type'
-import { OrdersScreenProps } from '../types/order.type'
+import { OrderScreenProps } from '../types/order.type'
 
-export const MyOrdersScreen = ({ history }: OrdersScreenProps) => {
+export const MyOrdersScreen = ({ history }: OrderScreenProps) => {
   const dispatch: Dispatch<any> = useDispatch()
 
   const orderListMy = useSelector(
-    (state: StateOrderListMy) => state.orderListMy
+    (state: StateOrderListMy) => state.orderListMy,
   )
   const { loading, error, orders } = orderListMy
 

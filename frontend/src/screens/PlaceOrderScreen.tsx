@@ -6,7 +6,6 @@ import { Dispatch } from 'redux'
 import { CheckoutSteps } from '../components/CheckoutSteps'
 import { createOrder } from '../actions/orderActions'
 import { Message } from '../components/Message'
-import { StateCart } from '../types/cart.type'
 
 type PlaceOrderScreenProps = {
   history: {
@@ -23,6 +22,15 @@ type CartItem = {
     _id: string
     image: string
     name: string
+  }
+}
+
+type StateCart = {
+  cart: {
+    cartItems: any
+    shippingAddress: any
+    itemsPrice: string
+    totalPrice: string
   }
 }
 
