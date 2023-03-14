@@ -13,7 +13,7 @@ import { Order } from '../types/order.type'
 import { CreateOrderUseCase } from '../usecases/create-order.use-case'
 
 @Resolver()
-export default class OrderResolver {
+export class OrderResolver {
   constructor(
     private readonly orderService: OrderService,
     private readonly createOrderUseCase: CreateOrderUseCase,

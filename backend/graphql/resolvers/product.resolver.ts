@@ -6,11 +6,11 @@ import { Context } from '../types/context.type'
 import {
   CreateProductInput,
   GetProductInput,
-  UpdateProductInput
+  UpdateProductInput,
 } from '../inputs/product.input'
 
 @Resolver()
-export default class ProductResolver {
+export class ProductResolver {
   constructor(private readonly productService: ProductService) {
     this.productService = new ProductService()
   }
@@ -20,7 +20,7 @@ export default class ProductResolver {
   async createProduct(
     @Arg('input')
     input: CreateProductInput,
-    @Ctx() context: Context
+    @Ctx() context: Context,
   ): Promise<Product> {
     return await this.productService.createProduct(input, context)
   }
@@ -29,7 +29,7 @@ export default class ProductResolver {
   @Mutation(() => Product)
   async updateProduct(
     @Arg('input') input: UpdateProductInput,
-    @Ctx() context: Context
+    @Ctx() context: Context,
   ): Promise<Product> {
     return await this.productService.updateProduct(input, context)
   }
