@@ -1,3 +1,4 @@
+import { ProductItem } from './product.type'
 import { User } from './user.type'
 
 export type Order = {
@@ -7,17 +8,15 @@ export type Order = {
   shippingAddress: shippingAddress
   createdAt: string
   totalPrice: number
-  isPaid: boolean
+  status: boolean
   isDelivered: boolean
   updatedAt: string
 }
 
-type OrderItem = {
-  name: string
+export type OrderItem = {
   quantity: number
-  image: string
   price: number
-  product: string
+  productId: ProductItem
 }
 
 type shippingAddress = {
@@ -81,5 +80,16 @@ export type StateOrderDetails = {
     userInfo: {
       login: User
     }
+  }
+}
+
+export type StatusOrderState = {
+  orderDeliver: {
+    loading: boolean
+    success: boolean
+  }
+  orderCancelled: {
+    loading: boolean
+    success: boolean
   }
 }

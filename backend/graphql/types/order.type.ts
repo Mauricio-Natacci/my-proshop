@@ -27,8 +27,14 @@ export class Order {
   @Field(() => Boolean)
   isDelivered: boolean
 
+  @Field(() => Boolean)
+  isCanceled: boolean
+
   @Field(() => Date)
   deliveredAt: Date
+
+  @Field(() => Date)
+  canceledAt: Date
 
   @Field(() => Date)
   updatedAt: Date

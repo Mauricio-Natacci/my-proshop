@@ -1,5 +1,4 @@
 import { gql } from '@apollo/client'
-import { ORDER_FIELDS_FRAGMENT } from '../../queries/order/order-query'
 
 export const CREATE_ORDER = gql`
   mutation createOrder($input: CreateOrderInput!) {
@@ -10,6 +9,29 @@ export const CREATE_ORDER = gql`
         quantity
       }
       totalPrice
+    }
+  }
+`
+
+export const DELIVER_ORDER = gql`
+  mutation deliverOrder($input: OrderDeliveredInput!) {
+    orderDelivered(input: $input) {
+      _id
+      isDelivered
+      deliveredAt
+      status
+    }
+  }
+`
+
+export const CANCEL_ORDER = gql`
+  mutation cancelOrder($input: OrderCanceledInput!) {
+    orderCanceled(input: $input) {
+      _id
+      isDelivered
+      isCanceled
+      canceledAt
+      status
     }
   }
 `

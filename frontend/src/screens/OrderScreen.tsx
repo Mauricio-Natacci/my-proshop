@@ -9,63 +9,43 @@ import { CheckoutSteps } from '../components/CheckoutSteps'
 import {
   getOrderDetails,
   deliverOrder,
-  cancelledOrder
+  cancelledOrder,
 } from '../actions/orderActions'
 import {
   ORDER_DELIVER_RESET,
-  ORDER_CANCELLED_RESET
+  ORDER_CANCELLED_RESET,
 } from '../constants/orderConstants'
 import { StateUserInfo } from '../types/user.type'
-import { OrderScreenProps } from '../types/order.type'
-
-type State = {
-  orderDetails: {
-    error: string | null
-    loading: boolean
-    order: any
-  }
-  orderDeliver: {
-    loading: boolean
-    success: boolean
-  }
-  orderCancelled: {
-    loading: boolean
-    success: boolean
-  }
-}
-
-type Item = {
-  name: string
-  image: string
-  price: number
-  productId: {
-    _id: string
-    image: string
-    name: string
-  }
-  quantity: number
-}
+import {
+  OrderItem,
+  OrderScreenProps,
+  StateOrderDetails,
+  StatusOrderState,
+} from '../types/order.type'
 
 export const OrderScreen = ({ match, history }: OrderScreenProps) => {
   const orderId = match.params.id
 
   const dispatch: Dispatch<any> = useDispatch()
 
-  const orderDetails = useSelector((state: State) => state.orderDetails)
+  const orderDetails = useSelector(
+    (state: StateOrderDetails) => state.orderDetails,
+  )
   const { order, loading, error } = orderDetails
 
-  const orderDeliver = useSelector((state: State) => state.orderDeliver)
+  const orderDeliver = useSelector(
+    (state: StatusOrderState) => state.orderDeliver,
+  )
   const { loading: loadingDeliver, success: successDeliver } = orderDeliver
 
-  const orderCancelled = useSelector((state: State) => state.orderCancelled)
+  const orderCancelled = useSelector(
+    (state: StatusOrderState) => state.orderCancelled,
+  )
   const { loading: loadingCancelled, success: successCancelled } =
     orderCancelled
 
   const userLogin = useSelector((state: StateUserInfo) => state.userLogin)
   const { userInfo } = userLogin
-
-  console.log('userInfo', userInfo)
-  console.log('order', order)
 
   useEffect(() => {
     if (!userInfo) {
@@ -74,19 +54,32 @@ export const OrderScreen = ({ match, history }: OrderScreenProps) => {
   }, [history, userInfo])
 
   useEffect(() => {
-    if (!order || order._id !== orderId || successDeliver || successCancelled) {
+    if (
+      !order ||
+      order.getOrder?._id !== orderId ||
+      successDeliver ||
+      successCancelled
+    ) {
       dispatch({ type: ORDER_DELIVER_RESET })
       dispatch({ type: ORDER_CANCELLED_RESET })
       dispatch(getOrderDetails(orderId))
     }
-  }, [dispatch, order, orderId, successDeliver, successCancelled])
+  }, [
+    dispatch,
+    order,
+    orderId,
+    successDeliver,
+    successCancelled,
+    userInfo,
+    history,
+  ])
 
   const deliverHandler = () => {
-    dispatch(deliverOrder(order))
+    dispatch(deliverOrder(order.getOrder._id))
   }
 
   const cancelledHandler = () => {
-    dispatch(cancelledOrder(order))
+    dispatch(cancelledOrder(order.getOrder._id))
   }
 
   return loading ? (
@@ -114,8 +107,8 @@ export const OrderScreen = ({ match, history }: OrderScreenProps) => {
               <p>
                 <strong>Address: </strong>
                 {order.getOrder?.shippingAddress.address},{' '}
-                {order.getOrder?.shippingAddress.city},
-                {order.getOrder?.shippingAddress.postalCode},
+                {order.getOrder?.shippingAddress.city},{' '}
+                {order.getOrder?.shippingAddress.postalCode},{' '}
                 {order.getOrder?.shippingAddress.country}
               </p>
             </ListGroup.Item>
@@ -127,20 +120,20 @@ export const OrderScreen = ({ match, history }: OrderScreenProps) => {
               ) : (
                 <ListGroup variant="flush">
                   {order.getOrder?.orderItems?.map(
-                    (item: Item, index: number) => (
+                    (item: OrderItem, index: number) => (
                       <ListGroup.Item key={index}>
                         <Row>
                           <Col md={1}>
                             <Image
-                              src={item.image}
-                              alt={item.name}
+                              src={item.productId?.image}
+                              alt={item.productId?.name}
                               fluid
                               rounded
                             />
                           </Col>
                           <Col>
                             <Link to={`/product/${item.productId}`}>
-                              {item.name}
+                              {item.productId?.name}
                             </Link>
                           </Col>
                           <Col md={4}>
@@ -149,7 +142,7 @@ export const OrderScreen = ({ match, history }: OrderScreenProps) => {
                           </Col>
                         </Row>
                       </ListGroup.Item>
-                    )
+                    ),
                   )}
                 </ListGroup>
               )}
@@ -178,7 +171,7 @@ export const OrderScreen = ({ match, history }: OrderScreenProps) => {
                 </Row>
               </ListGroup.Item>
               {loadingDeliver && <Loader />}
-              {userInfo.login?.isAdmin && !order.getOrder?.isDelivered && (
+              {userInfo?.login?.isAdmin && !order.getOrder?.isDelivered && (
                 <ListGroup.Item>
                   <Button
                     type="button"
@@ -190,7 +183,7 @@ export const OrderScreen = ({ match, history }: OrderScreenProps) => {
                 </ListGroup.Item>
               )}
               {loadingCancelled && <Loader />}
-              {userInfo.login?.isAdmin && (
+              {userInfo?.login?.isAdmin && (
                 <center>
                   <ListGroup.Item>
                     <Button

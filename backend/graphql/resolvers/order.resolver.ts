@@ -5,7 +5,7 @@ import {
   CreateOrderInput,
   GetOrderInput,
   OrderCanceledInput,
-  OrderDeliveredInput
+  OrderDeliveredInput,
 } from '../inputs/order.input'
 import { OrderService } from '../service/order.service'
 import { Context } from '../types/context.type'
@@ -16,7 +16,7 @@ import { CreateOrderUseCase } from '../usecases/create-order.use-case'
 export default class OrderResolver {
   constructor(
     private readonly orderService: OrderService,
-    private readonly createOrderUseCase: CreateOrderUseCase
+    private readonly createOrderUseCase: CreateOrderUseCase,
   ) {
     this.orderService = new OrderService()
     this.createOrderUseCase = new CreateOrderUseCase()
@@ -37,7 +37,7 @@ export default class OrderResolver {
   @Mutation(() => Order)
   async createOrder(
     @Arg('input') input: CreateOrderInput,
-    @Ctx() context: Context
+    @Ctx() context: Context,
   ): Promise<Order> {
     return await this.createOrderUseCase.execute(input, context)
   }
@@ -45,16 +45,14 @@ export default class OrderResolver {
   @IsAdmin()
   @Mutation(() => Order)
   async orderDelivered(
-    @Arg('input') input: OrderDeliveredInput
+    @Arg('input') input: OrderDeliveredInput,
   ): Promise<Order> {
     return await this.orderService.updateOrderToDelivered(input)
   }
 
   @IsAdmin()
   @Mutation(() => Order)
-  async orderCancelled(
-    @Arg('input') input: OrderCanceledInput
-  ): Promise<Order> {
+  async orderCanceled(@Arg('input') input: OrderCanceledInput): Promise<Order> {
     return await this.orderService.updateOrderToCanceled(input)
   }
 

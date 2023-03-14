@@ -4,7 +4,7 @@ import { NotFoundError } from '../errors/notFoundError'
 import {
   OrderDeliveredInput,
   GetOrderInput,
-  OrderCanceledInput
+  OrderCanceledInput,
 } from '../inputs/order.input'
 import { Context } from '../types/context.type'
 import { Order } from '../types/order.type'
@@ -48,6 +48,7 @@ export class OrderService {
     }
 
     order.isDelivered = false
+    order.isCanceled = true
     order.status = 'cancelled'
 
     return await order.save()

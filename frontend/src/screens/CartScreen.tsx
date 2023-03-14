@@ -7,8 +7,8 @@ import { addToCart, removeFromCart } from '../actions/cartActions'
 import { Message } from '../components/Message'
 import {
   CartScreenProps,
-  stateCart,
-  updateItemQuantityCart
+  StateCart,
+  UpdateItemQuantityCart,
 } from '../types/cart.type'
 
 export const CartScreen = ({ match, location, history }: CartScreenProps) => {
@@ -18,7 +18,7 @@ export const CartScreen = ({ match, location, history }: CartScreenProps) => {
 
   const dispatch: Dispatch<any> = useDispatch()
 
-  const cart = useSelector((state: stateCart) => state.cart)
+  const cart = useSelector((state: StateCart) => state.cart)
   const { cartItems } = cart
 
   useEffect(() => {
@@ -35,7 +35,7 @@ export const CartScreen = ({ match, location, history }: CartScreenProps) => {
     history.push('/login?redirect=shipping')
   }
 
-  const updateItemQuantity = ({ productId, value }: updateItemQuantityCart) => {
+  const updateItemQuantity = ({ productId, value }: UpdateItemQuantityCart) => {
     dispatch(addToCart(productId, value))
   }
 
@@ -49,7 +49,7 @@ export const CartScreen = ({ match, location, history }: CartScreenProps) => {
           </Message>
         ) : (
           <ListGroup variant="flush">
-            {cartItems.map((item) => (
+            {cartItems.map((item: any) => (
               <ListGroup.Item key={item.productId}>
                 <Row>
                   <Col md={3}>
@@ -71,7 +71,7 @@ export const CartScreen = ({ match, location, history }: CartScreenProps) => {
                       onChange={(e) =>
                         updateItemQuantity({
                           productId: item.productId,
-                          value: Number(e.target.value)
+                          value: Number(e.target.value),
                         })
                       }
                       min="1"
@@ -100,12 +100,19 @@ export const CartScreen = ({ match, location, history }: CartScreenProps) => {
             <ListGroup.Item>
               <h4>
                 Subtotal (
-                {cartItems.reduce((acc, item) => acc + item.quantity, 0)}) items
+                {cartItems.reduce(
+                  (acc: any, item: any) => acc + item.quantity,
+                  0,
+                )}
+                ) items
               </h4>
               <h4>
                 Total: $
                 {cartItems
-                  .reduce((acc, item) => acc + item.quantity * item.price, 0)
+                  .reduce(
+                    (acc: any, item: any) => acc + item.quantity * item.price,
+                    0,
+                  )
                   .toFixed(2)}
               </h4>
             </ListGroup.Item>

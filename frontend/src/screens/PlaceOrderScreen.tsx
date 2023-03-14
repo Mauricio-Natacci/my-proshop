@@ -6,6 +6,7 @@ import { Dispatch } from 'redux'
 import { CheckoutSteps } from '../components/CheckoutSteps'
 import { createOrder } from '../actions/orderActions'
 import { Message } from '../components/Message'
+import { StateCart } from '../types/cart.type'
 
 type PlaceOrderScreenProps = {
   history: {
@@ -25,13 +26,7 @@ type CartItem = {
   }
 }
 
-type StateCart = {
-  cart: {
-    cartItems: any
-    shippingAddress: any
-    itemsPrice: string
-    totalPrice: string
-  }
+type StateOrderCreate = {
   orderCreate: {
     order: any
     success: boolean
@@ -44,7 +39,9 @@ export const PlaceOrderScreen = ({ history }: PlaceOrderScreenProps) => {
 
   const cart = useSelector((state: StateCart) => state.cart)
 
-  const orderCreate = useSelector((state: StateCart) => state.orderCreate)
+  const orderCreate = useSelector(
+    (state: StateOrderCreate) => state.orderCreate,
+  )
   const { order, success, error } = orderCreate
 
   //   Calculate prices
@@ -55,15 +52,15 @@ export const PlaceOrderScreen = ({ history }: PlaceOrderScreenProps) => {
   cart.itemsPrice = addDecimals(
     cart.cartItems.reduce(
       (acc: string, item: any) => acc + item.price * item.quantity,
-      0
-    )
+      0,
+    ),
   )
   cart.totalPrice = Number(cart.itemsPrice).toFixed(2)
 
   const items = cart.cartItems.map((item: CartItem) => {
     return {
       productId: item.productId,
-      quantity: item.quantity
+      quantity: item.quantity,
     }
   })
 

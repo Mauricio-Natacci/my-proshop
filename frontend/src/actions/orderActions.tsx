@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import axios from 'axios'
 import { CART_EMPTY } from '../constants/cartConstants'
 import {
@@ -20,19 +21,20 @@ import {
   ORDER_LIST_MY_REQUEST,
   ORDER_LIST_MY_SUCCESS,
   ORDER_LIST_REQUEST,
-  ORDER_LIST_SUCCESS
+  ORDER_LIST_SUCCESS,
 } from '../constants/orderConstants'
 import { Dispatch } from 'redux'
 import { client } from '../graphql/service/index'
 import {
   GET_ALL_ORDERS,
   GET_MY_ORDERS,
-  GET_ORDER
+  GET_ORDER,
 } from '../graphql/queries/order/order-query'
-import { ME } from '../graphql/mutations/user/user.mutation'
-import { GET_PRODUCT } from '../graphql/queries/order/product-query'
-import { CREATE_ORDER } from '../graphql/mutations/order/order.mutation'
-import { CreateOrderInput } from '../../../backend/graphql/inputs/order.input'
+import {
+  CANCEL_ORDER,
+  CREATE_ORDER,
+  DELIVER_ORDER,
+} from '../graphql/mutations/order/order.mutation'
 import { ShippingAddress } from '../../../backend/graphql/types/shippingAddress.type'
 
 type getStateProps = () => {
@@ -100,21 +102,21 @@ export const createOrder =
       productId: string
       quantity: number
     }[],
-    shippingAddress: ShippingAddress
+    shippingAddress: ShippingAddress,
   ) =>
   async (dispatch: Dispatch, getState: any) => {
     try {
       dispatch<CreateOrderRequest>({
-        type: ORDER_CREATE_REQUEST
+        type: ORDER_CREATE_REQUEST,
       })
 
       const {
-        userLogin: { userInfo }
+        userLogin: { userInfo },
       } = getState()
 
       const { data } = await client.mutate({
         mutation: CREATE_ORDER,
-        variables: { input: { items, shippingAddress } }
+        variables: { input: { items, shippingAddress } },
       })
 
       // REST API
@@ -129,7 +131,7 @@ export const createOrder =
 
       dispatch<CreateOrderSuccess>({
         type: ORDER_CREATE_SUCCESS,
-        payload: data
+        payload: data,
       })
     } catch (error) {
       dispatch<CreateOrderFail>({
@@ -137,7 +139,7 @@ export const createOrder =
         payload:
           error.response && error.response.data.message
             ? error.response.data.message
-            : error.message
+            : error.message,
       })
     }
   }
@@ -165,16 +167,16 @@ export const getOrderDetails =
   (id: string) => async (dispatch: Dispatch, getState: getStateProps) => {
     try {
       dispatch<GetOrderDetailsRequest>({
-        type: ORDER_DETAILS_REQUEST
+        type: ORDER_DETAILS_REQUEST,
       })
 
       const {
-        userLogin: { userInfo }
+        userLogin: { userInfo },
       } = getState()
 
       const { data } = await client.query({
         query: GET_ORDER,
-        variables: { input: { _id: id } }
+        variables: { input: { _id: id } },
       })
 
       // REST API
@@ -188,12 +190,12 @@ export const getOrderDetails =
 
       dispatch<GetOrderDetailsSuccess>({
         type: ORDER_DETAILS_SUCCESS,
-        payload: data
+        payload: data,
       })
 
       dispatch<GetOrderSuccessEmptyCart>({
         type: CART_EMPTY,
-        payload: localStorage.setItem('cartItems', JSON.stringify([]))
+        payload: localStorage.setItem('cartItems', JSON.stringify([])),
       })
     } catch (error) {
       dispatch<GetOrderDetailsFail>({
@@ -201,7 +203,7 @@ export const getOrderDetails =
         payload:
           error.response && error.response.data.message
             ? error.response.data.message
-            : error.message
+            : error.message,
       })
     }
   }
@@ -225,30 +227,35 @@ export type DeliverOrderReset = {
 }
 
 export const deliverOrder =
-  (order: orderProps) =>
-  async (dispatch: Dispatch, getState: getStateProps) => {
+  (_id: string) => async (dispatch: Dispatch, getState: getStateProps) => {
     try {
       dispatch<DeliverOrderRequest>({
-        type: ORDER_DELIVER_REQUEST
+        type: ORDER_DELIVER_REQUEST,
       })
 
       const {
-        userLogin: { userInfo }
+        userLogin: { userInfo },
       } = getState()
 
-      const config = {
-        headers: { Authorization: `Bearer ${userInfo.login.token}` }
-      }
+      const { data } = await client.mutate({
+        mutation: DELIVER_ORDER,
+        variables: { input: { _id: _id } },
+      })
 
-      const { data } = await axios.put(
-        `/api/orders/${order._id}/deliver`,
-        {},
-        config
-      )
+      //REST API
+      // const config = {
+      //   headers: { Authorization: `Bearer ${userInfo.login.token}` },
+      // }
+
+      // const { data } = await axios.put(
+      //   `/api/orders/${order._id}/deliver`,
+      //   {},
+      //   config,
+      // )
 
       dispatch<DeliverOrderSuccess>({
         type: ORDER_DELIVER_SUCCESS,
-        payload: data
+        payload: data,
       })
     } catch (error) {
       dispatch<DeliverOrderFail>({
@@ -256,7 +263,7 @@ export const deliverOrder =
         payload:
           error.response && error.response.data.message
             ? error.response.data.message
-            : error.message
+            : error.message,
       })
     }
   }
@@ -280,30 +287,35 @@ export type CancelledOrderReset = {
 }
 
 export const cancelledOrder =
-  (order: orderProps) =>
-  async (dispatch: Dispatch, getState: getStateProps) => {
+  (_id: string) => async (dispatch: Dispatch, getState: getStateProps) => {
     try {
       dispatch<CancelledOrderRequest>({
-        type: ORDER_CANCELLED_REQUEST
+        type: ORDER_CANCELLED_REQUEST,
       })
 
       const {
-        userLogin: { userInfo }
+        userLogin: { userInfo },
       } = getState()
 
-      const config = {
-        headers: { Authorization: `Bearer ${userInfo.login.token}` }
-      }
+      const { data } = await client.mutate({
+        mutation: CANCEL_ORDER,
+        variables: { input: { _id: _id } },
+      })
 
-      const { data } = await axios.put(
-        `/api/orders/${order._id}/cancelled`,
-        {},
-        config
-      )
+      //REST API
+      // const config = {
+      //   headers: { Authorization: `Bearer ${userInfo.login.token}` },
+      // }
+
+      // const { data } = await axios.put(
+      //   `/api/orders/${order._id}/cancelled`,
+      //   {},
+      //   config,
+      // )
 
       dispatch<CancelledOrderSuccess>({
         type: ORDER_CANCELLED_SUCCESS,
-        payload: data
+        payload: data,
       })
     } catch (error) {
       dispatch<CancelledOrderFail>({
@@ -311,7 +323,7 @@ export const cancelledOrder =
         payload:
           error.response && error.response.data.message
             ? error.response.data.message
-            : error.message
+            : error.message,
       })
     }
   }
@@ -334,15 +346,15 @@ export const listMyOrders =
   () => async (dispatch: Dispatch, getState: getStateProps) => {
     try {
       dispatch<ListMyOrdersRequest>({
-        type: ORDER_LIST_MY_REQUEST
+        type: ORDER_LIST_MY_REQUEST,
       })
 
       const {
-        userLogin: { userInfo }
+        userLogin: { userInfo },
       } = getState()
 
       const { data } = await client.query({
-        query: GET_MY_ORDERS
+        query: GET_MY_ORDERS,
       })
 
       //REST API
@@ -353,7 +365,7 @@ export const listMyOrders =
 
       dispatch<ListMyOrdersSuccess>({
         type: ORDER_LIST_MY_SUCCESS,
-        payload: data
+        payload: data,
       })
     } catch (error) {
       dispatch<ListMyOrdersFail>({
@@ -361,7 +373,7 @@ export const listMyOrders =
         payload:
           error.response && error.response.data.message
             ? error.response.data.message
-            : error.message
+            : error.message,
       })
     }
   }
@@ -384,15 +396,15 @@ export const listOrders =
   () => async (dispatch: Dispatch, getState: getStateProps) => {
     try {
       dispatch<ListOrdersRequest>({
-        type: ORDER_LIST_REQUEST
+        type: ORDER_LIST_REQUEST,
       })
 
       const {
-        userLogin: { userInfo }
+        userLogin: { userInfo },
       } = getState()
 
       const { data } = await client.query({
-        query: GET_ALL_ORDERS
+        query: GET_ALL_ORDERS,
       })
 
       // REST API
@@ -403,7 +415,7 @@ export const listOrders =
 
       dispatch<ListOrdersSuccess>({
         type: ORDER_LIST_SUCCESS,
-        payload: data
+        payload: data,
       })
     } catch (error) {
       dispatch<ListOrdersFail>({
@@ -411,7 +423,7 @@ export const listOrders =
         payload:
           error.response && error.response.data.message
             ? error.response.data.message
-            : error.message
+            : error.message,
       })
     }
   }

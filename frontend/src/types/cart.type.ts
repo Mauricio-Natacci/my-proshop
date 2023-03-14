@@ -1,16 +1,13 @@
-export type stateCart = {
+export type StateCart = {
   cart: {
-    cartItems: {
-      productId: string
-      name: string
-      image: string
-      price: number
-      quantity: number
-    }[]
+    cartItems: any
+    shippingAddress: any
+    itemsPrice: string
+    totalPrice: string
   }
 }
 
-export type updateItemQuantityCart = {
+export type UpdateItemQuantityCart = {
   productId: string
   value: number
 }
