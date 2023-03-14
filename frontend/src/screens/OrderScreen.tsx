@@ -15,6 +15,7 @@ import {
   ORDER_DELIVER_RESET,
   ORDER_CANCELLED_RESET
 } from '../constants/orderConstants'
+import { StateUserInfo } from '../types/user.type'
 
 type OrderScreenProps = {
   match: {
@@ -41,15 +42,6 @@ type State = {
     loading: boolean
     success: boolean
   }
-  userLogin: {
-    userInfo: UserInfo
-  }
-}
-
-type UserInfo = {
-  name: string
-  email: string
-  isAdmin?: boolean
 }
 
 type Item = {
@@ -68,8 +60,6 @@ export const OrderScreen = ({ match, history }: OrderScreenProps) => {
   const orderDetails = useSelector((state: State) => state.orderDetails)
   const { order, loading, error } = orderDetails
 
-  console.log('orderDetails:', order)
-
   const orderDeliver = useSelector((state: State) => state.orderDeliver)
   const { loading: loadingDeliver, success: successDeliver } = orderDeliver
 
@@ -77,8 +67,10 @@ export const OrderScreen = ({ match, history }: OrderScreenProps) => {
   const { loading: loadingCancelled, success: successCancelled } =
     orderCancelled
 
-  const userLogin = useSelector((state: State) => state.userLogin)
+  const userLogin = useSelector((state: StateUserInfo) => state.userLogin)
   const { userInfo } = userLogin
+
+  console.log('userInfo', userInfo)
 
   useEffect(() => {
     if (!userInfo) {
@@ -124,22 +116,22 @@ export const OrderScreen = ({ match, history }: OrderScreenProps) => {
                   {order.getOrder?.buyer.email}
                 </a>
               </p>
-              {/* <p>
+              <p>
                 <strong>Address: </strong>
-                {order.getOrder.shippingAddress.address},{' '}
-                {order.getOrder.shippingAddress.city},
-                {order.getOrder.shippingAddress.postalCode},
-                {order.getOrder.shippingAddress.country}
-              </p> */}
+                {order.getOrder?.shippingAddress.address},{' '}
+                {order.getOrder?.shippingAddress.city},
+                {order.getOrder?.shippingAddress.postalCode},
+                {order.getOrder?.shippingAddress.country}
+              </p>
             </ListGroup.Item>
 
             <ListGroup.Item>
               <h2>Order Items</h2>
-              {/* {order.getOrder.orderItems.length === 0 ? (
+              {order.getOrder?.orderItems?.length === 0 ? (
                 <h2>Order is empty</h2>
               ) : (
                 <ListGroup variant="flush">
-                  {order.getOrder.orderItems.map(
+                  {order.getOrder?.orderItems?.map(
                     (item: Item, index: number) => (
                       <ListGroup.Item key={index}>
                         <Row>
@@ -165,7 +157,7 @@ export const OrderScreen = ({ match, history }: OrderScreenProps) => {
                     )
                   )}
                 </ListGroup>
-              )} */}
+              )}
               {order.getOrder?.isDelivered ? (
                 <Message>Delivered</Message>
               ) : (
@@ -191,7 +183,7 @@ export const OrderScreen = ({ match, history }: OrderScreenProps) => {
                 </Row>
               </ListGroup.Item>
               {loadingDeliver && <Loader />}
-              {userInfo?.isAdmin && !order.getOrder?.isDelivered && (
+              {userInfo.login?.isAdmin && !order.getOrder?.isDelivered && (
                 <ListGroup.Item>
                   <Button
                     type="button"
@@ -203,7 +195,7 @@ export const OrderScreen = ({ match, history }: OrderScreenProps) => {
                 </ListGroup.Item>
               )}
               {loadingCancelled && <Loader />}
-              {userInfo?.isAdmin && (
+              {userInfo.login?.isAdmin && (
                 <center>
                   <ListGroup.Item>
                     <Button

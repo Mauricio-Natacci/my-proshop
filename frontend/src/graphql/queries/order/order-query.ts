@@ -37,7 +37,6 @@ export const GET_ORDER = gql`
   query getOrder($input: GetOrderInput!) {
     getOrder(input: $input) {
       ...OrderFields
-
       shippingAddress {
         address
         city

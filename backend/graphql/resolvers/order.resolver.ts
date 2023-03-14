@@ -28,7 +28,6 @@ export default class OrderResolver {
     return await this.orderService.getAllOrders()
   }
 
-  @IsAdmin()
   @Query(() => Order)
   async getOrder(@Arg('input') input: GetOrderInput): Promise<Order> {
     return await this.orderService.findSingleOrder(input)

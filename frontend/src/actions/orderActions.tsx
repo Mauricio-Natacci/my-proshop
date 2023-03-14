@@ -31,24 +31,9 @@ import {
 } from '../graphql/queries/order/order-query'
 import { ME } from '../graphql/mutations/user/user.mutation'
 import { GET_PRODUCT } from '../graphql/queries/order/product-query'
-
-type createOrderProps = {
-  orderItems: {
-    name: string
-    image: string
-    price: number
-    product: string
-    quantity: number
-  }[]
-  shippingAddress: {
-    address: string
-    city: string
-    postalCode: string
-    country: string
-  }
-  itemsPrice: string
-  totalPrice: string
-}
+import { CREATE_ORDER } from '../graphql/mutations/order/order.mutation'
+import { CreateOrderInput } from '../../../backend/graphql/inputs/order.input'
+import { ShippingAddress } from '../../../backend/graphql/types/shippingAddress.type'
 
 type getStateProps = () => {
   userLogin: {
@@ -106,8 +91,14 @@ export type CreateOrderFail = {
 }
 
 export const createOrder =
-  (order: createOrderProps) =>
-  async (dispatch: Dispatch, getState: getStateProps) => {
+  (
+    items: {
+      productId: string
+      quantity: number
+    }[],
+    shippingAddress: ShippingAddress
+  ) =>
+  async (dispatch: Dispatch, getState: any) => {
     try {
       dispatch<CreateOrderRequest>({
         type: ORDER_CREATE_REQUEST
@@ -117,14 +108,20 @@ export const createOrder =
         userLogin: { userInfo }
       } = getState()
 
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${userInfo.login.token}`
-        }
-      }
+      const { data } = await client.mutate({
+        mutation: CREATE_ORDER,
+        variables: { input: { items, shippingAddress } }
+      })
 
-      const { data } = await axios.post(`/api/orders`, order, config)
+      // REST API
+      // const config = {
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     Authorization: `Bearer ${userInfo.login.token}`
+      //   }
+      // }
+
+      // const { data } = await axios.post(`/api/orders`, order, config)
 
       dispatch<CreateOrderSuccess>({
         type: ORDER_CREATE_SUCCESS,

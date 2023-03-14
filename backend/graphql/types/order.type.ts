@@ -36,3 +36,4 @@ export class Order {
   @Field(() => Date)
   createdAt: Date
 }
+export { OrderItem }
