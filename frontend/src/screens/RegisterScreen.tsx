@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, FormEventHandler } from 'react'
 import { Link } from 'react-router-dom'
 import { Form, Button, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
@@ -8,7 +8,6 @@ import { Loader } from '../components/Loader'
 import { FormContainer } from '../components/FormContainer'
 import { register } from '../actions/userActions'
 import { RegisterScreenProps, StateUserRegister } from '../types/user.type'
-import { Event } from '../types/event.type'
 
 export const RegisterScreen = ({ location, history }: RegisterScreenProps) => {
   const [name, setName] = useState('')
@@ -31,7 +30,7 @@ export const RegisterScreen = ({ location, history }: RegisterScreenProps) => {
     }
   }, [history, userInfo, redirect])
 
-  const submitHandler = (e: Event) => {
+  const submitHandler: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault()
     if (password !== confirmPassword) {
       setMessage('Passwords do not match')
