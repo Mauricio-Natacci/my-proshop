@@ -7,37 +7,10 @@ import { Message } from '../components/Message'
 import { Loader } from '../components/Loader'
 import { FormContainer } from '../components/FormContainer'
 import { register } from '../actions/userActions'
+import { LoginScreenProps, StateUserRegister } from '../types/user.type'
+import { Event } from '../types/event.type'
 
-type RegisterScreenProps = {
-  location: {
-    search: string
-  }
-  history: {
-    push: (url: string) => void
-  }
-}
-
-type userInfo = {
-  _id: string
-  name: string
-  email: string
-  isAdmin: boolean
-  token: string
-}
-
-type State = {
-  userRegister: {
-    loading: boolean
-    error: string
-    userInfo: userInfo
-  }
-}
-
-type Event = {
-  preventDefault: () => void
-}
-
-export const RegisterScreen = ({ location, history }: RegisterScreenProps) => {
+export const RegisterScreen = ({ location, history }: LoginScreenProps) => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -46,9 +19,10 @@ export const RegisterScreen = ({ location, history }: RegisterScreenProps) => {
 
   const dispatch: Dispatch<any> = useDispatch()
 
-  const userRegister = useSelector((state: State) => state.userRegister)
+  const userRegister = useSelector(
+    (state: StateUserRegister) => state.userRegister,
+  )
   const { loading, error, userInfo } = userRegister
-
   const redirect = location.search ? location.search.split('=')[1] : '/'
 
   useEffect(() => {

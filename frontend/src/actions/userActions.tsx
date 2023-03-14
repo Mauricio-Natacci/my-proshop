@@ -1,4 +1,4 @@
-import axios from 'axios'
+// import axios from 'axios'
 import {
   USER_LOGIN_FAIL,
   USER_LOGIN_REQUEST,
@@ -6,11 +6,11 @@ import {
   USER_LOGOUT,
   USER_REGISTER_FAIL,
   USER_REGISTER_REQUEST,
-  USER_REGISTER_SUCCESS
+  USER_REGISTER_SUCCESS,
 } from '../constants/userConstants'
 import { Dispatch } from 'redux'
 import { client } from '../graphql/service/index'
-import { LOGIN } from '../graphql/mutations/user/user.mutation'
+import { LOGIN, REGISTER } from '../graphql/mutations/user/user.mutation'
 
 export type LoginRequest = {
   type: typeof USER_LOGIN_REQUEST
@@ -37,20 +37,20 @@ export type UserInfo = {
 
 export const loginRequest = (
   email: string,
-  password: string
+  password: string,
 ): LoginRequest => ({
   type: USER_LOGIN_REQUEST,
-  payload: { email, password }
+  payload: { email, password },
 })
 
 export const loginSuccess = (data: UserInfo): LoginSuccess => ({
   type: USER_LOGIN_SUCCESS,
-  payload: data
+  payload: data,
 })
 
 export const loginFail = (error: string): LoginFail => ({
   type: USER_LOGIN_FAIL,
-  payload: error
+  payload: error,
 })
 
 export const login =
@@ -63,9 +63,9 @@ export const login =
         variables: { input: { email, password } },
         context: {
           headers: {
-            'Content-Type': 'application/json'
-          }
-        }
+            'Content-Type': 'application/json',
+          },
+        },
       })
 
       // REST API
@@ -89,8 +89,8 @@ export const login =
         loginFail(
           error.response && error.response.data.message
             ? error.response.data.message
-            : error.message
-        )
+            : error.message,
+        ),
       )
     }
   }
@@ -124,24 +124,35 @@ export const register =
   async (dispatch: Dispatch) => {
     try {
       dispatch<RegisterRequest>({
-        type: USER_REGISTER_REQUEST
+        type: USER_REGISTER_REQUEST,
       })
 
-      const config = {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }
+      const { data } = await client.mutate({
+        mutation: REGISTER,
+        variables: { input: { name, email, password } },
+        context: {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      })
 
-      const { data } = await axios.post(
-        '/api/users',
-        { name, email, password },
-        config
-      )
+      //REST API
+      // const config = {
+      //   headers: {
+      //     'Content-Type': 'application/json'
+      //   }
+      // }
+
+      // const { data } = await axios.post(
+      //   '/api/users',
+      //   { name, email, password },
+      //   config
+      // )
 
       dispatch<RegisterSuccess>({
         type: USER_REGISTER_SUCCESS,
-        payload: data
+        payload: data,
       })
 
       localStorage.setItem('userInfo', JSON.stringify(data))
@@ -151,7 +162,7 @@ export const register =
         payload:
           error.response && error.response.data.message
             ? error.response.data.message
-            : error.message
+            : error.message,
       })
     }
   }
