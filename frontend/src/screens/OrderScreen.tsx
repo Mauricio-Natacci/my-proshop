@@ -16,17 +16,7 @@ import {
   ORDER_CANCELLED_RESET
 } from '../constants/orderConstants'
 import { StateUserInfo } from '../types/user.type'
-
-type OrderScreenProps = {
-  match: {
-    params: {
-      id: string
-    }
-  }
-  history: {
-    push: (url: string) => void
-  }
-}
+import { OrderScreenProps } from '../types/order.type'
 
 type State = {
   orderDetails: {
@@ -48,7 +38,11 @@ type Item = {
   name: string
   image: string
   price: number
-  product: string
+  productId: {
+    _id: string
+    image: string
+    name: string
+  }
   quantity: number
 }
 
@@ -71,6 +65,7 @@ export const OrderScreen = ({ match, history }: OrderScreenProps) => {
   const { userInfo } = userLogin
 
   console.log('userInfo', userInfo)
+  console.log('order', order)
 
   useEffect(() => {
     if (!userInfo) {
@@ -144,7 +139,7 @@ export const OrderScreen = ({ match, history }: OrderScreenProps) => {
                             />
                           </Col>
                           <Col>
-                            <Link to={`/product/${item.product}`}>
+                            <Link to={`/product/${item.productId}`}>
                               {item.name}
                             </Link>
                           </Col>

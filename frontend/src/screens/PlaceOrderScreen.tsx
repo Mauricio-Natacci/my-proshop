@@ -18,7 +18,11 @@ type CartItem = {
   name: string
   quantity: number
   price: number
-  productId: string
+  productId: {
+    _id: string
+    image: string
+    name: string
+  }
 }
 
 type StateCart = {

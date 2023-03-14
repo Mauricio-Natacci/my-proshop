@@ -51,18 +51,22 @@ type getStateProps = () => {
 
 export type orderProps = {
   _id: string
-  user: {
+  buyer: {
     _id: string
     name: string
     email: string
     isAdmin: boolean
   }
-
   orderItems: {
     name: string
     image: string
     price: number
-    product: string
+    productId: {
+      _id: string
+      image: string
+      name: string
+      price: number
+    }
     quantity: number
   }[]
   shippingAddress: {

@@ -74,7 +74,7 @@ type State = {
   error: string | null
   order: {
     _id: string
-    user: {
+    buyer: {
       _id: string
       name: string
       email: string
@@ -97,7 +97,7 @@ const initialState: State = {
   error: null,
   order: {
     _id: '',
-    user: {
+    buyer: {
       _id: '',
       name: '',
       email: '',

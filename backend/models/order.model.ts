@@ -1,4 +1,5 @@
 import { getModelForClass, modelOptions, prop, Ref } from '@typegoose/typegoose'
+import { Product } from './product.model'
 import { User } from './user.model'
 
 @modelOptions({ options: { allowMixed: 0 } })

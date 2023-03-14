@@ -10,9 +10,9 @@ export class OrderItem {
   @Field(() => Number)
   price: number
 
-  @Field(() => String)
-  productId: string
+  // @Field(() => String)
+  // productId: string
 
-  // @Field(() => Product)
-  // productId: Ref<Product>
+  @Field(() => Product)
+  productId: Ref<Product>
 }

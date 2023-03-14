@@ -33,6 +33,17 @@ export type OrdersScreenProps = {
   }
 }
 
+export type OrderScreenProps = {
+  match: {
+    params: {
+      id: string
+    }
+  }
+  history: {
+    push: (url: string) => void
+  }
+}
+
 export type StateOrderList = {
   orderList: {
     loading: boolean
@@ -49,6 +60,21 @@ export type StateOrderListMy = {
     error: string
     orders: {
       getMyOrders: Order[]
+    }
+  }
+  userLogin: {
+    userInfo: {
+      login: User
+    }
+  }
+}
+
+export type StateOrderDetails = {
+  orderDetails: {
+    loading: boolean
+    error: string
+    order: {
+      getOrder: Order
     }
   }
   userLogin: {

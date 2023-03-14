@@ -5,37 +5,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Dispatch } from 'redux'
 import { addToCart, removeFromCart } from '../actions/cartActions'
 import { Message } from '../components/Message'
-
-type CartScreenProps = {
-  match: {
-    params: {
-      id: string
-    }
-  }
-  location: {
-    search: string
-  }
-  history: {
-    push: (url: string) => void
-  }
-}
-
-type stateProps = {
-  cart: {
-    cartItems: {
-      productId: string
-      name: string
-      image: string
-      price: number
-      quantity: number
-    }[]
-  }
-}
-
-type updateItemQuantityProps = {
-  productId: string
-  value: number
-}
+import {
+  CartScreenProps,
+  stateCart,
+  updateItemQuantityCart
+} from '../types/cart.type'
 
 export const CartScreen = ({ match, location, history }: CartScreenProps) => {
   const productId = match.params.id
@@ -44,7 +18,7 @@ export const CartScreen = ({ match, location, history }: CartScreenProps) => {
 
   const dispatch: Dispatch<any> = useDispatch()
 
-  const cart = useSelector((state: stateProps) => state.cart)
+  const cart = useSelector((state: stateCart) => state.cart)
   const { cartItems } = cart
 
   useEffect(() => {
@@ -61,10 +35,7 @@ export const CartScreen = ({ match, location, history }: CartScreenProps) => {
     history.push('/login?redirect=shipping')
   }
 
-  const updateItemQuantity = ({
-    productId,
-    value
-  }: updateItemQuantityProps) => {
+  const updateItemQuantity = ({ productId, value }: updateItemQuantityCart) => {
     dispatch(addToCart(productId, value))
   }
 

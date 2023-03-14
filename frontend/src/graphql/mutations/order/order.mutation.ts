@@ -6,7 +6,6 @@ export const CREATE_ORDER = gql`
     createOrder(input: $input) {
       _id
       orderItems {
-        productId
         price
         quantity
       }
