@@ -58,7 +58,7 @@ export type StatusOrderState = {
   }
 }
 
-export type shippingAddress = {
+export type ShippingAddress = {
   address: string
   city: string
   postalCode: string
@@ -69,7 +69,7 @@ export type Order = {
   _id: string
   buyer: User
   orderItems: OrderItem[]
-  shippingAddress: shippingAddress
+  shippingAddress: ShippingAddress
   createdAt: string
   totalPrice: number
   status: boolean
@@ -80,5 +80,5 @@ export type Order = {
 export type OrderItem = {
   quantity: number
   price: number
-  productId: ProductItem
+  product: ProductItem
 }

@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import axios from 'axios'
 import { CART_EMPTY } from '../constants/cartConstants'
 import {
   ORDER_CANCELLED_FAIL,
@@ -36,7 +34,7 @@ import {
   DELIVER_ORDER,
 } from '../graphql/mutations/order/order.mutation'
 import { ShippingAddress } from '../../../backend/graphql/types/shippingAddress.type'
-import { CartItem } from './cartActions'
+import { CartItem } from '../types/cart.type'
 
 type getStateProps = () => {
   userLogin: {

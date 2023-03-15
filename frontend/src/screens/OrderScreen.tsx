@@ -33,6 +33,8 @@ export const OrderScreen = ({ match, history }: OrderScreenProps) => {
   )
   const { order, loading, error } = orderDetails
 
+  console.log('order', order)
+
   const orderDeliver = useSelector(
     (state: StatusOrderState) => state.orderDeliver,
   )
@@ -125,15 +127,15 @@ export const OrderScreen = ({ match, history }: OrderScreenProps) => {
                         <Row>
                           <Col md={1}>
                             <Image
-                              src={item.productId?.image}
-                              alt={item.productId?.name}
+                              src={item.product?.image}
+                              alt={item.product?.name}
                               fluid
                               rounded
                             />
                           </Col>
                           <Col>
-                            <Link to={`/product/${item.productId}`}>
-                              {item.productId?.name}
+                            <Link to={`/product/${item.product._id}`}>
+                              {item.product?.name}
                             </Link>
                           </Col>
                           <Col md={4}>

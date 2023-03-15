@@ -1,5 +1,4 @@
-import { shippingAddress } from './order.type'
-import { ProductItem } from './product.type'
+import { ShippingAddress } from './order.type'
 
 export type CartScreenProps = {
   match: {
@@ -23,9 +22,8 @@ export type ShippingScreenProps = {
 
 export type StateCart = {
   cart: {
-    cartItems: cartItem[]
-    shippingAddress: shippingAddress
-    itemsPrice: string
+    cartItems: CartItem[]
+    shippingAddress: ShippingAddress
     totalPrice: string
   }
 }
@@ -35,8 +33,10 @@ export type UpdateItemQuantityCart = {
   value: number
 }
 
-type cartItem = {
+export type CartItem = {
   quantity: number
+  name: string
   price: number
-  productId: ProductItem
+  image: string
+  productId: string
 }

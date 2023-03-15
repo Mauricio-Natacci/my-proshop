@@ -38,6 +38,12 @@ export const GET_ORDER = gql`
     getOrder(input: $input) {
       ...OrderFields
       orderItems {
+        product {
+          _id
+          name
+          image
+        }
+
         quantity
         price
       }

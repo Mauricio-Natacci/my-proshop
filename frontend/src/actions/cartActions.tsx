@@ -7,25 +7,12 @@ import {
 import { Dispatch } from 'redux'
 import { GET_PRODUCT } from '../graphql/queries/order/product-query'
 import { client } from '../graphql/service'
-
-export type CartItem = {
-  productId: string
-  name: string
-  image: string
-  price: number
-  quantity: number
-}
-
-export type SaveShippingAddressProps = {
-  address: string
-  city: string
-  postalCode: string
-  country: string
-}
+import { ShippingAddress } from '../types/order.type'
+import { CartItem } from '../types/cart.type'
 
 type getStateProps = () => {
   cart: { cartItems: CartItem[] }
-  shippingAddress: SaveShippingAddressProps
+  shippingAddress: ShippingAddress
 }
 
 export type AddToCartAction = {
@@ -40,9 +27,6 @@ export const addToCart =
       query: GET_PRODUCT,
       variables: { id: { _id: id } },
     })
-
-    //REST API
-    // const { data } = await axios.get(`/api/products/${id}`)
 
     dispatch<AddToCartAction>({
       type: CART_ADD_ITEM,
@@ -74,11 +58,11 @@ export const removeFromCart =
 
 export type SaveShippingAddressAction = {
   type: typeof CART_SAVE_SHIPPING_ADDRESS
-  payload: SaveShippingAddressProps
+  payload: ShippingAddress
 }
 
 export const saveShippingAddress =
-  (data: SaveShippingAddressProps) => (dispatch: Dispatch) => {
+  (data: ShippingAddress) => (dispatch: Dispatch) => {
     dispatch<SaveShippingAddressAction>({
       type: CART_SAVE_SHIPPING_ADDRESS,
       payload: data,
