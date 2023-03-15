@@ -41,15 +41,16 @@ export const addToCart =
       variables: { id: { _id: id } },
     })
 
+    //REST API
     // const { data } = await axios.get(`/api/products/${id}`)
 
     dispatch<AddToCartAction>({
       type: CART_ADD_ITEM,
       payload: {
-        productId: data._id,
-        name: data.name,
-        image: data.image,
-        price: data.price,
+        productId: data.getProduct._id,
+        name: data.getProduct.name,
+        image: data.getProduct.image,
+        price: data.getProduct.price,
         quantity,
       },
     })
