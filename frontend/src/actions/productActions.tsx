@@ -136,6 +136,7 @@ export const deleteProduct =
       await client.mutate({
         mutation: DELETE_PRODUCT,
         variables: { id: { _id: id } },
+        refetchQueries: [{ query: GET_ALL_PRODUCTS }],
       })
 
       // REST API
@@ -191,6 +192,7 @@ export const createProduct =
             image: '/images/sample.jpg',
           },
         },
+        refetchQueries: [{ query: GET_ALL_PRODUCTS }],
       })
 
       // REST API

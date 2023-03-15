@@ -83,7 +83,10 @@ export const ProductListScreen = ({ history }: ProductListScreenProps) => {
     product: createdProduct,
   } = productCreate
 
-  console.log('createdProduct', createdProduct)
+  console.log('products:', products)
+  console.log('successDelete:', successDelete)
+  console.log('successCreate:', successCreate)
+
   useEffect(() => {
     dispatch({ type: PRODUCT_CREATE_RESET })
 
@@ -94,6 +97,7 @@ export const ProductListScreen = ({ history }: ProductListScreenProps) => {
     if (successCreate) {
       history.push(`/admin/product/${createdProduct.createProduct._id}/edit`)
     } else {
+      console.log('listProducts called')
       dispatch(listProducts())
     }
   }, [
