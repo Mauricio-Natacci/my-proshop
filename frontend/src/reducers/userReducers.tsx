@@ -5,22 +5,21 @@ import {
   USER_LOGOUT,
   USER_REGISTER_FAIL,
   USER_REGISTER_REQUEST,
-  USER_REGISTER_SUCCESS
-} from "../constants/userConstants"
+  USER_REGISTER_SUCCESS,
+} from '../constants/userConstants'
 import {
   LoginRequest,
   LoginSuccess,
   LoginFail,
   Logout,
-  UserInfo,
   RegisterRequest,
   RegisterSuccess,
-  RegisterFail
-} from "../actions/userActions"
-
+  RegisterFail,
+} from '../actions/userActions'
+import { User } from '../types/user.type'
 
 type Action =
-  LoginRequest
+  | LoginRequest
   | LoginSuccess
   | LoginFail
   | Logout
@@ -30,17 +29,20 @@ type Action =
 
 type StateProps = {
   loading: boolean
-  userInfo: UserInfo | null
+  userInfo: User | null
   error: string | null
 }
 
 const initialState: StateProps = {
   loading: false,
   userInfo: null,
-  error: null
+  error: null,
 }
 
-export const userLoginReducer = (state = initialState, action: Action): StateProps => {
+export const userLoginReducer = (
+  state = initialState,
+  action: Action,
+): StateProps => {
   switch (action.type) {
     case USER_LOGIN_REQUEST:
       return { ...state, loading: true }
@@ -54,7 +56,6 @@ export const userLoginReducer = (state = initialState, action: Action): StatePro
       return state
   }
 }
-
 
 export const userRegisterReducer = (state = {}, action: Action) => {
   switch (action.type) {

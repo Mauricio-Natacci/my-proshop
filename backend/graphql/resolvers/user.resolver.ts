@@ -30,11 +30,13 @@ export class UserResolver {
     return this.userService.logout(context)
   }
 
+  @IsLoggedIn()
   @Query(() => User)
   async getUser(@Arg('input') input: GetUserInput): Promise<User> {
     return await this.userService.getUser(input)
   }
 
+  @IsLoggedIn()
   @Query(() => User, { nullable: true })
   me(@Ctx() context: Context): User | null {
     return this.userService.me(context)

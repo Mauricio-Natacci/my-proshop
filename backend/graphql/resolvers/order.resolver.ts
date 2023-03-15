@@ -28,6 +28,7 @@ export class OrderResolver {
     return await this.orderService.getAllOrders()
   }
 
+  @IsLoggedIn()
   @Query(() => Order)
   async getOrder(@Arg('input') input: GetOrderInput): Promise<Order> {
     return await this.orderService.findSingleOrder(input)

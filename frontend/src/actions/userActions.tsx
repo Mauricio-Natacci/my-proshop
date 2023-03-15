@@ -1,4 +1,3 @@
-// import axios from 'axios'
 import {
   USER_LOGIN_FAIL,
   USER_LOGIN_REQUEST,
@@ -11,6 +10,7 @@ import {
 import { Dispatch } from 'redux'
 import { client } from '../graphql/service/index'
 import { LOGIN, REGISTER } from '../graphql/mutations/user/user.mutation'
+import { User } from '../types/user.type'
 
 export type LoginRequest = {
   type: typeof USER_LOGIN_REQUEST
@@ -19,20 +19,12 @@ export type LoginRequest = {
 
 export type LoginSuccess = {
   type: typeof USER_LOGIN_SUCCESS
-  payload: UserInfo
+  payload: User
 }
 
 export type LoginFail = {
   type: typeof USER_LOGIN_FAIL
   payload: string | null
-}
-
-export type UserInfo = {
-  _id: string
-  name: string
-  email: string
-  isAdmin: boolean
-  token: string
 }
 
 export const loginRequest = (
@@ -43,7 +35,7 @@ export const loginRequest = (
   payload: { email, password },
 })
 
-export const loginSuccess = (data: UserInfo): LoginSuccess => ({
+export const loginSuccess = (data: User): LoginSuccess => ({
   type: USER_LOGIN_SUCCESS,
   payload: data,
 })
@@ -67,19 +59,6 @@ export const login =
           },
         },
       })
-
-      // REST API
-
-      // const config = {
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   }
-      // }
-      // const { data } = await axios.post(
-      //   '/api/users/login',
-      //   { email, password },
-      //   config
-      // )
 
       dispatch(loginSuccess(data))
 
@@ -111,7 +90,7 @@ export type RegisterRequest = {
 
 export type RegisterSuccess = {
   type: typeof USER_REGISTER_SUCCESS
-  payload: UserInfo
+  payload: User
 }
 
 export type RegisterFail = {
@@ -136,19 +115,6 @@ export const register =
           },
         },
       })
-
-      //REST API
-      // const config = {
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   }
-      // }
-
-      // const { data } = await axios.post(
-      //   '/api/users',
-      //   { name, email, password },
-      //   config
-      // )
 
       dispatch<RegisterSuccess>({
         type: USER_REGISTER_SUCCESS,
