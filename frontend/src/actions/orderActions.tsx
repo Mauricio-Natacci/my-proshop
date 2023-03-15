@@ -35,51 +35,7 @@ import {
 } from '../graphql/mutations/order/order.mutation'
 import { ShippingAddress } from '../../../backend/graphql/types/shippingAddress.type'
 import { CartItem } from '../types/cart.type'
-
-type getStateProps = () => {
-  userLogin: {
-    userInfo: {
-      login: {
-        _id: string
-        name: string
-        email: string
-        isAdmin: boolean
-        token: string
-      }
-    }
-  }
-}
-
-export type orderProps = {
-  _id: string
-  buyer: {
-    _id: string
-    name: string
-    email: string
-    isAdmin: boolean
-  }
-  orderItems: {
-    name: string
-    image: string
-    price: number
-    productId: {
-      _id: string
-      image: string
-      name: string
-      price: number
-    }
-    quantity: number
-  }[]
-  shippingAddress: {
-    address: string
-    city: string
-    postalCode: string
-    country: string
-  }
-  itemsPrice: string
-  totalPrice: string
-  isDelivered: boolean
-}
+import { Order } from '../types/order.type'
 
 export type CreateOrderRequest = {
   type: typeof ORDER_CREATE_REQUEST
@@ -87,7 +43,7 @@ export type CreateOrderRequest = {
 
 export type CreateOrderSuccess = {
   type: typeof ORDER_CREATE_SUCCESS
-  payload: orderProps
+  payload: Order
 }
 
 export type CreateOrderFail = {
@@ -97,30 +53,16 @@ export type CreateOrderFail = {
 
 export const createOrder =
   (items: CartItem, shippingAddress: ShippingAddress) =>
-  async (dispatch: Dispatch, getState: any) => {
+  async (dispatch: Dispatch) => {
     try {
       dispatch<CreateOrderRequest>({
         type: ORDER_CREATE_REQUEST,
       })
 
-      const {
-        userLogin: { userInfo },
-      } = getState()
-
       const { data } = await client.mutate({
         mutation: CREATE_ORDER,
         variables: { input: { items, shippingAddress } },
       })
-
-      // REST API
-      // const config = {
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //     Authorization: `Bearer ${userInfo.login.token}`
-      //   }
-      // }
-
-      // const { data } = await axios.post(`/api/orders`, order, config)
 
       dispatch<CreateOrderSuccess>({
         type: ORDER_CREATE_SUCCESS,
@@ -143,7 +85,7 @@ export type GetOrderDetailsRequest = {
 
 export type GetOrderDetailsSuccess = {
   type: typeof ORDER_DETAILS_SUCCESS
-  payload: orderProps
+  payload: Order
 }
 
 export type GetOrderDetailsFail = {
@@ -156,50 +98,36 @@ export type GetOrderSuccessEmptyCart = {
   payload: void
 }
 
-export const getOrderDetails =
-  (id: string) => async (dispatch: Dispatch, getState: getStateProps) => {
-    try {
-      dispatch<GetOrderDetailsRequest>({
-        type: ORDER_DETAILS_REQUEST,
-      })
+export const getOrderDetails = (id: string) => async (dispatch: Dispatch) => {
+  try {
+    dispatch<GetOrderDetailsRequest>({
+      type: ORDER_DETAILS_REQUEST,
+    })
 
-      const {
-        userLogin: { userInfo },
-      } = getState()
+    const { data } = await client.query({
+      query: GET_ORDER,
+      variables: { input: { _id: id } },
+    })
 
-      const { data } = await client.query({
-        query: GET_ORDER,
-        variables: { input: { _id: id } },
-      })
+    dispatch<GetOrderDetailsSuccess>({
+      type: ORDER_DETAILS_SUCCESS,
+      payload: data,
+    })
 
-      // REST API
-      // const config = {
-      //   headers: {
-      //     Authorization: `Bearer ${userInfo.login.token}`
-      //   }
-      // }
-
-      // const { data } = await axios.get(`/api/orders/${id}`, config)
-
-      dispatch<GetOrderDetailsSuccess>({
-        type: ORDER_DETAILS_SUCCESS,
-        payload: data,
-      })
-
-      dispatch<GetOrderSuccessEmptyCart>({
-        type: CART_EMPTY,
-        payload: localStorage.setItem('cartItems', JSON.stringify([])),
-      })
-    } catch (error) {
-      dispatch<GetOrderDetailsFail>({
-        type: ORDER_DETAILS_FAIL,
-        payload:
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message,
-      })
-    }
+    dispatch<GetOrderSuccessEmptyCart>({
+      type: CART_EMPTY,
+      payload: localStorage.setItem('cartItems', JSON.stringify([])),
+    })
+  } catch (error) {
+    dispatch<GetOrderDetailsFail>({
+      type: ORDER_DETAILS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
   }
+}
 
 export type DeliverOrderRequest = {
   type: typeof ORDER_DELIVER_REQUEST
@@ -207,7 +135,7 @@ export type DeliverOrderRequest = {
 
 export type DeliverOrderSuccess = {
   type: typeof ORDER_DELIVER_SUCCESS
-  payload: orderProps
+  payload: Order
 }
 
 export type DeliverOrderFail = {
@@ -219,47 +147,31 @@ export type DeliverOrderReset = {
   type: typeof ORDER_DELIVER_RESET
 }
 
-export const deliverOrder =
-  (_id: string) => async (dispatch: Dispatch, getState: getStateProps) => {
-    try {
-      dispatch<DeliverOrderRequest>({
-        type: ORDER_DELIVER_REQUEST,
-      })
+export const deliverOrder = (_id: string) => async (dispatch: Dispatch) => {
+  try {
+    dispatch<DeliverOrderRequest>({
+      type: ORDER_DELIVER_REQUEST,
+    })
 
-      const {
-        userLogin: { userInfo },
-      } = getState()
+    const { data } = await client.mutate({
+      mutation: DELIVER_ORDER,
+      variables: { input: { _id: _id } },
+    })
 
-      const { data } = await client.mutate({
-        mutation: DELIVER_ORDER,
-        variables: { input: { _id: _id } },
-      })
-
-      //REST API
-      // const config = {
-      //   headers: { Authorization: `Bearer ${userInfo.login.token}` },
-      // }
-
-      // const { data } = await axios.put(
-      //   `/api/orders/${order._id}/deliver`,
-      //   {},
-      //   config,
-      // )
-
-      dispatch<DeliverOrderSuccess>({
-        type: ORDER_DELIVER_SUCCESS,
-        payload: data,
-      })
-    } catch (error) {
-      dispatch<DeliverOrderFail>({
-        type: ORDER_DELIVER_FAIL,
-        payload:
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message,
-      })
-    }
+    dispatch<DeliverOrderSuccess>({
+      type: ORDER_DELIVER_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {
+    dispatch<DeliverOrderFail>({
+      type: ORDER_DELIVER_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
   }
+}
 
 export type CancelledOrderRequest = {
   type: typeof ORDER_CANCELLED_REQUEST
@@ -267,7 +179,7 @@ export type CancelledOrderRequest = {
 
 export type CancelledOrderSuccess = {
   type: typeof ORDER_CANCELLED_SUCCESS
-  payload: orderProps
+  payload: Order
 }
 
 export type CancelledOrderFail = {
@@ -279,47 +191,31 @@ export type CancelledOrderReset = {
   type: typeof ORDER_CANCELLED_RESET
 }
 
-export const cancelledOrder =
-  (_id: string) => async (dispatch: Dispatch, getState: getStateProps) => {
-    try {
-      dispatch<CancelledOrderRequest>({
-        type: ORDER_CANCELLED_REQUEST,
-      })
+export const cancelledOrder = (_id: string) => async (dispatch: Dispatch) => {
+  try {
+    dispatch<CancelledOrderRequest>({
+      type: ORDER_CANCELLED_REQUEST,
+    })
 
-      const {
-        userLogin: { userInfo },
-      } = getState()
+    const { data } = await client.mutate({
+      mutation: CANCEL_ORDER,
+      variables: { input: { _id: _id } },
+    })
 
-      const { data } = await client.mutate({
-        mutation: CANCEL_ORDER,
-        variables: { input: { _id: _id } },
-      })
-
-      //REST API
-      // const config = {
-      //   headers: { Authorization: `Bearer ${userInfo.login.token}` },
-      // }
-
-      // const { data } = await axios.put(
-      //   `/api/orders/${order._id}/cancelled`,
-      //   {},
-      //   config,
-      // )
-
-      dispatch<CancelledOrderSuccess>({
-        type: ORDER_CANCELLED_SUCCESS,
-        payload: data,
-      })
-    } catch (error) {
-      dispatch<CancelledOrderFail>({
-        type: ORDER_CANCELLED_FAIL,
-        payload:
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message,
-      })
-    }
+    dispatch<CancelledOrderSuccess>({
+      type: ORDER_CANCELLED_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {
+    dispatch<CancelledOrderFail>({
+      type: ORDER_CANCELLED_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
   }
+}
 
 export type ListMyOrdersRequest = {
   type: typeof ORDER_LIST_MY_REQUEST
@@ -327,7 +223,7 @@ export type ListMyOrdersRequest = {
 
 export type ListMyOrdersSuccess = {
   type: typeof ORDER_LIST_MY_SUCCESS
-  payload: orderProps[]
+  payload: Order[]
 }
 
 export type ListMyOrdersFail = {
@@ -335,41 +231,30 @@ export type ListMyOrdersFail = {
   payload: string
 }
 
-export const listMyOrders =
-  () => async (dispatch: Dispatch, getState: getStateProps) => {
-    try {
-      dispatch<ListMyOrdersRequest>({
-        type: ORDER_LIST_MY_REQUEST,
-      })
+export const listMyOrders = () => async (dispatch: Dispatch) => {
+  try {
+    dispatch<ListMyOrdersRequest>({
+      type: ORDER_LIST_MY_REQUEST,
+    })
 
-      const {
-        userLogin: { userInfo },
-      } = getState()
+    const { data } = await client.query({
+      query: GET_MY_ORDERS,
+    })
 
-      const { data } = await client.query({
-        query: GET_MY_ORDERS,
-      })
-
-      //REST API
-      // const config = {
-      //   headers: { Authorization: `Bearer ${userInfo.login.token}` }
-      // }
-      // const { data } = await axios.get(`/api/orders/my-orders`, config)
-
-      dispatch<ListMyOrdersSuccess>({
-        type: ORDER_LIST_MY_SUCCESS,
-        payload: data,
-      })
-    } catch (error) {
-      dispatch<ListMyOrdersFail>({
-        type: ORDER_LIST_MY_FAIL,
-        payload:
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message,
-      })
-    }
+    dispatch<ListMyOrdersSuccess>({
+      type: ORDER_LIST_MY_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {
+    dispatch<ListMyOrdersFail>({
+      type: ORDER_LIST_MY_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
   }
+}
 
 export type ListOrdersRequest = {
   type: typeof ORDER_LIST_REQUEST
@@ -377,7 +262,7 @@ export type ListOrdersRequest = {
 
 export type ListOrdersSuccess = {
   type: typeof ORDER_LIST_SUCCESS
-  payload: orderProps[]
+  payload: Order[]
 }
 
 export type ListOrdersFail = {
@@ -385,38 +270,27 @@ export type ListOrdersFail = {
   payload: string
 }
 
-export const listOrders =
-  () => async (dispatch: Dispatch, getState: getStateProps) => {
-    try {
-      dispatch<ListOrdersRequest>({
-        type: ORDER_LIST_REQUEST,
-      })
+export const listOrders = () => async (dispatch: Dispatch) => {
+  try {
+    dispatch<ListOrdersRequest>({
+      type: ORDER_LIST_REQUEST,
+    })
 
-      const {
-        userLogin: { userInfo },
-      } = getState()
+    const { data } = await client.query({
+      query: GET_ALL_ORDERS,
+    })
 
-      const { data } = await client.query({
-        query: GET_ALL_ORDERS,
-      })
-
-      // REST API
-      // const config = {
-      //   headers: { Authorization: `Bearer ${userInfo.login.token}` }
-      // }
-      // const { data } = await axios.get(`/api/orders/all-orders`, config)
-
-      dispatch<ListOrdersSuccess>({
-        type: ORDER_LIST_SUCCESS,
-        payload: data,
-      })
-    } catch (error) {
-      dispatch<ListOrdersFail>({
-        type: ORDER_LIST_FAIL,
-        payload:
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message,
-      })
-    }
+    dispatch<ListOrdersSuccess>({
+      type: ORDER_LIST_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {
+    dispatch<ListOrdersFail>({
+      type: ORDER_LIST_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
   }
+}
