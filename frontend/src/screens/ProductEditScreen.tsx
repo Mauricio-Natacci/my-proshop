@@ -49,6 +49,8 @@ export const ProductEditScreen = ({
   )
   const { loading, error, product } = productDetails
 
+  console.log('productDetails', product)
+
   const productUpdate = useSelector((state: State) => state.productUpdate)
   const {
     loading: loadingUpdate,
@@ -64,10 +66,10 @@ export const ProductEditScreen = ({
       if (!product.getProduct?.name || product.getProduct?._id !== productId) {
         dispatch(listProductDetails(productId))
       } else {
-        setName(product.getProduct.name)
-        setPrice(product.getProduct.price)
-        setImage(product.getProduct.image)
-        setDescription(product.getProduct.description)
+        setName(product.getProduct?.name)
+        setPrice(product.getProduct?.price)
+        setImage(product.getProduct?.image)
+        setDescription(product.getProduct?.description)
       }
     }
   }, [dispatch, history, product, productId, successUpdate])

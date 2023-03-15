@@ -10,7 +10,9 @@ import {
   deleteProduct,
   createProduct,
 } from '../actions/productActions'
-import { PRODUCT_CREATE_RESET } from '../constants/productConstants'
+import {
+  PRODUCT_CREATE_RESET,
+} from '../constants/productConstants'
 import { UserInfo } from '../actions/userActions'
 import { ProductListState } from '../types/product.type'
 import { StateUserInfo } from '../types/user.type'
@@ -44,16 +46,19 @@ type State = {
   userLogin: {
     userInfo: UserInfo
   }
-  productDelete: {
-    loading: boolean
-    error: string
-    success: boolean
-  }
   productCreate: {
     loading: boolean
     error: string
     success: boolean
     product: { createProduct: Product }
+  }
+}
+
+type StateDeleteProduct = {
+  productDelete: {
+    loading: boolean
+    error: string
+    success: boolean
   }
 }
 
@@ -68,7 +73,9 @@ export const ProductListScreen = ({ history }: ProductListScreenProps) => {
   const userLogin = useSelector((state: StateUserInfo) => state.userLogin)
   const { userInfo } = userLogin
 
-  const productDelete = useSelector((state: State) => state.productDelete)
+  const productDelete = useSelector(
+    (state: StateDeleteProduct) => state.productDelete,
+  )
   const {
     loading: loadingDelete,
     error: errorDelete,
@@ -84,14 +91,18 @@ export const ProductListScreen = ({ history }: ProductListScreenProps) => {
   } = productCreate
 
   console.log('products:', products)
-  console.log('successDelete:', successDelete)
-  console.log('successCreate:', successCreate)
+  console.log('successCreate', successCreate)
+  console.log('successDelete', successDelete)
 
   useEffect(() => {
     dispatch({ type: PRODUCT_CREATE_RESET })
 
     if (!userInfo.login.isAdmin) {
       history.push('/login')
+    }
+
+    if (successDelete) {
+      dispatch(listProducts())
     }
 
     if (successCreate) {
@@ -104,9 +115,9 @@ export const ProductListScreen = ({ history }: ProductListScreenProps) => {
     dispatch,
     history,
     userInfo,
-    successDelete,
     successCreate,
     createdProduct,
+    successDelete,
   ])
 
   const createProductHandler = () => {

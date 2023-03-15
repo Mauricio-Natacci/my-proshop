@@ -54,6 +54,7 @@ export const listProducts = () => async (dispatch: Dispatch) => {
 
     const { data } = await client.query({
       query: GET_ALL_PRODUCTS,
+      fetchPolicy: 'no-cache',
     })
 
     // REST API
@@ -136,7 +137,6 @@ export const deleteProduct =
       await client.mutate({
         mutation: DELETE_PRODUCT,
         variables: { id: { _id: id } },
-        refetchQueries: [{ query: GET_ALL_PRODUCTS }],
       })
 
       // REST API

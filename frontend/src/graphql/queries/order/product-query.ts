@@ -16,8 +16,6 @@ export const GET_ALL_PRODUCTS = gql`
   query getAllProducts {
     getAllProducts {
       ...ProductFields
-      updatedAt
-      createdAt
     }
   }
 `
@@ -27,8 +25,6 @@ export const GET_PRODUCT = gql`
   query getProduct($id: GetProductInput!) {
     getProduct(input: $id) {
       ...ProductFields
-      updatedAt
-      createdAt
     }
   }
 `
