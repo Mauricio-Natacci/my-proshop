@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import axios from 'axios'
 import {
   PRODUCT_LIST_REQUEST,
@@ -192,7 +193,6 @@ export const createProduct =
             image: '/images/sample.jpg',
           },
         },
-        refetchQueries: [{ query: GET_ALL_PRODUCTS }],
       })
 
       // REST API

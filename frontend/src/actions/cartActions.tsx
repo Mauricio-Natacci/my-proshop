@@ -1,4 +1,3 @@
-import axios from 'axios'
 import {
   CART_ADD_ITEM,
   CART_REMOVE_ITEM,
@@ -6,6 +5,8 @@ import {
   CART_EMPTY,
 } from '../constants/cartConstants'
 import { Dispatch } from 'redux'
+import { GET_PRODUCT } from '../graphql/queries/order/product-query'
+import { client } from '../graphql/service'
 
 export type CartItem = {
   productId: string
@@ -35,7 +36,12 @@ export type AddToCartAction = {
 export const addToCart =
   (id: string, quantity: number) =>
   async (dispatch: Dispatch, getState: getStateProps) => {
-    const { data } = await axios.get(`/api/products/${id}`)
+    const { data } = await client.query({
+      query: GET_PRODUCT,
+      variables: { id: { _id: id } },
+    })
+
+    // const { data } = await axios.get(`/api/products/${id}`)
 
     dispatch<AddToCartAction>({
       type: CART_ADD_ITEM,

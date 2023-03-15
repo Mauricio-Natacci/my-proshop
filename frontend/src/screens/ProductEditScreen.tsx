@@ -9,26 +9,11 @@ import { FormContainer } from '../components/FormContainer'
 import { listProductDetails, updateProduct } from '../actions/productActions'
 import { PRODUCT_UPDATE_RESET } from '../constants/productConstants'
 import { Dispatch } from 'redux'
-import { ProductDetailsState } from '../types/product.type'
-
-type ProductEditScreenProps = {
-  match: {
-    params: {
-      id: string
-    }
-  }
-  history: {
-    push: (url: string) => void
-  }
-}
-
-type State = {
-  productUpdate: {
-    loading: boolean
-    error: string
-    success: boolean
-  }
-}
+import {
+  ProductDetailsState,
+  ProductEditScreenProps,
+  ProductUpdateState,
+} from '../types/product.type'
 
 export const ProductEditScreen = ({
   match,
@@ -49,9 +34,9 @@ export const ProductEditScreen = ({
   )
   const { loading, error, product } = productDetails
 
-  console.log('productDetails', product)
-
-  const productUpdate = useSelector((state: State) => state.productUpdate)
+  const productUpdate = useSelector(
+    (state: ProductUpdateState) => state.productUpdate,
+  )
   const {
     loading: loadingUpdate,
     error: errorUpdate,

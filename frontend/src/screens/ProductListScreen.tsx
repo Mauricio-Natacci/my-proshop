@@ -10,57 +10,14 @@ import {
   deleteProduct,
   createProduct,
 } from '../actions/productActions'
+import { PRODUCT_CREATE_RESET } from '../constants/productConstants'
 import {
-  PRODUCT_CREATE_RESET,
-} from '../constants/productConstants'
-import { UserInfo } from '../actions/userActions'
-import { ProductListState } from '../types/product.type'
+  ProductCreateState,
+  ProductListScreenProps,
+  ProductListState,
+  StateDeleteProduct,
+} from '../types/product.type'
 import { StateUserInfo } from '../types/user.type'
-
-type ProductListScreenProps = {
-  history: {
-    push: (url: string) => void
-  }
-}
-
-type Products = {
-  _id: string
-  name: string
-  price: number
-  user: string
-  image: string
-  description: string
-}
-type Product = {
-  loading: boolean
-  error: string
-  products: Products[]
-  _id: string
-}
-type State = {
-  productList: {
-    loading: boolean
-    error: string
-    products: Products[]
-  }
-  userLogin: {
-    userInfo: UserInfo
-  }
-  productCreate: {
-    loading: boolean
-    error: string
-    success: boolean
-    product: { createProduct: Product }
-  }
-}
-
-type StateDeleteProduct = {
-  productDelete: {
-    loading: boolean
-    error: string
-    success: boolean
-  }
-}
 
 export const ProductListScreen = ({ history }: ProductListScreenProps) => {
   const dispatch: Dispatch<any> = useDispatch()
@@ -82,17 +39,15 @@ export const ProductListScreen = ({ history }: ProductListScreenProps) => {
     success: successDelete,
   } = productDelete
 
-  const productCreate = useSelector((state: State) => state.productCreate)
+  const productCreate = useSelector(
+    (state: ProductCreateState) => state.productCreate,
+  )
   const {
     loading: loadingCreate,
     error: errorCreate,
     success: successCreate,
     product: createdProduct,
   } = productCreate
-
-  console.log('products:', products)
-  console.log('successCreate', successCreate)
-  console.log('successDelete', successDelete)
 
   useEffect(() => {
     dispatch({ type: PRODUCT_CREATE_RESET })
@@ -108,7 +63,6 @@ export const ProductListScreen = ({ history }: ProductListScreenProps) => {
     if (successCreate) {
       history.push(`/admin/product/${createdProduct.createProduct._id}/edit`)
     } else {
-      console.log('listProducts called')
       dispatch(listProducts())
     }
   }, [
