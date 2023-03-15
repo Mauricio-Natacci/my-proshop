@@ -16,7 +16,7 @@ export type ProductListState = {
   }
 }
 
-export type State = {
+export type ProductDetailsState = {
   productDetails: {
     loading: boolean
     error: string

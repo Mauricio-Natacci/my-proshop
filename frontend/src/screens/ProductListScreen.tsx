@@ -8,10 +8,12 @@ import { Loader } from '../components/Loader'
 import {
   listProducts,
   deleteProduct,
-  createProduct
+  createProduct,
 } from '../actions/productActions'
 import { PRODUCT_CREATE_RESET } from '../constants/productConstants'
 import { UserInfo } from '../actions/userActions'
+import { ProductListState } from '../types/product.type'
+import { StateUserInfo } from '../types/user.type'
 
 type ProductListScreenProps = {
   history: {
@@ -51,24 +53,26 @@ type State = {
     loading: boolean
     error: string
     success: boolean
-    product: Product
+    product: { createProduct: Product }
   }
 }
 
 export const ProductListScreen = ({ history }: ProductListScreenProps) => {
   const dispatch: Dispatch<any> = useDispatch()
 
-  const productList = useSelector((state: State) => state.productList)
+  const productList = useSelector(
+    (state: ProductListState) => state.productList,
+  )
   const { loading, error, products } = productList
 
-  const userLogin = useSelector((state: State) => state.userLogin)
+  const userLogin = useSelector((state: StateUserInfo) => state.userLogin)
   const { userInfo } = userLogin
 
   const productDelete = useSelector((state: State) => state.productDelete)
   const {
     loading: loadingDelete,
     error: errorDelete,
-    success: successDelete
+    success: successDelete,
   } = productDelete
 
   const productCreate = useSelector((state: State) => state.productCreate)
@@ -76,18 +80,19 @@ export const ProductListScreen = ({ history }: ProductListScreenProps) => {
     loading: loadingCreate,
     error: errorCreate,
     success: successCreate,
-    product: createdProduct
+    product: createdProduct,
   } = productCreate
 
+  console.log('createdProduct', createdProduct)
   useEffect(() => {
     dispatch({ type: PRODUCT_CREATE_RESET })
 
-    if (!userInfo.isAdmin) {
+    if (!userInfo.login.isAdmin) {
       history.push('/login')
     }
 
     if (successCreate) {
-      history.push(`/admin/product/${createdProduct._id}/edit`)
+      history.push(`/admin/product/${createdProduct.createProduct._id}/edit`)
     } else {
       dispatch(listProducts())
     }
@@ -97,7 +102,7 @@ export const ProductListScreen = ({ history }: ProductListScreenProps) => {
     userInfo,
     successDelete,
     successCreate,
-    createdProduct
+    createdProduct,
   ])
 
   const createProductHandler = () => {
@@ -140,7 +145,7 @@ export const ProductListScreen = ({ history }: ProductListScreenProps) => {
             </tr>
           </thead>
           <tbody>
-            {products.map((product) => (
+            {products.getAllProducts?.map((product) => (
               <tr key={product._id}>
                 <td>{product._id}</td>
                 <td>{product.name}</td>

@@ -16,14 +16,19 @@ import {
   PRODUCT_UPDATE_SUCCESS,
   PRODUCT_UPDATE_FAIL,
   PRODUCT_CREATE_RESET,
-  PRODUCT_UPDATE_RESET
+  PRODUCT_UPDATE_RESET,
 } from '../constants/productConstants'
 import { Dispatch } from 'redux'
 import { client } from '../graphql/service/index'
 import {
   GET_ALL_PRODUCTS,
-  GET_PRODUCT
+  GET_PRODUCT,
 } from '../graphql/queries/order/product-query'
+import {
+  CREATE_PRODUCT,
+  DELETE_PRODUCT,
+  UPDATE_PRODUCT,
+} from '../graphql/mutations/product/product.mutation'
 
 type Product = {
   _id: string
@@ -48,7 +53,7 @@ export const listProducts = () => async (dispatch: Dispatch) => {
     dispatch<ProductListRequest>({ type: PRODUCT_LIST_REQUEST })
 
     const { data } = await client.query({
-      query: GET_ALL_PRODUCTS
+      query: GET_ALL_PRODUCTS,
     })
 
     // REST API
@@ -56,7 +61,7 @@ export const listProducts = () => async (dispatch: Dispatch) => {
 
     dispatch<ProductListSuccess>({
       type: PRODUCT_LIST_SUCCESS,
-      payload: data
+      payload: data,
     })
   } catch (error) {
     dispatch<ProductListFail>({
@@ -64,7 +69,7 @@ export const listProducts = () => async (dispatch: Dispatch) => {
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
-          : error.message
+          : error.message,
     })
   }
 }
@@ -86,7 +91,7 @@ export const listProductDetails =
 
       const { data } = await client.query({
         query: GET_PRODUCT,
-        variables: { id: { _id: id } }
+        variables: { id: { _id: id } },
       })
 
       // REST API
@@ -94,7 +99,7 @@ export const listProductDetails =
 
       dispatch<ProductDetailsSuccess>({
         type: PRODUCT_DETAILS_SUCCESS,
-        payload: data
+        payload: data,
       })
     } catch (error) {
       dispatch<ProductDetailsFail>({
@@ -102,7 +107,7 @@ export const listProductDetails =
         payload:
           error.response && error.response.data.message
             ? error.response.data.message
-            : error.message
+            : error.message,
       })
     }
   }
@@ -121,21 +126,27 @@ export const deleteProduct =
   (id: string) => async (dispatch: Dispatch, getState: getStateProps) => {
     try {
       dispatch<ProductDeleteRequest>({
-        type: PRODUCT_DELETE_REQUEST
+        type: PRODUCT_DELETE_REQUEST,
       })
 
       const {
-        userLogin: { userInfo }
+        userLogin: { userInfo },
       } = getState()
 
-      const config = {
-        headers: { Authorization: `Bearer ${userInfo.token}` }
-      }
+      await client.mutate({
+        mutation: DELETE_PRODUCT,
+        variables: { id: { _id: id } },
+      })
 
-      await axios.delete(`/api/products/${id}`, config)
+      // REST API
+      // const config = {
+      //   headers: { Authorization: `Bearer ${userInfo.token}` }
+      // }
+
+      // await axios.delete(`/api/products/${id}`, config)
 
       dispatch<ProductDeleteSuccess>({
-        type: PRODUCT_DELETE_SUCCESS
+        type: PRODUCT_DELETE_SUCCESS,
       })
     } catch (error) {
       dispatch<ProductDeleteFail>({
@@ -143,7 +154,7 @@ export const deleteProduct =
         payload:
           error.response && error.response.data.message
             ? error.response.data.message
-            : error.message
+            : error.message,
       })
     }
   }
@@ -163,22 +174,35 @@ export const createProduct =
   () => async (dispatch: Dispatch, getState: getStateProps) => {
     try {
       dispatch<ProductCreateRequest>({
-        type: PRODUCT_CREATE_REQUEST
+        type: PRODUCT_CREATE_REQUEST,
       })
 
       const {
-        userLogin: { userInfo }
+        userLogin: { userInfo },
       } = getState()
 
-      const config = {
-        headers: { Authorization: `Bearer ${userInfo.token}` }
-      }
+      const { data } = await client.mutate({
+        mutation: CREATE_PRODUCT,
+        variables: {
+          input: {
+            name: 'Sample name',
+            description: 'Sample description',
+            price: 0,
+            image: '/images/sample.jpg',
+          },
+        },
+      })
 
-      const { data } = await axios.post(`/api/products`, {}, config)
+      // REST API
+      // const config = {
+      //   headers: { Authorization: `Bearer ${userInfo.token}` },
+      // }
+
+      // const { data } = await axios.post(`/api/products`, {}, config)
 
       dispatch<ProductCreateSuccess>({
         type: PRODUCT_CREATE_SUCCESS,
-        payload: data
+        payload: data,
       })
     } catch (error) {
       dispatch<ProductCreateFail>({
@@ -186,7 +210,7 @@ export const createProduct =
         payload:
           error.response && error.response.data.message
             ? error.response.data.message
-            : error.message
+            : error.message,
       })
     }
   }
@@ -206,27 +230,41 @@ export const updateProduct =
   (product: Product) => async (dispatch: Dispatch, getState: getStateProps) => {
     try {
       dispatch<ProductUpdateRequest>({
-        type: PRODUCT_UPDATE_REQUEST
+        type: PRODUCT_UPDATE_REQUEST,
       })
 
       const {
-        userLogin: { userInfo }
+        userLogin: { userInfo },
       } = getState()
 
-      const config = {
-        'Content-Type': 'application/json',
-        headers: { Authorization: `Bearer ${userInfo.token}` }
-      }
+      const { data } = await client.mutate({
+        mutation: UPDATE_PRODUCT,
+        variables: {
+          input: {
+            _id: product._id,
+            name: product.name,
+            description: product.description,
+            price: product.price,
+            image: product.image,
+          },
+        },
+      })
 
-      const { data } = await axios.put(
-        `/api/products/${product._id}`,
-        product,
-        config
-      )
+      // REST API
+      // const config = {
+      //   'Content-Type': 'application/json',
+      //   headers: { Authorization: `Bearer ${userInfo.token}` },
+      // }
+
+      // const { data } = await axios.put(
+      //   `/api/products/${product._id}`,
+      //   product,
+      //   config,
+      // )
 
       dispatch<ProductUpdateSuccess>({
         type: PRODUCT_UPDATE_SUCCESS,
-        payload: data
+        payload: data,
       })
     } catch (error) {
       dispatch<ProductUpdateFail>({
@@ -234,7 +272,7 @@ export const updateProduct =
         payload:
           error.response && error.response.data.message
             ? error.response.data.message
-            : error.message
+            : error.message,
       })
     }
   }
