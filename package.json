@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Shopping cart app",
   "main": "server.ts",
+  "engines": {
+    "node": "19.x",
+    "npm": "9.5.x"
+  },
   "scripts": {
     "build:backend": "npm run build:rest && npm run build:graphql",
     "start:rest:js": "node dist/server.js",
