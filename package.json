@@ -4,8 +4,8 @@
   "description": "Shopping cart app",
   "main": "server.ts",
   "engines": {
-    "node": "19.x",
-    "npm": "9.5.x"
+    "node": "19.2.0",
+    "npm": "8.19.3"
   },
   "scripts": {
     "build:backend": "npm run build:rest && npm run build:graphql",
