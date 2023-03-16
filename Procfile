@@ -1,2 +1,1 @@
-web: sucrase-node backend/server.ts
-web: ts-node-dev --respawn --transpile-only backend/graphql/index.ts
+web: node dist/server.js && node dist/backend/graphql/index.js

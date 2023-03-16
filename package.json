@@ -4,12 +4,15 @@
   "description": "Shopping cart app",
   "main": "server.ts",
   "scripts": {
-    "server:ts": "tsx backend/server.ts",
-    "build": "tsup backend",
-    "graphql": "ts-node-dev --respawn --transpile-only backend/graphql/index.ts",
-    "server:js": "node dist/server.js",
+    "build:backend": "npm run build:rest && npm run build:graphql",
+    "start:rest:js": "node dist/server.js",
+    "start:graphql:js": "node dist/backend/graphql/index.js",
+    "build:graphql": "tsc",
+    "build:rest": "tsup backend",
+    "dev:rest": "tsx backend/server.ts",
+    "dev:graphql": "ts-node-dev --respawn --transpile-only backend/graphql/index.ts",
     "client": "npm start --prefix frontend",
-    "dev": "concurrently \"npm run server:ts\"  \"npm run graphql\" \"npm run client\"",
+    "dev": "concurrently \"npm run dev:rest\"  \"npm run dev:graphql\" \"npm run client\"",
     "data:import": "node backend/seeder",
     "data:destroy": "node backend/seeder -d",
     "build:front": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend",
@@ -43,6 +46,7 @@
     "multer-s3": "^2.10.0",
     "reflect-metadata": "^0.1.13",
     "type-graphql": "^1.1.1",
+    "ts-node-dev": "^1.1.8",
     "uuidv4": "^6.2.13"
   },
   "devDependencies": {
@@ -64,7 +68,6 @@
     "eslint-plugin-react": "^7.32.2",
     "nodemon": "^2.0.20",
     "prettier": "^2.8.3",
-    "ts-node-dev": "^1.1.8",
     "tsup": "^6.6.3",
     "tsx": "^3.12.3",
     "typescript": "^4.9.5"
