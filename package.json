@@ -8,7 +8,7 @@
     "start:rest:js": "node dist/server.js",
     "start:graphql:js": "node dist/backend/graphql/index.js",
     "build:graphql": "tsc",
-    "build:rest": "tsup backend",
+    "build:rest": "sucrase-node backend/server.ts",
     "dev:rest": "tsx backend/server.ts",
     "dev:graphql": "ts-node-dev --respawn --transpile-only backend/graphql/index.ts",
     "client": "npm start --prefix frontend",
