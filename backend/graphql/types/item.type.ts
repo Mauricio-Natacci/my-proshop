@@ -1,4 +1,6 @@
+import { Ref } from '@typegoose/typegoose'
 import { Field, ObjectType } from 'type-graphql'
+import { Product } from './product.type'
 
 @ObjectType()
 export class OrderItem {
@@ -9,5 +11,5 @@ export class OrderItem {
   price: number
 
   @Field(() => String)
-  productId: string
+  productId: Ref<Product>
 }

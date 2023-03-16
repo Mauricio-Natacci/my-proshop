@@ -6,6 +6,7 @@ export const ORDER_FIELDS_FRAGMENT = gql`
     buyer {
       _id
       name
+      email
     }
     updatedAt
     createdAt
@@ -28,6 +29,31 @@ export const GET_MY_ORDERS = gql`
   query getMyOrders {
     getMyOrders {
       ...OrderFields
+    }
+  }
+`
+export const GET_ORDER = gql`
+  ${ORDER_FIELDS_FRAGMENT}
+  query getOrder($input: GetOrderInput!) {
+    getOrder(input: $input) {
+      ...OrderFields
+      orderItems {
+        product {
+          _id
+          name
+          image
+        }
+
+        quantity
+        price
+      }
+      shippingAddress {
+        address
+        city
+        country
+        postalCode
+      }
+      status
     }
   }
 `

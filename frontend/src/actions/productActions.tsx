@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import axios from 'axios'
 import {
   PRODUCT_LIST_REQUEST,
@@ -16,27 +17,25 @@ import {
   PRODUCT_UPDATE_SUCCESS,
   PRODUCT_UPDATE_FAIL,
   PRODUCT_CREATE_RESET,
-  PRODUCT_UPDATE_RESET
+  PRODUCT_UPDATE_RESET,
 } from '../constants/productConstants'
 import { Dispatch } from 'redux'
 import { client } from '../graphql/service/index'
 import {
   GET_ALL_PRODUCTS,
-  GET_PRODUCT
+  GET_PRODUCT,
 } from '../graphql/queries/order/product-query'
-
-type Product = {
-  _id: string
-  name: string
-  image: string
-  description: string
-  price: number
-}
+import {
+  CREATE_PRODUCT,
+  DELETE_PRODUCT,
+  UPDATE_PRODUCT,
+} from '../graphql/mutations/product/product.mutation'
+import { ProductItem } from '../types/product.type'
 
 export type ProductListRequest = { type: typeof PRODUCT_LIST_REQUEST }
 export type ProductListSuccess = {
   type: typeof PRODUCT_LIST_SUCCESS
-  payload: Product[]
+  payload: ProductItem[]
 }
 export type ProductListFail = {
   type: typeof PRODUCT_LIST_FAIL
@@ -48,15 +47,13 @@ export const listProducts = () => async (dispatch: Dispatch) => {
     dispatch<ProductListRequest>({ type: PRODUCT_LIST_REQUEST })
 
     const { data } = await client.query({
-      query: GET_ALL_PRODUCTS
+      query: GET_ALL_PRODUCTS,
+      fetchPolicy: 'no-cache',
     })
-
-    // REST API
-    // const { data } = await axios.get('/api/products')
 
     dispatch<ProductListSuccess>({
       type: PRODUCT_LIST_SUCCESS,
-      payload: data
+      payload: data,
     })
   } catch (error) {
     dispatch<ProductListFail>({
@@ -64,7 +61,7 @@ export const listProducts = () => async (dispatch: Dispatch) => {
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
-          : error.message
+          : error.message,
     })
   }
 }
@@ -72,7 +69,7 @@ export const listProducts = () => async (dispatch: Dispatch) => {
 export type ProductDetailsRequest = { type: typeof PRODUCT_DETAILS_REQUEST }
 export type ProductDetailsSuccess = {
   type: typeof PRODUCT_DETAILS_SUCCESS
-  payload: Product
+  payload: ProductItem
 }
 export type ProductDetailsFail = {
   type: typeof PRODUCT_DETAILS_FAIL
@@ -86,15 +83,12 @@ export const listProductDetails =
 
       const { data } = await client.query({
         query: GET_PRODUCT,
-        variables: { id: { _id: id } }
+        variables: { id: { _id: id } },
       })
-
-      // REST API
-      // const { data } = await axios.get(`/api/products/${id}`)
 
       dispatch<ProductDetailsSuccess>({
         type: PRODUCT_DETAILS_SUCCESS,
-        payload: data
+        payload: data,
       })
     } catch (error) {
       dispatch<ProductDetailsFail>({
@@ -102,7 +96,7 @@ export const listProductDetails =
         payload:
           error.response && error.response.data.message
             ? error.response.data.message
-            : error.message
+            : error.message,
       })
     }
   }
@@ -121,21 +115,27 @@ export const deleteProduct =
   (id: string) => async (dispatch: Dispatch, getState: getStateProps) => {
     try {
       dispatch<ProductDeleteRequest>({
-        type: PRODUCT_DELETE_REQUEST
+        type: PRODUCT_DELETE_REQUEST,
       })
 
       const {
-        userLogin: { userInfo }
+        userLogin: { userInfo },
       } = getState()
 
-      const config = {
-        headers: { Authorization: `Bearer ${userInfo.token}` }
-      }
+      await client.mutate({
+        mutation: DELETE_PRODUCT,
+        variables: { id: { _id: id } },
+      })
 
-      await axios.delete(`/api/products/${id}`, config)
+      // REST API
+      // const config = {
+      //   headers: { Authorization: `Bearer ${userInfo.token}` }
+      // }
+
+      // await axios.delete(`/api/products/${id}`, config)
 
       dispatch<ProductDeleteSuccess>({
-        type: PRODUCT_DELETE_SUCCESS
+        type: PRODUCT_DELETE_SUCCESS,
       })
     } catch (error) {
       dispatch<ProductDeleteFail>({
@@ -143,7 +143,7 @@ export const deleteProduct =
         payload:
           error.response && error.response.data.message
             ? error.response.data.message
-            : error.message
+            : error.message,
       })
     }
   }
@@ -151,51 +151,55 @@ export const deleteProduct =
 export type ProductCreateRequest = { type: typeof PRODUCT_CREATE_REQUEST }
 export type ProductCreateSuccess = {
   type: typeof PRODUCT_CREATE_SUCCESS
-  payload: Product
+  payload: ProductItem
 }
+
 export type ProductCreateFail = {
   type: typeof PRODUCT_CREATE_FAIL
   payload: string
 }
+
 export type ProductCreateReset = { type: typeof PRODUCT_CREATE_RESET }
 
-export const createProduct =
-  () => async (dispatch: Dispatch, getState: getStateProps) => {
-    try {
-      dispatch<ProductCreateRequest>({
-        type: PRODUCT_CREATE_REQUEST
-      })
+export const createProduct = () => async (dispatch: Dispatch) => {
+  try {
+    dispatch<ProductCreateRequest>({
+      type: PRODUCT_CREATE_REQUEST,
+    })
 
-      const {
-        userLogin: { userInfo }
-      } = getState()
+    const { data } = await client.mutate({
+      mutation: CREATE_PRODUCT,
+      variables: {
+        input: {
+          name: 'Sample name',
+          description: 'Sample description',
+          price: 0,
+          image: '/images/sample.jpg',
+        },
+      },
+    })
 
-      const config = {
-        headers: { Authorization: `Bearer ${userInfo.token}` }
-      }
-
-      const { data } = await axios.post(`/api/products`, {}, config)
-
-      dispatch<ProductCreateSuccess>({
-        type: PRODUCT_CREATE_SUCCESS,
-        payload: data
-      })
-    } catch (error) {
-      dispatch<ProductCreateFail>({
-        type: PRODUCT_CREATE_FAIL,
-        payload:
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message
-      })
-    }
+    dispatch<ProductCreateSuccess>({
+      type: PRODUCT_CREATE_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {
+    dispatch<ProductCreateFail>({
+      type: PRODUCT_CREATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
   }
+}
 
 export type ProductUpdateRequest = { type: typeof PRODUCT_UPDATE_REQUEST }
 export type ProductUpdateSuccess = {
   type: typeof PRODUCT_UPDATE_SUCCESS
-  payload: Product
+  payload: ProductItem
 }
+
 export type ProductUpdateFail = {
   type: typeof PRODUCT_UPDATE_FAIL
   payload: string
@@ -203,30 +207,28 @@ export type ProductUpdateFail = {
 export type ProductUpdateReset = { type: typeof PRODUCT_UPDATE_RESET }
 
 export const updateProduct =
-  (product: Product) => async (dispatch: Dispatch, getState: getStateProps) => {
+  (product: ProductItem) => async (dispatch: Dispatch) => {
     try {
       dispatch<ProductUpdateRequest>({
-        type: PRODUCT_UPDATE_REQUEST
+        type: PRODUCT_UPDATE_REQUEST,
       })
 
-      const {
-        userLogin: { userInfo }
-      } = getState()
-
-      const config = {
-        'Content-Type': 'application/json',
-        headers: { Authorization: `Bearer ${userInfo.token}` }
-      }
-
-      const { data } = await axios.put(
-        `/api/products/${product._id}`,
-        product,
-        config
-      )
+      const { data } = await client.mutate({
+        mutation: UPDATE_PRODUCT,
+        variables: {
+          input: {
+            _id: product._id,
+            name: product.name,
+            description: product.description,
+            price: product.price,
+            image: product.image,
+          },
+        },
+      })
 
       dispatch<ProductUpdateSuccess>({
         type: PRODUCT_UPDATE_SUCCESS,
-        payload: data
+        payload: data,
       })
     } catch (error) {
       dispatch<ProductUpdateFail>({
@@ -234,7 +236,7 @@ export const updateProduct =
         payload:
           error.response && error.response.data.message
             ? error.response.data.message
-            : error.message
+            : error.message,
       })
     }
   }

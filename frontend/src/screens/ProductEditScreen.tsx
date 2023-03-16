@@ -9,40 +9,15 @@ import { FormContainer } from '../components/FormContainer'
 import { listProductDetails, updateProduct } from '../actions/productActions'
 import { PRODUCT_UPDATE_RESET } from '../constants/productConstants'
 import { Dispatch } from 'redux'
-
-type ProductEditScreenProps = {
-  match: {
-    params: {
-      id: string
-    }
-  }
-  history: {
-    push: (url: string) => void
-  }
-}
-
-type State = {
-  productDetails: {
-    loading: boolean
-    error: string
-    product: {
-      _id: string
-      name: string
-      price: number
-      image: string
-      description: string
-    }
-  }
-  productUpdate: {
-    loading: boolean
-    error: string
-    success: boolean
-  }
-}
+import {
+  ProductDetailsState,
+  ProductEditScreenProps,
+  ProductUpdateState,
+} from '../types/product.type'
 
 export const ProductEditScreen = ({
   match,
-  history
+  history,
 }: ProductEditScreenProps) => {
   const productId = match.params.id
 
@@ -54,14 +29,18 @@ export const ProductEditScreen = ({
 
   const dispatch: Dispatch<any> = useDispatch()
 
-  const productDetails = useSelector((state: State) => state.productDetails)
+  const productDetails = useSelector(
+    (state: ProductDetailsState) => state.productDetails,
+  )
   const { loading, error, product } = productDetails
 
-  const productUpdate = useSelector((state: State) => state.productUpdate)
+  const productUpdate = useSelector(
+    (state: ProductUpdateState) => state.productUpdate,
+  )
   const {
     loading: loadingUpdate,
     error: errorUpdate,
-    success: successUpdate
+    success: successUpdate,
   } = productUpdate
 
   useEffect(() => {
@@ -69,13 +48,13 @@ export const ProductEditScreen = ({
       dispatch({ type: PRODUCT_UPDATE_RESET })
       history.push('/admin/productlist')
     } else {
-      if (!product.name || product._id !== productId) {
+      if (!product.getProduct?.name || product.getProduct?._id !== productId) {
         dispatch(listProductDetails(productId))
       } else {
-        setName(product.name)
-        setPrice(product.price)
-        setImage(product.image)
-        setDescription(product.description)
+        setName(product.getProduct?.name)
+        setPrice(product.getProduct?.price)
+        setImage(product.getProduct?.image)
+        setDescription(product.getProduct?.description)
       }
     }
   }, [dispatch, history, product, productId, successUpdate])
@@ -89,8 +68,8 @@ export const ProductEditScreen = ({
     try {
       const config = {
         headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+          'Content-Type': 'multipart/form-data',
+        },
       }
 
       const { data } = await axios.post('/api/upload/s3', formData, config)
@@ -111,8 +90,8 @@ export const ProductEditScreen = ({
         name,
         price,
         image,
-        description
-      })
+        description,
+      }),
     )
   }
 

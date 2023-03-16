@@ -8,86 +8,60 @@ import { Loader } from '../components/Loader'
 import {
   listProducts,
   deleteProduct,
-  createProduct
+  createProduct,
 } from '../actions/productActions'
 import { PRODUCT_CREATE_RESET } from '../constants/productConstants'
-import { UserInfo } from '../actions/userActions'
-
-type ProductListScreenProps = {
-  history: {
-    push: (url: string) => void
-  }
-}
-
-type Products = {
-  _id: string
-  name: string
-  price: number
-  user: string
-  image: string
-  description: string
-}
-type Product = {
-  loading: boolean
-  error: string
-  products: Products[]
-  _id: string
-}
-type State = {
-  productList: {
-    loading: boolean
-    error: string
-    products: Products[]
-  }
-  userLogin: {
-    userInfo: UserInfo
-  }
-  productDelete: {
-    loading: boolean
-    error: string
-    success: boolean
-  }
-  productCreate: {
-    loading: boolean
-    error: string
-    success: boolean
-    product: Product
-  }
-}
+import {
+  ProductCreateState,
+  ProductListScreenProps,
+  ProductListState,
+  StateDeleteProduct,
+} from '../types/product.type'
+import { StateUserInfo } from '../types/user.type'
 
 export const ProductListScreen = ({ history }: ProductListScreenProps) => {
   const dispatch: Dispatch<any> = useDispatch()
 
-  const productList = useSelector((state: State) => state.productList)
+  const productList = useSelector(
+    (state: ProductListState) => state.productList,
+  )
   const { loading, error, products } = productList
 
-  const userLogin = useSelector((state: State) => state.userLogin)
+  const userLogin = useSelector((state: StateUserInfo) => state.userLogin)
   const { userInfo } = userLogin
 
-  const productDelete = useSelector((state: State) => state.productDelete)
+  const productDelete = useSelector(
+    (state: StateDeleteProduct) => state.productDelete,
+  )
   const {
     loading: loadingDelete,
     error: errorDelete,
-    success: successDelete
+    success: successDelete,
   } = productDelete
 
-  const productCreate = useSelector((state: State) => state.productCreate)
+  const productCreate = useSelector(
+    (state: ProductCreateState) => state.productCreate,
+  )
   const {
     loading: loadingCreate,
     error: errorCreate,
     success: successCreate,
-    product: createdProduct
+    product: createdProduct,
   } = productCreate
 
   useEffect(() => {
     dispatch({ type: PRODUCT_CREATE_RESET })
 
-    if (!userInfo.isAdmin) {
+    if (!userInfo.login.isAdmin) {
       history.push('/login')
     }
 
+    if (successDelete) {
+      dispatch(listProducts())
+    }
+
     if (successCreate) {
-      history.push(`/admin/product/${createdProduct._id}/edit`)
+      history.push(`/admin/product/${createdProduct.createProduct._id}/edit`)
     } else {
       dispatch(listProducts())
     }
@@ -95,9 +69,9 @@ export const ProductListScreen = ({ history }: ProductListScreenProps) => {
     dispatch,
     history,
     userInfo,
-    successDelete,
     successCreate,
-    createdProduct
+    createdProduct,
+    successDelete,
   ])
 
   const createProductHandler = () => {
@@ -140,7 +114,7 @@ export const ProductListScreen = ({ history }: ProductListScreenProps) => {
             </tr>
           </thead>
           <tbody>
-            {products.map((product) => (
+            {products.getAllProducts?.map((product) => (
               <tr key={product._id}>
                 <td>{product._id}</td>
                 <td>{product.name}</td>

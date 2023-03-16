@@ -26,3 +26,11 @@ export const ME = gql`
     }
   }
 `
+export const REGISTER = gql`
+  ${USER_FIELDS_FRAGMENT}
+  mutation createUser($input: CreateUserInput!) {
+    createUser(input: $input) {
+      ...UserFields
+    }
+  }
+`

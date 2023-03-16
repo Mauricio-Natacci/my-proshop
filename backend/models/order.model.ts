@@ -23,8 +23,14 @@ export class Order {
   @prop({ required: true, default: false, type: () => Boolean })
   isDelivered: boolean
 
+  @prop({ required: true, default: false, type: () => Boolean })
+  isCanceled: boolean
+
   @prop({ required: true, default: Date.now, type: () => Date })
   deliveredAt: Date
+
+  @prop({ required: true, default: Date.now, type: () => Date })
+  canceledAt: Date
 
   @prop({ required: true, default: Date.now, type: () => Date })
   updatedAt: Date

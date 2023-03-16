@@ -18,7 +18,11 @@ type CartItem = {
   name: string
   quantity: number
   price: number
-  product: string
+  productId: {
+    _id: string
+    image: string
+    name: string
+  }
 }
 
 type StateCart = {
@@ -28,6 +32,9 @@ type StateCart = {
     itemsPrice: string
     totalPrice: string
   }
+}
+
+type StateOrderCreate = {
   orderCreate: {
     order: any
     success: boolean
@@ -40,6 +47,11 @@ export const PlaceOrderScreen = ({ history }: PlaceOrderScreenProps) => {
 
   const cart = useSelector((state: StateCart) => state.cart)
 
+  const orderCreate = useSelector(
+    (state: StateOrderCreate) => state.orderCreate,
+  )
+  const { order, success, error } = orderCreate
+
   //   Calculate prices
   const addDecimals = (num: number) => {
     return (Math.round(num * 100) / 100).toFixed(2)
@@ -48,30 +60,29 @@ export const PlaceOrderScreen = ({ history }: PlaceOrderScreenProps) => {
   cart.itemsPrice = addDecimals(
     cart.cartItems.reduce(
       (acc: string, item: any) => acc + item.price * item.quantity,
-      0
-    )
+      0,
+    ),
   )
   cart.totalPrice = Number(cart.itemsPrice).toFixed(2)
 
-  const orderCreate = useSelector((state: StateCart) => state.orderCreate)
-  const { order, success, error } = orderCreate
+  const items = cart.cartItems.map((item: CartItem) => {
+    return {
+      productId: item.productId,
+      quantity: item.quantity,
+    }
+  })
+
+  const shippingAddress = cart.shippingAddress
 
   useEffect(() => {
     if (success) {
-      history.push(`/order/${order._id}`)
+      history.push(`/order/${order.createOrder._id}`)
     }
     // eslint-disable-next-line
   }, [history, success, dispatch])
 
   const placeOrderHandler = () => {
-    dispatch(
-      createOrder({
-        orderItems: cart.cartItems,
-        shippingAddress: cart.shippingAddress,
-        itemsPrice: cart.itemsPrice,
-        totalPrice: cart.totalPrice
-      })
-    )
+    dispatch(createOrder(items, shippingAddress))
   }
 
   return (
@@ -107,7 +118,7 @@ export const PlaceOrderScreen = ({ history }: PlaceOrderScreenProps) => {
                           />
                         </Col>
                         <Col>
-                          <Link to={`/product/${item.product}`}>
+                          <Link to={`/product/${item.productId}`}>
                             {item.name}
                           </Link>
                         </Col>
@@ -133,7 +144,7 @@ export const PlaceOrderScreen = ({ history }: PlaceOrderScreenProps) => {
               <ListGroup.Item>
                 <Row>
                   <Col>Total Price:</Col>
-                  <Col>${cart.totalPrice}</Col>
+                  <Col>$ {cart.totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>

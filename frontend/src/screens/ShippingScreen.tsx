@@ -5,26 +5,10 @@ import { Dispatch } from 'redux'
 import { saveShippingAddress } from '../actions/cartActions'
 import { CheckoutSteps } from '../components/CheckoutSteps'
 import { FormContainer } from '../components/FormContainer'
-
-type ShippingScreenProps = {
-  history: {
-    push(url: string): void
-  }
-}
-
-type cartStateProps = {
-  cart: {
-    shippingAddress: {
-      address: string
-      city: string
-      postalCode: string
-      country: string
-    }
-  }
-}
+import { ShippingScreenProps, StateCart } from '../types/cart.type'
 
 export const ShippingScreen = ({ history }: ShippingScreenProps) => {
-  const cart = useSelector((state: cartStateProps) => state.cart)
+  const cart = useSelector((state: StateCart) => state.cart)
   const { shippingAddress } = cart
 
   const [address, setAddress] = useState(shippingAddress.address)

@@ -4,7 +4,7 @@ import { NotFoundError } from '../errors/notFoundError'
 import {
   OrderDeliveredInput,
   GetOrderInput,
-  OrderCanceledInput
+  OrderCanceledInput,
 } from '../inputs/order.input'
 import { Context } from '../types/context.type'
 import { Order } from '../types/order.type'
@@ -44,6 +44,7 @@ export class OrderService {
     }
 
     order.isDelivered = false
+    order.isCanceled = true
     order.status = 'cancelled'
 
     return await order.save()
@@ -52,10 +53,9 @@ export class OrderService {
   async getMyOrders(context: Context): Promise<Order[]> {
     const user = context.user!
 
-    const test = await OrderModel.find({ buyer: user._id }).populate(
+    return await OrderModel.find({ buyer: user._id }).populate(
       'buyer',
-      '-password'
+      '-password',
     )
-    return test
   }
 }

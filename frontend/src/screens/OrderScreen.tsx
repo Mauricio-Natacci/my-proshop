@@ -9,72 +9,44 @@ import { CheckoutSteps } from '../components/CheckoutSteps'
 import {
   getOrderDetails,
   deliverOrder,
-  cancelledOrder
+  cancelledOrder,
 } from '../actions/orderActions'
 import {
   ORDER_DELIVER_RESET,
-  ORDER_CANCELLED_RESET
+  ORDER_CANCELLED_RESET,
 } from '../constants/orderConstants'
-
-type OrderScreenProps = {
-  match: {
-    params: {
-      id: string
-    }
-  }
-  history: {
-    push: (url: string) => void
-  }
-}
-
-type State = {
-  orderDetails: {
-    error: string | null
-    loading: boolean
-    order: any
-  }
-  orderDeliver: {
-    loading: boolean
-    success: boolean
-  }
-  orderCancelled: {
-    loading: boolean
-    success: boolean
-  }
-  userLogin: {
-    userInfo: UserInfo
-  }
-}
-
-type UserInfo = {
-  name: string
-  email: string
-  isAdmin?: boolean
-}
-
-type Item = {
-  name: string
-  image: string
-  price: number
-  product: string
-  quantity: number
-}
+import { StateUserInfo } from '../types/user.type'
+import {
+  OrderItem,
+  OrderScreenProps,
+  StateOrderDetails,
+  StatusOrderState,
+} from '../types/order.type'
 
 export const OrderScreen = ({ match, history }: OrderScreenProps) => {
   const orderId = match.params.id
+
   const dispatch: Dispatch<any> = useDispatch()
 
-  const orderDetails = useSelector((state: State) => state.orderDetails)
+  const orderDetails = useSelector(
+    (state: StateOrderDetails) => state.orderDetails,
+  )
   const { order, loading, error } = orderDetails
 
-  const orderDeliver = useSelector((state: State) => state.orderDeliver)
+  console.log('order', order)
+
+  const orderDeliver = useSelector(
+    (state: StatusOrderState) => state.orderDeliver,
+  )
   const { loading: loadingDeliver, success: successDeliver } = orderDeliver
 
-  const orderCancelled = useSelector((state: State) => state.orderCancelled)
+  const orderCancelled = useSelector(
+    (state: StatusOrderState) => state.orderCancelled,
+  )
   const { loading: loadingCancelled, success: successCancelled } =
     orderCancelled
 
-  const userLogin = useSelector((state: State) => state.userLogin)
+  const userLogin = useSelector((state: StateUserInfo) => state.userLogin)
   const { userInfo } = userLogin
 
   useEffect(() => {
@@ -84,19 +56,32 @@ export const OrderScreen = ({ match, history }: OrderScreenProps) => {
   }, [history, userInfo])
 
   useEffect(() => {
-    if (!order || order._id !== orderId || successDeliver || successCancelled) {
+    if (
+      !order ||
+      order.getOrder?._id !== orderId ||
+      successDeliver ||
+      successCancelled
+    ) {
       dispatch({ type: ORDER_DELIVER_RESET })
       dispatch({ type: ORDER_CANCELLED_RESET })
       dispatch(getOrderDetails(orderId))
     }
-  }, [dispatch, order, orderId, successDeliver, successCancelled])
+  }, [
+    dispatch,
+    order,
+    orderId,
+    successDeliver,
+    successCancelled,
+    userInfo,
+    history,
+  ])
 
   const deliverHandler = () => {
-    dispatch(deliverOrder(order))
+    dispatch(deliverOrder(order.getOrder._id))
   }
 
-  const cancelledHanler = () => {
-    dispatch(cancelledOrder(order))
+  const cancelledHandler = () => {
+    dispatch(cancelledOrder(order.getOrder._id))
   }
 
   return loading ? (
@@ -106,63 +91,70 @@ export const OrderScreen = ({ match, history }: OrderScreenProps) => {
   ) : (
     <>
       <CheckoutSteps step4 />
-      <h1>Order {order._id}</h1>
+      <h1>Order {order.getOrder?._id}</h1>
       <Row>
         <Col md={8}>
           <ListGroup variant="flush">
             <ListGroup.Item>
               <h2>Shipping</h2>
-              <p>{/* <strong>Name: </strong> {order.user.name} */}</p>
+              <p>
+                <strong>Name: </strong> {order.getOrder?.buyer.name}
+              </p>
               <p>
                 <strong>Email: </strong>{' '}
-                <a href={`mailto:${order.user.email}`}>{order.user.email}</a>
+                <a href={`mailto:${order.getOrder?.buyer.email}`}>
+                  {order.getOrder?.buyer.email}
+                </a>
               </p>
               <p>
                 <strong>Address: </strong>
-                {order.shippingAddress.address}, {order.shippingAddress.city},
-                {order.shippingAddress.postalCode},
-                {order.shippingAddress.country}
+                {order.getOrder?.shippingAddress.address},{' '}
+                {order.getOrder?.shippingAddress.city},{' '}
+                {order.getOrder?.shippingAddress.postalCode},{' '}
+                {order.getOrder?.shippingAddress.country}
               </p>
             </ListGroup.Item>
 
             <ListGroup.Item>
               <h2>Order Items</h2>
-              {order.orderItems.length === 0 ? (
+              {order.getOrder?.orderItems?.length === 0 ? (
                 <h2>Order is empty</h2>
               ) : (
                 <ListGroup variant="flush">
-                  {order.orderItems.map((item: Item, index: number) => (
-                    <ListGroup.Item key={index}>
-                      <Row>
-                        <Col md={1}>
-                          <Image
-                            src={item.image}
-                            alt={item.name}
-                            fluid
-                            rounded
-                          />
-                        </Col>
-                        <Col>
-                          <Link to={`/product/${item.product}`}>
-                            {item.name}
-                          </Link>
-                        </Col>
-                        <Col md={4}>
-                          {item.quantity} x ${item.price} = $
-                          {item.quantity * item.price}
-                        </Col>
-                      </Row>
-                    </ListGroup.Item>
-                  ))}
+                  {order.getOrder?.orderItems?.map(
+                    (item: OrderItem, index: number) => (
+                      <ListGroup.Item key={index}>
+                        <Row>
+                          <Col md={1}>
+                            <Image
+                              src={item.product?.image}
+                              alt={item.product?.name}
+                              fluid
+                              rounded
+                            />
+                          </Col>
+                          <Col>
+                            <Link to={`/product/${item.product._id}`}>
+                              {item.product?.name}
+                            </Link>
+                          </Col>
+                          <Col md={4}>
+                            {item.quantity} x ${item.price} = $
+                            {item.quantity * item.price}
+                          </Col>
+                        </Row>
+                      </ListGroup.Item>
+                    ),
+                  )}
                 </ListGroup>
               )}
-              {order.isDelivered ? (
+              {order.getOrder?.isDelivered ? (
                 <Message>Delivered</Message>
               ) : (
                 <Message variant="danger">Not Delivered</Message>
               )}
               <ListGroup.Item className="Uppercase">
-                Status: {order.status}
+                Status: {order.getOrder?.status}
               </ListGroup.Item>
             </ListGroup.Item>
           </ListGroup>
@@ -177,11 +169,11 @@ export const OrderScreen = ({ match, history }: OrderScreenProps) => {
               <ListGroup.Item>
                 <Row>
                   <Col>Total Price:</Col>
-                  <Col>${order.totalPrice}</Col>
+                  <Col>${order.getOrder?.totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
               {loadingDeliver && <Loader />}
-              {userInfo && userInfo.isAdmin && !order.isDelivered && (
+              {userInfo?.login?.isAdmin && !order.getOrder?.isDelivered && (
                 <ListGroup.Item>
                   <Button
                     type="button"
@@ -193,13 +185,13 @@ export const OrderScreen = ({ match, history }: OrderScreenProps) => {
                 </ListGroup.Item>
               )}
               {loadingCancelled && <Loader />}
-              {userInfo?.isAdmin && (
+              {userInfo?.login?.isAdmin && (
                 <center>
                   <ListGroup.Item>
                     <Button
                       type="button"
                       className="btn btn-danger"
-                      onClick={cancelledHanler}
+                      onClick={cancelledHandler}
                     >
                       Mark as Cancelled
                     </Button>

@@ -7,18 +7,19 @@ import {
   productDeleteReducer,
   productDetailsReducer,
   productListReducer,
-  productUpdateReducer
+  productUpdateReducer,
 } from './reducers/productReducers'
 import { cartReducer } from './reducers/cartReducers'
-import { CartItem, SaveShippingAddressProps } from './actions/cartActions'
 import {
   orderCancelledReducer,
   orderCreateReducer,
   orderDeliverReducer,
   orderDetailsReducer,
   orderListMyReducer,
-  orderListReducer
+  orderListReducer,
 } from './reducers/orderReducers'
+import { ShippingAddress } from './types/order.type'
+import { CartItem } from './types/cart.type'
 
 const reducer = combineReducers({
   productList: productListReducer,
@@ -34,7 +35,7 @@ const reducer = combineReducers({
   orderDeliver: orderDeliverReducer,
   orderCancelled: orderCancelledReducer,
   orderListMy: orderListMyReducer,
-  orderList: orderListReducer
+  orderList: orderListReducer,
 })
 
 const userInfoFromStorage = localStorage.getItem('userInfo')
@@ -45,21 +46,22 @@ const cartItemsFromStorage: CartItem[] = localStorage.getItem('cartItems')
   ? JSON.parse(localStorage.getItem('cartItems') || '')
   : []
 
-const shippingAddressFromStorage: SaveShippingAddressProps =
-  localStorage.getItem('shippingAddress')
-    ? JSON.parse(localStorage.getItem('shippingAddress') || '')
-    : {}
+const shippingAddressFromStorage: ShippingAddress = localStorage.getItem(
+  'shippingAddress',
+)
+  ? JSON.parse(localStorage.getItem('shippingAddress') || '')
+  : {}
 
 const initialState = {
   cart: {
     cartItems: cartItemsFromStorage,
-    shippingAddress: shippingAddressFromStorage
+    shippingAddress: shippingAddressFromStorage,
   },
   userLogin: {
     loading: false,
     userInfo: userInfoFromStorage,
-    error: null
-  }
+    error: null,
+  },
 }
 
 const middleware = [thunk]
@@ -67,5 +69,5 @@ const middleware = [thunk]
 export const store = createStore(
   reducer,
   initialState,
-  composeWithDevTools(applyMiddleware(...middleware))
+  composeWithDevTools(applyMiddleware(...middleware)),
 )

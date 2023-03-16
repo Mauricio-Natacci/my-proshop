@@ -6,7 +6,7 @@ import { CreateUserInput, GetUserInput, LoginInput } from '../inputs/user.input'
 import { IsLoggedIn } from '../decorators/authDecorator'
 
 @Resolver()
-export default class UserResolver {
+export class UserResolver {
   constructor(private readonly userService: UserService) {
     this.userService = new UserService()
   }
@@ -19,7 +19,7 @@ export default class UserResolver {
   @Mutation(() => User, { nullable: true })
   async login(
     @Arg('input') input: LoginInput,
-    @Ctx() context: Context
+    @Ctx() context: Context,
   ): Promise<User> {
     return await this.userService.login(input, context)
   }
@@ -30,11 +30,13 @@ export default class UserResolver {
     return this.userService.logout(context)
   }
 
+  @IsLoggedIn()
   @Query(() => User)
   async getUser(@Arg('input') input: GetUserInput): Promise<User> {
     return await this.userService.getUser(input)
   }
 
+  @IsLoggedIn()
   @Query(() => User, { nullable: true })
   me(@Ctx() context: Context): User | null {
     return this.userService.me(context)

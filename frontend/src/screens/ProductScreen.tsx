@@ -5,13 +5,15 @@ import { Link } from 'react-router-dom'
 import { Row, Col, Image, ListGroup, Button } from 'react-bootstrap'
 import { Message } from '../components/Message'
 import { Loader } from '../components/Loader'
-import { ProductScreenProps, State } from '../types/product.type'
+import { ProductScreenProps, ProductDetailsState } from '../types/product.type'
 import { listProductDetails } from '../actions/productActions'
 
 export const ProductScreen = ({ history, match }: ProductScreenProps) => {
   const dispatch: Dispatch<any> = useDispatch()
 
-  const productDetails = useSelector((state: State) => state.productDetails)
+  const productDetails = useSelector(
+    (state: ProductDetailsState) => state.productDetails,
+  )
   const { loading, error, product } = productDetails
 
   const qty = 1
