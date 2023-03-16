@@ -8,7 +8,7 @@
     "start:rest:js": "node dist/server.js",
     "start:graphql:js": "node dist/backend/graphql/index.js",
     "build:graphql": "tsc",
-    "build:rest": "sucrase-node backend/server.ts",
+    "build:rest": "tsup backend",
     "dev:rest": "tsx backend/server.ts",
     "dev:graphql": "ts-node-dev --respawn --transpile-only backend/graphql/index.ts",
     "client": "npm start --prefix frontend",
@@ -47,7 +47,8 @@
     "reflect-metadata": "^0.1.13",
     "type-graphql": "^1.1.1",
     "ts-node-dev": "^1.1.8",
-    "uuidv4": "^6.2.13"
+    "uuidv4": "^6.2.13",
+    "tsup": "^6.6.3"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
@@ -68,7 +69,6 @@
     "eslint-plugin-react": "^7.32.2",
     "nodemon": "^2.0.20",
     "prettier": "^2.8.3",
-    "tsup": "^6.6.3",
     "tsx": "^3.12.3",
     "typescript": "^4.9.5"
   }
