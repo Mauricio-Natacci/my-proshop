@@ -4,7 +4,7 @@ import { User } from './user.model'
 export class Product {
   _id: string
 
-  @prop({ ref: () => User })
+  @prop()
   createdBy: Ref<User>
 
   @prop({ required: true, type: () => String })
