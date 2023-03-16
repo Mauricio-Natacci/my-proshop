@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build:backend": "npm run build:rest && npm run build:graphql",
-    "start:rest:js": "node dist/server.js",
+    "start:rest:js": "node dist/backend/server.js",
     "start:graphql:js": "node dist/backend/graphql/index.js",
     "build:graphql": "tsc",
     "build:rest": "tsup backend",
