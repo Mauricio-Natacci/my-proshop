@@ -12,18 +12,20 @@ export const config = {
   jwtSecret: process.env.JWT_SECRET,
   playgroundEnabled: process.env.PLAYGROUND_ENABLED === 'true',
   portGraphql: process.env.PORT_GRAPHQL,
-  originFrontend: process.env.ORIGIN_FRONTEND
+  originFrontend: process.env.ORIGIN_FRONTEND,
 }
 
 if (!config.mongoURI) {
   throw new NotFoundError('MONGO_URI environment variable is not set')
 }
 
-if (config.shouldServeReactApp) {
+const isValidReactApp = config.shouldServeReactApp === undefined
+if (isValidReactApp) {
   throw new NotFoundError('SERVE_REACT_APP environment variable is not set')
 }
 
-if (config.showErrorStack) {
+const isValidShowErrorStack = config.showErrorStack === undefined
+if (isValidShowErrorStack) {
   throw new NotFoundError('SHOW_ERROR_STACK environment variable is not set')
 }
 
@@ -39,7 +41,8 @@ if (!config.jwtSecret) {
   throw new NotFoundError('JWT_SECRET environment variable is not set')
 }
 
-if (config.playgroundEnabled) {
+const isValidPlaygroundEnabled = config.playgroundEnabled === undefined
+if (isValidPlaygroundEnabled) {
   throw new NotFoundError('PLAYGROUND_ENABLED environment variable is not set')
 }
 
