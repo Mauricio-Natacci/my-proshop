@@ -2,28 +2,28 @@ import { getModelForClass, prop, Ref } from '@typegoose/typegoose'
 import { User } from './user.model'
 
 export class Product {
-  _id!: string
+  _id: string
 
   @prop({ required: true, ref: () => User })
-  createdBy!: Ref<User>
+  createdBy: Ref<User>
 
   @prop({ required: true, type: () => String })
-  name!: string
+  name: string
 
   @prop({ required: true, type: () => String })
-  image!: string
+  image: string
 
   @prop({ required: true, type: () => String })
-  description!: string
+  description: string
 
   @prop({ required: true, type: () => Number })
-  price!: number
+  price: number
 
   @prop({ required: true, default: Date.now, type: () => Date })
-  createdAt!: Date
+  createdAt: Date
 
   @prop({ required: true, default: Date.now, type: () => Date })
-  updatedAt!: Date
+  updatedAt: Date
 }
 
-export const ProductModel = getModelForClass<typeof Product>(Product)
+export const ProductModel = getModelForClass(Product)
