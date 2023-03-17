@@ -11,7 +11,7 @@ export const config = {
   environment: process.env.NODE_ENV,
   jwtSecret: process.env.JWT_SECRET,
   playgroundEnabled: process.env.PLAYGROUND_ENABLED === 'true',
-  portGraphql: process.env.PORT_GRAPHQL,
+  portRest: process.env.PORT_REST,
   originFrontend: process.env.ORIGIN_FRONTEND,
 }
 
@@ -46,8 +46,8 @@ if (isValidPlaygroundEnabled) {
   throw new NotFoundError('PLAYGROUND_ENABLED environment variable is not set')
 }
 
-if (!config.portGraphql) {
-  throw new NotFoundError('PORT_GRAPHQL environment variable is not set')
+if (!config.portRest) {
+  throw new NotFoundError('PORT_REST environment variable is not set')
 }
 
 if (!config.originFrontend) {

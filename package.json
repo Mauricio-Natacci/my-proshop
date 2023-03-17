@@ -11,6 +11,7 @@
     "build:backend": "tsc",
     "start:rest:js": "node dist/backend/server.js",
     "start:graphql:js": "node dist/backend/graphql/index.js",
+    "start:restAndGraphql": "concurrently \"npm run start:rest:js\"  \"npm run start:graphql:js\"",
     "dev:rest": "tsx backend/server.ts",
     "dev:graphql": "ts-node-dev --respawn --transpile-only backend/graphql/index.ts",
     "client": "npm start --prefix frontend",
@@ -56,12 +57,12 @@
     "ts-node-dev": "^1.1.8",
     "tsup": "^6.6.3",
     "type-graphql": "^1.1.1",
-    "uuidv4": "^6.2.13"
+    "uuidv4": "^6.2.13",
+    "concurrently": "^7.6.0"
   },
   "devDependencies": {
     "@types/node": "^18.11.18",
     "@typescript-eslint/eslint-plugin": "^5.50.0",
-    "concurrently": "^7.6.0",
     "eslint": "^8.33.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-config-standard-with-typescript": "^34.0.0",
