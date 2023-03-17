@@ -10,6 +10,7 @@ import { Context } from './types/context.type'
 import { config } from '../config'
 import { verifyJwt } from './utils/jwt'
 import { User, UserModel } from '../models/user.model'
+import path from 'path'
 
 async function bootstrap() {
   const schema = await buildSchema({
@@ -43,10 +44,24 @@ async function bootstrap() {
   server.applyMiddleware({
     app,
     cors: {
-      origin: 'http://localhost:3000',
+      origin: config.originFrontend,
       credentials: true,
     },
   })
+
+  if (config.shouldServeReactApp) {
+    app.use(express.static(path.join(__dirname, '../../frontend/build')))
+
+    app.get('*', (_, res) => {
+      res.sendFile(
+        path.resolve(__dirname, '..', '..', 'frontend', 'build', 'index.html'),
+      )
+    })
+  } else {
+    app.get('/', (_, res) => {
+      res.send('API is running...')
+    })
+  }
 
   // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
   const port = config.port
