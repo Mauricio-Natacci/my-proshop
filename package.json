@@ -17,7 +17,7 @@
     "dev": "concurrently \"npm run dev:rest\"  \"npm run dev:graphql\" \"npm run client\"",
     "data:import": "node backend/seeder",
     "data:destroy": "node backend/seeder -d",
-    "build:front": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend",
     "prettier-format": "prettier --config .prettierrc '*/**/*.ts' --write",
     "lint": "eslint . --ext .js,.ts",
     "start": "npm run build:backend && npm run build:front && npm run start:rest:js && npm run start:graphql:js && npm run client"
