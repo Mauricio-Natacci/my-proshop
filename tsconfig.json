@@ -12,5 +12,6 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "strictPropertyInitialization": false
-  }
+  },
+  "exclude": ["frontend"]
 }

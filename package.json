@@ -8,11 +8,9 @@
     "npm": "8.19.3"
   },
   "scripts": {
-    "build:backend": "npm run build:rest && npm run build:graphql",
+    "build:backend": "tsc",
     "start:rest:js": "node dist/backend/server.js",
     "start:graphql:js": "node dist/backend/graphql/index.js",
-    "build:graphql": "tsc",
-    "build:rest": "tsup backend",
     "dev:rest": "tsx backend/server.ts",
     "dev:graphql": "ts-node-dev --respawn --transpile-only backend/graphql/index.ts",
     "client": "npm start --prefix frontend",
@@ -22,7 +20,7 @@
     "build:front": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend",
     "prettier-format": "prettier --config .prettierrc '*/**/*.ts' --write",
     "lint": "eslint . --ext .js,.ts",
-    "start": "npm run build && npm run build:front && npm run rest:js && npm run graphql && npm run client"
+    "start": "npm run build:backend && npm run build:front && npm run start:rest:js && npm run start:graphql:js && npm run client"
   },
   "author": "Mauricio Natacci",
   "license": "MIT",
