@@ -8,9 +8,9 @@
     "npm": "8.19.3"
   },
   "scripts": {
-    "build:backend": "tsc",
-    "start:rest:js": "node dist/backend/server.js",
-    "start:graphql:js": "node dist/backend/graphql/index.js",
+    "build:backend": "tsc --optimize_for_size --max_old_space_size=920",
+    "start:rest:js": "node --optimize_for_size --max_old_space_size=920 dist/backend/server.js",
+    "start:graphql:js": "node --optimize_for_size --max_old_space_size=920 dist/backend/graphql/index.js",
     "dev:rest": "tsx backend/server.ts",
     "dev:graphql": "ts-node-dev --respawn --transpile-only backend/graphql/index.ts",
     "client": "npm start --prefix frontend",
