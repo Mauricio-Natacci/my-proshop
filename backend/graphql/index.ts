@@ -44,7 +44,7 @@ async function bootstrap() {
   server.applyMiddleware({
     app,
     cors: {
-      origin: config.originFrontend,
+      origin: 'http://localhost:3000',
       credentials: true,
     },
   })
