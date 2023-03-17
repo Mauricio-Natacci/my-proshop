@@ -49,10 +49,10 @@ async function bootstrap() {
   })
 
   // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-  const PORT = config.port
+  const port = config.port
 
-  app.listen({ PORT }, () => {
-    console.log(`App is listening on port ${PORT}!`)
+  app.listen({ port }, () => {
+    console.log(`App is listening on port ${port}!`)
   })
   connectToMongo()
 }
