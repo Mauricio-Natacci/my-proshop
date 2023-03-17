@@ -49,10 +49,10 @@ async function bootstrap() {
   })
 
   // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-  const port = config.portGraphql || 8081
+  const PORT = config.port
 
-  app.listen({ port }, () => {
-    console.log(`App is listening on port ${port}!`)
+  app.listen({ PORT }, () => {
+    console.log(`App is listening on port ${PORT}!`)
   })
   connectToMongo()
 }
