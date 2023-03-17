@@ -29,7 +29,7 @@ if (config.shouldServeReactApp) {
   })
 } else {
   app.get('/', (_, res) => {
-    res.send('API is running...')
+    res.send('API is running....')
   })
 }
 
