@@ -14,7 +14,7 @@ import { User, UserModel } from '../models/user.model'
 async function bootstrap() {
   const schema = await buildSchema({
     resolvers,
-    authChecker
+    authChecker,
   })
 
   const app = express()
@@ -35,7 +35,7 @@ async function bootstrap() {
 
       return context
     },
-    playground: config.playgroundEnabled
+    playground: config.playgroundEnabled,
   })
 
   await server.start()
@@ -44,11 +44,12 @@ async function bootstrap() {
     app,
     cors: {
       origin: 'http://localhost:3000',
-      credentials: true
-    }
+      credentials: true,
+    },
   })
 
-  const port = config.portGraphql
+  // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+  const port = config.portGraphql || 8081
 
   app.listen({ port }, () => {
     console.log(`App is listening on port ${port}!`)
