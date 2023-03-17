@@ -1,1 +1,1 @@
-web: sucrase-node backend/server.ts
+web: npm run build:backend && npm run start:graphql:js

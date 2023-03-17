@@ -10,11 +10,12 @@ import { Context } from './types/context.type'
 import { config } from '../config'
 import { verifyJwt } from './utils/jwt'
 import { User, UserModel } from '../models/user.model'
+import path from 'path'
 
 async function bootstrap() {
   const schema = await buildSchema({
     resolvers,
-    authChecker
+    authChecker,
   })
 
   const app = express()
@@ -35,7 +36,7 @@ async function bootstrap() {
 
       return context
     },
-    playground: config.playgroundEnabled
+    playground: config.playgroundEnabled,
   })
 
   await server.start()
@@ -44,11 +45,34 @@ async function bootstrap() {
     app,
     cors: {
       origin: 'http://localhost:3000',
-      credentials: true
-    }
+      credentials: true,
+    },
   })
 
-  const port = config.portGraphql
+  if (config.shouldServeReactApp) {
+    app.use(express.static(path.join(__dirname, '../../../frontend/build')))
+
+    app.get('*', (_, res) => {
+      res.sendFile(
+        path.resolve(
+          __dirname,
+          '..',
+          '..',
+          '..',
+          'frontend',
+          'build',
+          'index.html',
+        ),
+      )
+    })
+  } else {
+    app.get('/', (_, res) => {
+      res.send('API is running...')
+    })
+  }
+
+  // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+  const port = config.port
 
   app.listen({ port }, () => {
     console.log(`App is listening on port ${port}!`)

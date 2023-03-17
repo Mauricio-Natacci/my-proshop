@@ -26,4 +26,4 @@ export class Product {
   updatedAt: Date
 }
 
-export const ProductModel = getModelForClass<typeof Product>(Product)
+export const ProductModel = getModelForClass(Product)

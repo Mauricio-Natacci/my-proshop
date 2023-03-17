@@ -19,30 +19,16 @@ app.use('/api/upload', uploadRoutes)
 
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
 
-if (config.shouldServeReactApp) {
-  app.use(express.static(path.join(__dirname, '../frontend/build')))
-
-  app.get('*', (_, res) => {
-    res.sendFile(
-      path.resolve(__dirname, '..', 'frontend', 'build', 'index.html')
-    )
-  })
-} else {
-  app.get('/', (_, res) => {
-    res.send('API is running...')
-  })
-}
-
 app.use(notFound)
 
 app.use(errorHandler)
-const PORT = config.port
+const PORT = config.portRest
 
 connectDB()
   .then(() => {
     app.listen(PORT, () => {
       console.log(
-        `Server running in ${config.environment} mode on port ${PORT}`
+        `Server running in ${config.environment} mode on port ${PORT}`,
       )
     })
   })
