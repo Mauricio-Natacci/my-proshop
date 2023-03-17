@@ -1,1 +1,1 @@
-web: npm run build:backend && npm run start:restAndGraphql
+web: npm run build:backend && npm run start:graphql:js

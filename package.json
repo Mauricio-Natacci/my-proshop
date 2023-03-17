@@ -11,7 +11,6 @@
     "build:backend": "tsc",
     "start:rest:js": "node dist/backend/server.js",
     "start:graphql:js": "node dist/backend/graphql/index.js",
-    "start:restAndGraphql": "concurrently \"npm run start:rest:js\"  \"npm run start:graphql:js\"",
     "dev:rest": "tsx backend/server.ts",
     "dev:graphql": "ts-node-dev --respawn --transpile-only backend/graphql/index.ts",
     "client": "npm start --prefix frontend",
