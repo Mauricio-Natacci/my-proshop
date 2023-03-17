@@ -50,12 +50,10 @@ async function bootstrap() {
   })
 
   if (config.shouldServeReactApp) {
-    app.use(express.static(path.join(__dirname, '../../frontend/build')))
+    app.use(express.static(path.join(__dirname, 'frontend/build')))
 
     app.get('*', (_, res) => {
-      res.sendFile(
-        path.resolve(__dirname, '..', '..', 'frontend', 'build', 'index.html'),
-      )
+      res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
     })
   } else {
     app.get('/', (_, res) => {
