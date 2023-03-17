@@ -24,7 +24,7 @@ if (config.shouldServeReactApp) {
 
   app.get('*', (_, res) => {
     res.sendFile(
-      path.resolve(__dirname, '..', 'frontend', 'build', 'index.html'),
+      path.resolve(__dirname, '..', '..', 'frontend', 'build', 'index.html'),
     )
   })
 } else {
